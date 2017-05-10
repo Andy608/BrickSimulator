@@ -1,27 +1,24 @@
 #pragma once
-#ifndef BRICKSIMULATOR_WINDOW_H_
-#define BRICKSIMULATOR_WINDOW_H_
+#ifndef BOUNTIVE_WINDOW_H_
+#define BOUNTIVE_WINDOW_H_
 
-#include <glfw\glfw3.h>
-#include <glm\glm.hpp>
+#include "CallbackManager.h"
 
-namespace BrickSimulator
+namespace Bountive
 {
 	class Window
 	{
 	public:
-		
-		/** Constructors */
 		Window();
-		
-		/** Destructor */
 		~Window();
 
-
-
+		GLFWwindow* getWindowHandle() const;
 
 	private:
-		GLFWwindow* windowHandle;
+		const GLFWvidmode* mVIDEO_MODE;
+		GLFWwindow* mWindowHandle;
+		CallbackManager* mCallbackManager;
+
 	};
 }
 

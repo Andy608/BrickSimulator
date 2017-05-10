@@ -18,7 +18,6 @@ namespace Bountive
 		const GLFWvidmode* mVIDEO_MODE;
 		GLFWwindow* mWindowHandle;
 		CallbackManager* mCallbackManager;
-
 	};
 }
 

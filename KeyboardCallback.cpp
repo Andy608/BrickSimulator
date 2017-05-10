@@ -17,19 +17,19 @@ namespace Bountive
 	}
 
 
-	KeyboardCallback::KeyboardCallback() : pressedKeys(new int[MAX_KEYS_PRESSED]) 
+	KeyboardCallback::KeyboardCallback() : mPressedKeys(new int[MAX_KEYS_PRESSED]) 
 	{
 		for (int i = 0; i < MAX_KEYS_PRESSED; ++i)
 		{
-			pressedKeys[i] = NULL;
+			mPressedKeys[i] = NULL;
 		}
 	}
 
 
 	KeyboardCallback::~KeyboardCallback()
 	{
-		std::cout << "Deleting pressedKeys." << std::endl;
-		delete[] pressedKeys;
+		std::cout << "Deleting KeyboardCallback." << std::endl;
+		delete[] mPressedKeys;
 	}
 
 
@@ -37,20 +37,20 @@ namespace Bountive
 	{
 		for (int i = 0; i < MAX_KEYS_PRESSED; ++i)
 		{
-			if (pressedKeys[i] == asciiValue)
+			if (mPressedKeys[i] == asciiValue)
 			{
 				//std::cout << "Key is already pressed." << std::endl;
 				break;
 			}
-			else if (pressedKeys[i] == NULL)
+			else if (mPressedKeys[i] == NULL)
 			{
 				//std::cout << "Adding key to the list." << std::endl;
-				pressedKeys[i] = asciiValue;
+				mPressedKeys[i] = asciiValue;
 				break;
 			}
 		}
 
-		printPressedKeys(true);
+		printPressedKeysDebug(true);
 	}
 
 
@@ -58,31 +58,31 @@ namespace Bountive
 	{
 		for (int i = 0; i < MAX_KEYS_PRESSED; ++i)
 		{
-			if (pressedKeys[i] == asciiValue)
+			if (mPressedKeys[i] == asciiValue)
 			{
 				//std::cout << "Removing key from the list." << std::endl;
-				pressedKeys[i] = NULL;
+				mPressedKeys[i] = NULL;
 				
 				for (int j = i; j < MAX_KEYS_PRESSED - 1; ++j)
 				{
-					if (pressedKeys[j + 1] == NULL)
+					if (mPressedKeys[j + 1] == NULL)
 					{
 						continue;
 					}
 					else
 					{
-						pressedKeys[j] = pressedKeys[j + 1];
-						pressedKeys[j + 1] = NULL;
+						mPressedKeys[j] = mPressedKeys[j + 1];
+						mPressedKeys[j + 1] = NULL;
 					}
 				}
 			}
 		}
 
-		printPressedKeys(false);
+		printPressedKeysDebug(false);
 	}
 
 
-	void KeyboardCallback::printPressedKeys(GLboolean isPressed) const
+	void KeyboardCallback::printPressedKeysDebug(GLboolean isPressed) const
 	{
 		if (isPressed)
 		{
@@ -93,11 +93,11 @@ namespace Bountive
 			std::cout << "Key Removed... | ";
 		}
 
-		std::cout << "(" << 0 << ": " << instance->pressedKeys[0];
+		std::cout << "(" << 0 << ": " << instance->mPressedKeys[0];
 
 		for (int i = 1; i < MAX_KEYS_PRESSED; ++i)
 		{
-			std::cout << ", " << i << ": " << instance->pressedKeys[i];
+			std::cout << ", " << i << ": " << instance->mPressedKeys[i];
 		}
 
 		std::cout << ")" << std::endl;
@@ -117,6 +117,7 @@ namespace Bountive
 			if (asciiValue == GLFW_KEY_ESCAPE)
 			{
 				//TODO: Make a boolean in the settings file and set this to true and then handle this somewhere else.
+				//TODO: Send keys to input handler
 				glfwSetWindowShouldClose(windowHandle, GL_TRUE);
 			}
 		}

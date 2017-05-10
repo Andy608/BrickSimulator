@@ -35,10 +35,10 @@ namespace Bountive
 
 	void BrickSimulator::loop()
 	{
-		GLdouble mLastTime			= glfwGetTime();
-		GLdouble mCurrentTime		= 0.0f;
-		GLdouble mDeltaTime			= 0.0f;
-		GLdouble mAccumulatedTime	= 0.0f;
+		GLdouble mLastTime = glfwGetTime();
+		GLdouble mCurrentTime = 0.0f;
+		GLdouble mDeltaTime = 0.0f;
+		GLdouble mAccumulatedTime = 0.0f;
 		
 		//TODO: Implement settings to get vsync and other window properties
 		glfwSwapInterval(0);

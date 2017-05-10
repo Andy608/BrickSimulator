@@ -18,13 +18,13 @@ namespace Bountive
 		void addKeyPressed(const GLint& asciiValue);
 		void removeKeyPressed(const GLint& asciiValue);
 
-		void printPressedKeys(GLboolean isPressed) const;
+		void printPressedKeysDebug(GLboolean isPressed) const;
 
 		~KeyboardCallback();
 
 	private:
 		const static GLint MAX_KEYS_PRESSED;
-		GLint* pressedKeys;
+		GLint* mPressedKeys;
 
 		KeyboardCallback();
 	};

@@ -28,7 +28,6 @@ namespace Bountive
 		void loop();
 		void update();
 		void render();
-
 	};
 }
 

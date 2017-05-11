@@ -8,9 +8,9 @@ namespace Bountive
 	const GLfloat BrickSimulator::LAG_CAP = 0.15f;
 
 	BrickSimulator::BrickSimulator()
-	try : mWindowHandle(new Window())
+	try : mFileUtil(FileUtil::init()), mWindowHandle(new Window())
 	{
-
+		
 	}
 	catch (std::string e)
 	{
@@ -23,11 +23,13 @@ namespace Bountive
 	{
 		std::cout << "Deleting BrickSimulator" << std::endl;
 		delete mWindowHandle;
+		delete mFileUtil;
 	}
 
 
 	void BrickSimulator::start()
 	{
+		std::cout << mFileUtil->getmAppdataDir()->mFILE_PATH << std::endl;
 		//TODO: Create a ScreenManager class and set the screen
 		loop();
 	}

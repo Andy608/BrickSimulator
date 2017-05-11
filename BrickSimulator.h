@@ -3,6 +3,7 @@
 #define BOUNTIVE_BRICKSIMULATOR_H_
 
 #include "Window.h"
+#include "FileUtil.h"
 #include <string>
 
 namespace Bountive
@@ -24,6 +25,7 @@ namespace Bountive
 		GLint mFramesPerSecond;
 
 		Window* mWindowHandle;
+		FileUtil* mFileUtil;
 
 		void loop();
 		void update();

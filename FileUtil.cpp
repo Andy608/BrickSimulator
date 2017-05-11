@@ -25,9 +25,9 @@ namespace Bountive
 
 	
 	FileUtil::FileUtil()
-	try : mAppdataDir(createDirectory(FOLDERID_RoamingAppData, BRICKSIMULATOR_APPDATA_FOLDER_NAME))
+	try : mAPPDATA_DIRECTORY(createDirectory(FOLDERID_RoamingAppData, mAPPDATA_FOLDER_NAME))
 	{
-	
+		
 	}
 	catch (std::string e)
 	{
@@ -38,13 +38,13 @@ namespace Bountive
 	FileUtil::~FileUtil()
 	{
 		std::cout << "Deleting FileUtil." << std::endl;
-		delete mAppdataDir;
+		delete mAPPDATA_DIRECTORY;
 	}
 
 
 	const FileDirectory* const FileUtil::getmAppdataDir() const
 	{
-		return mAppdataDir;
+		return mAPPDATA_DIRECTORY;
 	}
 
 

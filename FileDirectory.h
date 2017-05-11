@@ -2,6 +2,7 @@
 #ifndef BOUNTIVE_FILEDIRECTORY
 #define BOUNTIVE_FILEDIRECTORY
 
+#include <glew.h>
 #include <string>
 
 namespace Bountive
@@ -9,13 +10,14 @@ namespace Bountive
 	class FileDirectory
 	{
 	public:
-		const std::wstring mFILE_PATH;
-
 		FileDirectory(std::wstring filePath);
 		~FileDirectory();
 
-		void printDirectory() const;
-		bool createDirectory();
+		std::wstring getDirectory() const;
+		GLboolean createDirectory() const;
+
+	private:
+		const std::wstring mFILE_PATH;
 	};
 }
 

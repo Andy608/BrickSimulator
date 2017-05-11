@@ -3,8 +3,8 @@
 #define BOUNTIVE_FILEUTIL
 
 #include "FileDirectory.h"
-#include <glew.h>
 #include <shlobj.h>
+#include <glew.h>
 #include <string>
 
 namespace Bountive
@@ -20,8 +20,8 @@ namespace Bountive
 		const FileDirectory* const getmAppdataDir() const;
 
 	protected:
-		const std::wstring BRICKSIMULATOR_APPDATA_FOLDER_NAME = L"Brick Simulator";
-		FileDirectory* mAppdataDir;
+		const std::wstring mAPPDATA_FOLDER_NAME = L"Brick Simulator";
+		const FileDirectory * const mAPPDATA_DIRECTORY;
 
 		FileUtil();
 

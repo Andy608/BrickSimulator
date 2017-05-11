@@ -1,7 +1,7 @@
 #include "FileDirectory.h"
-#include <glew.h>
 #include <iostream>
 #include <Windows.h>
+#include <glew.h>
 
 namespace Bountive
 {
@@ -18,13 +18,13 @@ namespace Bountive
 	}
 
 
-	void FileDirectory::printDirectory() const
+	std::wstring FileDirectory::getDirectory() const
 	{
-		std::wcout << "Directory: " << mFILE_PATH << std::endl;
+		return mFILE_PATH;
 	}
 
 
-	bool FileDirectory::createDirectory()
+	GLboolean FileDirectory::createDirectory() const
 	{
 		try
 		{

@@ -1,7 +1,7 @@
-#include "FileLocation.h"
 #include "BrickSimulator.h"
 #include <iostream>
 
+#include "FileLocation.h"
 
 namespace Bountive
 {
@@ -13,7 +13,6 @@ namespace Bountive
 	try : mFileUtil(FileUtil::init()), mWindowHandle(new Window())
 	{
 		FileLocation testFile = FileLocation(mFileUtil->getmAppdataDir(), L"test", L".txt");
-		testFile.createFile();
 	}
 	catch (std::string e)
 	{
@@ -32,7 +31,7 @@ namespace Bountive
 
 	void BrickSimulator::start()
 	{
-		std::wcout << L"Directory: " << mFileUtil->getmAppdataDir()->getDirectory() << std::endl;
+		std::wcout << mFileUtil->getmAppdataDir()->getDirectory() << std::endl;
 		//TODO: Create a ScreenManager class and set the screen
 		loop();
 	}

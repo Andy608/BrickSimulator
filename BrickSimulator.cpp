@@ -29,7 +29,7 @@ namespace Bountive
 
 	void BrickSimulator::start()
 	{
-		std::cout << mFileUtil->getmAppdataDir()->mFILE_PATH << std::endl;
+		mFileUtil->getmAppdataDir()->printDirectory();
 		//TODO: Create a ScreenManager class and set the screen
 		loop();
 	}

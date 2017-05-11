@@ -9,10 +9,13 @@ namespace Bountive
 	class FileDirectory
 	{
 	public:
-		const std::string mFILE_PATH;
+		const std::wstring mFILE_PATH;
 
-		FileDirectory(std::string filePath);
+		FileDirectory(std::wstring filePath);
 		~FileDirectory();
+
+		void printDirectory() const;
+		bool createDirectory();
 	};
 }
 

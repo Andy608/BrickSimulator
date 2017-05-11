@@ -21,5 +21,4 @@ namespace Bountive
 	};
 }
 
-
 #endif

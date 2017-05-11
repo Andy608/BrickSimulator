@@ -2,7 +2,6 @@
 #include "BrickSimulator.h"
 #include <iostream>
 
-
 namespace Bountive
 {
 	const GLint BrickSimulator::TICKS_PER_SECOND = 60;

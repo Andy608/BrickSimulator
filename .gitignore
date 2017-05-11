@@ -33,4 +33,5 @@
 *.vcxproj
 *.vcxproj.filters
 *.vcxproj.user
+*.TMP
 Debug/

@@ -1,5 +1,4 @@
 #include "BrickSimulator.h"
-
 #include <string>
 #include <iostream>
 

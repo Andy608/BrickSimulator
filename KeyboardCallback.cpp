@@ -33,7 +33,7 @@ namespace Bountive
 	}
 
 
-	void KeyboardCallback::addKeyPressed(const GLint& asciiValue)
+	void KeyboardCallback::addKeyPressed(GLint asciiValue)
 	{
 		for (int i = 0; i < MAX_KEYS_PRESSED; ++i)
 		{
@@ -54,7 +54,7 @@ namespace Bountive
 	}
 
 
-	void KeyboardCallback::removeKeyPressed(const GLint& asciiValue)
+	void KeyboardCallback::removeKeyPressed(GLint asciiValue)
 	{
 		for (int i = 0; i < MAX_KEYS_PRESSED; ++i)
 		{

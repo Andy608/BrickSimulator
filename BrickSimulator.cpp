@@ -11,8 +11,7 @@ namespace Bountive
 	BrickSimulator::BrickSimulator()
 	try : mFileUtil(FileUtil::init()), mWindowHandle(new Window())
 	{
-		FileLocation testFile = FileLocation(mFileUtil->getmAppdataDir(), L"test", L".txt");
-		testFile.createFile();
+		
 	}
 	catch (std::string e)
 	{

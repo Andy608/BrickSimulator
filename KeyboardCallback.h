@@ -15,8 +15,8 @@ namespace Bountive
 		static KeyboardCallback* init();
 		static void keyCallback(GLFWwindow* windowHandle, GLint key, GLint scancode, GLint action, GLint mode);
 
-		void addKeyPressed(const GLint& asciiValue);
-		void removeKeyPressed(const GLint& asciiValue);
+		void addKeyPressed(GLint asciiValue);
+		void removeKeyPressed(GLint asciiValue);
 
 		void printPressedKeysDebug(GLboolean isPressed) const;
 

@@ -2,7 +2,7 @@
 #ifndef BOUNTIVE_FILEUTIL
 #define BOUNTIVE_FILEUTIL
 
-#include "FileDirectory.h"
+#include "SettingsHandler.h"
 #include <shlobj.h>
 #include <glew.h>
 #include <string>
@@ -17,15 +17,18 @@ namespace Bountive
 
 		virtual ~FileUtil();
 
-		const FileDirectory* const getmAppdataDir() const;
+		static const FileDirectory* const getmAppdataDir();
 
-	protected:
-		const std::wstring mAPPDATA_FOLDER_NAME = L"Brick Simulator";
-		const FileDirectory * const mAPPDATA_DIRECTORY;
+		static FileDirectory* createDirectory(const GUID& folderId, const std::wstring& dirName);
+		static FileDirectory* createDirectory(const std::wstring& foldPath, const std::wstring& dirName);
+
+	private:
+		static const SettingsHandler* SETTINGS_HANDLER;
+
+		static const std::wstring APPDATA_FOLDER_NAME;
+		static const FileDirectory* APPDATA_DIRECTORY;
 
 		FileUtil();
-
-		FileDirectory* createDirectory(const GUID folderId, std::wstring dirName);
 	};
 }
 

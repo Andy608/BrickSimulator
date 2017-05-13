@@ -6,6 +6,11 @@ namespace Bountive
 {
 	FileUtil* FileUtil::instance = nullptr;
 
+	const std::wstring FileUtil::APPDATA_FOLDER_NAME = L"Brick Simulator";
+
+	const SettingsHandler* FileUtil::SETTINGS_HANDLER = nullptr;
+	const FileDirectory* FileUtil::APPDATA_DIRECTORY = nullptr;
+
 	FileUtil* FileUtil::init()
 	{
 		if (instance == nullptr)
@@ -13,42 +18,29 @@ namespace Bountive
 			try
 			{
 				instance = new FileUtil();
+				APPDATA_DIRECTORY = createDirectory(FOLDERID_RoamingAppData, APPDATA_FOLDER_NAME);
+				std::wcout << APPDATA_DIRECTORY->getDirectory() << std::endl;
+				SETTINGS_HANDLER = SettingsHandler::init();
 			}
-			catch (std::string e)
+			catch (std::wstring e)
 			{
-				std::cout << e << std::endl;
+				delete instance;
+				instance = nullptr;
+				std::wcout << e << std::endl;
 			}
 		}
 
 		return instance;
 	}
 
-	
-	FileUtil::FileUtil()
-	try : mAPPDATA_DIRECTORY(createDirectory(FOLDERID_RoamingAppData, mAPPDATA_FOLDER_NAME))
+
+	const FileDirectory* const FileUtil::getmAppdataDir()
 	{
-		
-	}
-	catch (std::string e)
-	{
-		throw (e);
+		return APPDATA_DIRECTORY;
 	}
 
 
-	FileUtil::~FileUtil()
-	{
-		std::cout << "Deleting FileUtil." << std::endl;
-		delete mAPPDATA_DIRECTORY;
-	}
-
-
-	const FileDirectory* const FileUtil::getmAppdataDir() const
-	{
-		return mAPPDATA_DIRECTORY;
-	}
-
-
-	FileDirectory* FileUtil::createDirectory(const GUID folderId, std::wstring dirName)
+	FileDirectory* FileUtil::createDirectory(const GUID& folderId, const std::wstring& dirName)
 	{
 		FileDirectory* dir = nullptr;
 
@@ -57,23 +49,41 @@ namespace Bountive
 
 		if (SUCCEEDED(result))
 		{
-			std::wstringstream ss;
-			ss << path;
-			std::wstring appdataPath = ss.str() + L"\\" + dirName;
-			dir = new FileDirectory(appdataPath);
+			std::wstringstream pathDir;
+			pathDir << path;
+			dir = new FileDirectory(pathDir.str(), dirName);
 
 			if (!dir->createDirectory())
 			{
-				throw (std::string("Could not create directory."));
+				throw (std::wstring(L"Could not create directory."));
 			}
 		}
 		else
 		{
 			CoTaskMemFree(static_cast<void*>(path));
-			throw(std::string("Could not create path."));
+			throw (std::wstring(L"Could not find path with that GUID."));
 		}
 
 		CoTaskMemFree(static_cast<void*>(path));
 		return dir;
+	}
+
+
+	FileDirectory* FileUtil::createDirectory(const std::wstring &folderPath, const std::wstring& dirName)
+	{
+		FileDirectory* dir = new FileDirectory(folderPath, dirName);
+		dir->createDirectory();
+		return dir;
+	}
+
+
+	FileUtil::FileUtil() {}
+
+
+	FileUtil::~FileUtil()
+	{
+		std::cout << "Deleting FileUtil." << std::endl;
+		delete APPDATA_DIRECTORY;
+		delete SETTINGS_HANDLER;
 	}
 }

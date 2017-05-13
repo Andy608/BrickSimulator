@@ -3,16 +3,22 @@
 
 namespace Bountive
 {
-	std::wfstream FileLocation::fileStream = std::wfstream();
+	std::wstring FileLocation::TXT_EXT = L".txt";
 
 	FileLocation::FileLocation(const FileDirectory* parentDirectory, const std::wstring fileName, const std::wstring fileExtension) :
-		mPARENT_DIRECTORY(parentDirectory), mFILE_NAME(fileName), mFILE_EXTENSION(fileExtension)
+		mPARENT_DIRECTORY(parentDirectory), 
+		mFILE_NAME(fileName), 
+		mFILE_EXTENSION(fileExtension),
+		mIsCreated(false)
 	{
 		
 	}
 
 
-	FileLocation::~FileLocation() {}
+	FileLocation::~FileLocation() 
+	{
+		std::wcout << "Deleting FileLocation." << std::endl;
+	}
 
 
 	std::wstring FileLocation::getFileName() const
@@ -21,7 +27,7 @@ namespace Bountive
 	}
 
 
-	std::wstring FileLocation::getFileNameNoExtension() const
+	const std::wstring& FileLocation::getFileNameNoExtension() const
 	{
 		return mFILE_NAME;
 	}
@@ -33,22 +39,34 @@ namespace Bountive
 	}
 
 
-	GLboolean FileLocation::createFile() const
+	const GLboolean& FileLocation::isCreated() const
 	{
-		fileStream.open(getFullPath(), 
-			std::wfstream::in | std::wfstream::out | std::wfstream::trunc | std::wfstream::binary);
+		return mIsCreated;
+	}
 
-		if (fileStream.good())
+
+	void FileLocation::setCreated(GLboolean isCreated)
+	{
+		mIsCreated = isCreated;
+	}
+
+
+	GLboolean FileLocation::createFile(std::wofstream& fileWriter)
+	{
+		fileWriter.open(getFullPath(), std::fstream::app);
+
+		if (fileWriter.good())
 		{
 			std::wcout << "Creating file: " << getFullPath() << std::endl;
-			fileStream << "YO YO YO";
-			fileStream.close();
+			fileWriter.close();
+			setCreated(true);
 			return true;
 		}
 		else
 		{
 			std::wcout << "Error creating file: " << getFullPath() << std::endl;
-			fileStream.close();
+			fileWriter.close();
+			setCreated(false);
 			return false;
 		}
 	}

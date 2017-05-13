@@ -5,8 +5,8 @@
 
 namespace Bountive
 {
-	FileDirectory::FileDirectory(std::wstring filePath) :
-		mFILE_PATH(filePath)
+	FileDirectory::FileDirectory(std::wstring filePath, std::wstring folderName) :
+		mFILE_PATH(filePath), mFOLDER_NAME(folderName)
 	{
 
 	}
@@ -14,13 +14,25 @@ namespace Bountive
 
 	FileDirectory::~FileDirectory()
 	{
-		std::wcout << "Deleting File Directory: \'" << mFILE_PATH << "\'." << std::endl;
+		std::wcout << "Deleting File Directory: \'" << mFILE_PATH << L"\\" << mFOLDER_NAME << "\'." << std::endl;
 	}
 
 
 	std::wstring FileDirectory::getDirectory() const
 	{
+		return mFILE_PATH + L"\\" + mFOLDER_NAME;
+	}
+
+
+	std::wstring FileDirectory::getDirectoryPath() const
+	{
 		return mFILE_PATH;
+	}
+
+
+	std::wstring FileDirectory::getFolderName() const
+	{
+		return mFOLDER_NAME;
 	}
 
 
@@ -28,13 +40,14 @@ namespace Bountive
 	{
 		try
 		{
-			if (CreateDirectoryW(mFILE_PATH.c_str(), NULL) || ERROR_ALREADY_EXISTS == GetLastError())
+			if (CreateDirectoryW(getDirectory().c_str(), NULL) || ERROR_ALREADY_EXISTS == GetLastError())
 			{
+				std::wcout << "Valid directory at: " << getDirectory() << std::endl;
 				return true;
 			}
 			else
 			{
-				throw(std::wstring(L"Could not create directory with path: " + mFILE_PATH));
+				throw(std::wstring(L"Could not create directory with path: " + getDirectory()));
 			}
 		}
 		catch (std::wstring e)
@@ -42,5 +55,11 @@ namespace Bountive
 			std::wcout << e << std::endl;
 			return false;
 		}
+	}
+
+
+	FileDirectory::operator std::wstring() const
+	{
+		return mFILE_PATH;
 	}
 }

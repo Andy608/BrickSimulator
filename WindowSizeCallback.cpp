@@ -1,4 +1,5 @@
 #include "WindowSizeCallback.h"
+#include "GameSettingsHandler.h"
 #include <iostream>
 
 namespace Bountive
@@ -27,7 +28,7 @@ namespace Bountive
 
 	void WindowSizeCallback::windowSizeCallback(GLFWwindow* windowHandle, GLint windowWidth, GLint windowHeight)
 	{
-		//TODO: Set size variable in settings file.
-		std::cout << "Width: " << windowWidth << " | Height: " << windowHeight << std::endl;
+		GameSettingsHandler::instance->setWindowSizeX(windowWidth);
+		GameSettingsHandler::instance->setWindowSizeY(windowHeight);
 	}
 }

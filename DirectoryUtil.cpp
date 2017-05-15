@@ -1,26 +1,22 @@
-#include "FileUtil.h"
+#include "DirectoryUtil.h"
 #include <iostream>
 #include <sstream>
 
 namespace Bountive
 {
-	FileUtil* FileUtil::instance = nullptr;
+	DirectoryUtil* DirectoryUtil::instance = nullptr;
 
-	const std::wstring FileUtil::APPDATA_FOLDER_NAME = L"Brick Simulator";
+	const FileDirectory* DirectoryUtil::APPDATA_DIRECTORY = nullptr;
 
-	const SettingsHandler* FileUtil::SETTINGS_HANDLER = nullptr;
-	const FileDirectory* FileUtil::APPDATA_DIRECTORY = nullptr;
-
-	FileUtil* FileUtil::init()
+	DirectoryUtil* DirectoryUtil::init()
 	{
 		if (instance == nullptr)
 		{
 			try
 			{
-				instance = new FileUtil();
-				APPDATA_DIRECTORY = createDirectory(FOLDERID_RoamingAppData, APPDATA_FOLDER_NAME);
+				instance = new DirectoryUtil();
+				APPDATA_DIRECTORY = createDirectory(FOLDERID_RoamingAppData, L"Brick Simulator");
 				std::wcout << APPDATA_DIRECTORY->getDirectory() << std::endl;
-				SETTINGS_HANDLER = SettingsHandler::init();
 			}
 			catch (std::wstring e)
 			{
@@ -34,13 +30,13 @@ namespace Bountive
 	}
 
 
-	const FileDirectory* const FileUtil::getmAppdataDir()
+	const FileDirectory* const DirectoryUtil::getmAppdataDir()
 	{
 		return APPDATA_DIRECTORY;
 	}
 
 
-	FileDirectory* FileUtil::createDirectory(const GUID& folderId, const std::wstring& dirName)
+	FileDirectory* DirectoryUtil::createDirectory(const GUID& folderId, const std::wstring& dirName)
 	{
 		FileDirectory* dir = nullptr;
 
@@ -69,7 +65,7 @@ namespace Bountive
 	}
 
 
-	FileDirectory* FileUtil::createDirectory(const std::wstring &folderPath, const std::wstring& dirName)
+	FileDirectory* DirectoryUtil::createDirectory(const std::wstring &folderPath, const std::wstring& dirName)
 	{
 		FileDirectory* dir = new FileDirectory(folderPath, dirName);
 		dir->createDirectory();
@@ -77,13 +73,12 @@ namespace Bountive
 	}
 
 
-	FileUtil::FileUtil() {}
+	DirectoryUtil::DirectoryUtil() {}
 
 
-	FileUtil::~FileUtil()
+	DirectoryUtil::~DirectoryUtil()
 	{
-		std::cout << "Deleting FileUtil." << std::endl;
+		std::cout << "Deleting DirectoryUtil." << std::endl;
 		delete APPDATA_DIRECTORY;
-		delete SETTINGS_HANDLER;
 	}
 }

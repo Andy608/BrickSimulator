@@ -1,4 +1,5 @@
 #include "WindowPositionCallback.h"
+#include "GameSettingsHandler.h"
 #include <iostream>
 
 namespace Bountive
@@ -27,7 +28,7 @@ namespace Bountive
 
 	void WindowPositionCallback::windowPositionCallback(GLFWwindow* windowHandle, GLint xPosition, GLint yPosition)
 	{
-		//TODO: Save position in options
-		std::cout << "Window Position: (" << xPosition << ", " << yPosition << ")" << std::endl;
+		GameSettingsHandler::instance->setWindowPositionX(xPosition);
+		GameSettingsHandler::instance->setWindowPositionY(yPosition);
 	}
 }

@@ -6,7 +6,8 @@
 namespace Bountive
 {
 	FileDirectory::FileDirectory(std::wstring filePath, std::wstring folderName) :
-		mFILE_PATH(filePath), mFOLDER_NAME(folderName)
+		mFILE_PATH(filePath), 
+		mFOLDER_NAME(folderName)
 	{
 
 	}

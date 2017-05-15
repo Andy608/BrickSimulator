@@ -1,21 +1,21 @@
 #pragma once
-#ifndef BOUNTIVE_FILEUTIL
-#define BOUNTIVE_FILEUTIL
+#ifndef BOUNTIVE_DIRECTORYUTIL_H_
+#define BOUNTIVE_DIRECTORYUTIL_H_
 
-#include "SettingsHandler.h"
+#include "FileDirectory.h"
 #include <shlobj.h>
 #include <glew.h>
 #include <string>
 
 namespace Bountive
 {
-	class FileUtil
+	class DirectoryUtil
 	{
 	public:
-		static FileUtil* instance;
-		static FileUtil* init();
+		static DirectoryUtil* instance;
+		static DirectoryUtil* init();
 
-		virtual ~FileUtil();
+		virtual ~DirectoryUtil();
 
 		static const FileDirectory* const getmAppdataDir();
 
@@ -23,12 +23,9 @@ namespace Bountive
 		static FileDirectory* createDirectory(const std::wstring& foldPath, const std::wstring& dirName);
 
 	private:
-		static const SettingsHandler* SETTINGS_HANDLER;
-
-		static const std::wstring APPDATA_FOLDER_NAME;
 		static const FileDirectory* APPDATA_DIRECTORY;
 
-		FileUtil();
+		DirectoryUtil();
 	};
 }
 

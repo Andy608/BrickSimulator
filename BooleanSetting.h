@@ -1,19 +1,16 @@
 #pragma once
-#ifndef BOUNTIVE_BOOLSETTINGTYPE_H_
-#define BOUNTIVE_BOOLSETTINGTYPE_H_
+#ifndef BOUNTIVE_BOOLEANSETTING_H_
+#define BOUNTIVE_BOOLEANSETTING_H_
 
 #include "SettingType.h"
-#include <glew.h>
 
 namespace Bountive
 {
-	class BooleanSettingType : public SettingType
+	class BooleanSetting : public SettingType
 	{
 	public:
-		static std::wstring toString(GLboolean booleanValue);
-
-		BooleanSettingType(std::wstring settingName, const GLboolean DEFAULT_BOOLEAN);
-		~BooleanSettingType();
+		BooleanSetting(std::wstring settingName, const GLboolean DEFAULT_BOOLEAN);
+		virtual ~BooleanSetting();
 
 		void setCustomBoolean(GLboolean customBoolean);
 		void setCustomBoolean(std::wstring fileValue);
@@ -24,12 +21,13 @@ namespace Bountive
 		const GLboolean& getDefaultBoolean();
 		const GLboolean& getCustomBoolean();
 
-		void resetBoolean();
-		GLboolean isModified();
+		virtual std::wstring toString() const;
+		virtual GLboolean isModified() const;
+		virtual void resetCustomValue();
 
 	private:
-		static const std::wstring TRUE;
-		static const std::wstring FALSE;
+		static const std::wstring SETTING_TRUE;
+		static const std::wstring SETTING_FALSE;
 
 		const GLboolean mDEFAULT_BOOLEAN;
 		GLboolean mCustomBoolean;

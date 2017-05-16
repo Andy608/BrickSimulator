@@ -2,10 +2,10 @@
 #ifndef BOUNTIVE_FILELOCATION_H_
 #define BOUNTIVE_FILELOCATION_H_
 
-#include "FileDirectory.h"
+#include <glew.h>
 #include <fstream>
 #include <string>
-#include <glew.h>
+#include "FileDirectory.h"
 
 namespace Bountive
 {

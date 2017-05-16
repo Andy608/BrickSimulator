@@ -1,19 +1,20 @@
-#include "Window.h"
 #include <glm\vec2.hpp>
 #include <iostream>
 #include <string>
+#include "BrickSimulator.h"
+#include "CallbackManager.h"
+#include "GameSettingsHandler.h"
 
 namespace Bountive
 {
 	Window* Window::instance = nullptr;
 	
-	
 	Window* Window::init()
 	{
 		if (instance == nullptr)
 		{
-			instance = new Window();
 			std::wcout << "Creating Window Wrapper." << std::endl;
+			instance = new Window();
 		}
 
 		return instance;
@@ -45,7 +46,7 @@ namespace Bountive
 	}
 
 
-	void Window::buildWindow()
+	void Window::buildWindow(GameSettingsHandler& gameSettingsHandler)
 	{
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -53,11 +54,11 @@ namespace Bountive
 		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 		glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
 
-		mWindowHandle = glfwCreateWindow(GameSettingsHandler::instance->getWindowWidth(), GameSettingsHandler::instance->getWindowHeight(), "Brick Simulator 2017", nullptr, nullptr);
-		glfwSetWindowPos(mWindowHandle, GameSettingsHandler::instance->getWindowPositionX(), GameSettingsHandler::instance->getWindowPositionY());
-		glfwSetWindowSizeLimits(mWindowHandle, mMINIMUM_SIZE_X, mMINIMUM_SIZE_Y, mMAXIMUM_SIZE_X, mMAXIMUM_SIZE_Y);
+		mWindowHandle = glfwCreateWindow(gameSettingsHandler.getWindowWidth(), gameSettingsHandler.getWindowHeight(), "Brick Simulator 2017", nullptr, nullptr);
 		glfwHideWindow(mWindowHandle);
-
+		glfwSetWindowPos(mWindowHandle, gameSettingsHandler.getWindowPositionX(), gameSettingsHandler.getWindowPositionY());
+		glfwSetWindowSizeLimits(mWindowHandle, mMINIMUM_SIZE_X, mMINIMUM_SIZE_Y, mMAXIMUM_SIZE_X, mMAXIMUM_SIZE_Y);
+		
 		if (mWindowHandle == nullptr)
 		{
 			throw std::wstring(L"[Window] Window could not be created.");
@@ -74,10 +75,11 @@ namespace Bountive
 
 			GLint windowWidth, windowHeight;
 			glfwGetFramebufferSize(mWindowHandle, &windowWidth, &windowHeight);
+			glfwSwapInterval(gameSettingsHandler.isVsyncEnabled());
 			glViewport(0, 0, windowWidth, windowHeight);
 		}
 
-		mCallbackManager = new CallbackManager(mWindowHandle);
+		mCallbackManager = new CallbackManager(this, gameSettingsHandler);
 		glfwShowWindow(mWindowHandle);
 	}
 

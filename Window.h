@@ -2,11 +2,15 @@
 #ifndef BOUNTIVE_WINDOW_H_
 #define BOUNTIVE_WINDOW_H_
 
-#include "CallbackManager.h"
-#include "GameSettingsHandler.h"
+#include <glew.h>
+#include <glfw\glfw3.h>
+#include <glm\vec2.hpp>
 
 namespace Bountive
 {
+	class CallbackManager;
+	class GameSettingsHandler;
+
 	class Window
 	{
 	public:
@@ -21,7 +25,7 @@ namespace Bountive
 
 		~Window();
 
-		void buildWindow();
+		void buildWindow(GameSettingsHandler& gameSettingsHandler);
 		GLFWwindow* getWindowHandle() const;
 		glm::vec2 getMinimumWindowPosition() const;
 		glm::vec2 getMaximumWindowPosition() const;

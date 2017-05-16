@@ -1,5 +1,5 @@
-#include "FileWriter.h"
 #include <iostream>
+#include "FileWriter.h"
 
 namespace Bountive
 {
@@ -42,13 +42,13 @@ namespace Bountive
 			}
 
 			mWriteStream->close();
-			return true;
+			return GL_TRUE;
 		}
 		else
 		{
 			std::wcout << "Error writing to file: " << file.getFullPath() << std::endl;
 			mWriteStream->close();
-			return false;
+			return GL_FALSE;
 		}
 	}
 }

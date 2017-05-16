@@ -2,9 +2,9 @@
 #ifndef BOUNTIVE_FILEREADER_H_
 #define BOUNTIVE_FILEREADER_H_
 
-#include "FileLocation.h"
 #include <fstream>
 #include <vector>
+#include "FileLocation.h"
 
 namespace Bountive
 {

@@ -1,5 +1,5 @@
-#include "MouseScrollCallback.h"
 #include <iostream>
+#include "MouseScrollCallback.h"
 
 namespace Bountive
 {
@@ -28,6 +28,6 @@ namespace Bountive
 	void MouseScrollCallback::mouseScrollCallback(GLFWwindow* windowHandle, GLdouble xOffset, GLdouble yOffset)
 	{
 		//TODO: Save scroll in input handler
-		std::cout << "Mouse Scroll Offset: (" << xOffset << ", " << yOffset << ")" << std::endl;
+		//std::cout << "Mouse Scroll Offset: (" << xOffset << ", " << yOffset << ")" << std::endl;
 	}
 }

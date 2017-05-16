@@ -18,8 +18,8 @@ namespace Bountive
 		void operator=(GLboolean customBoolean);
 		GLboolean operator==(GLboolean anotherBoolean);
 
-		const GLboolean& getDefaultBoolean();
-		const GLboolean& getCustomBoolean();
+		const GLboolean& getDefaultBoolean() const;
+		const GLboolean& getCustomBoolean() const;
 
 		virtual std::wstring toString() const;
 		virtual GLboolean isModified() const;

@@ -4,6 +4,7 @@
 
 #include <glew.h>
 #include <glfw\glfw3.h>
+#include "GameSettingsHandler.h"
 
 namespace Bountive
 {
@@ -12,13 +13,15 @@ namespace Bountive
 	public:
 		static WindowSizeCallback* instance;
 
-		static WindowSizeCallback* init();
+		static WindowSizeCallback* init(GameSettingsHandler& gameSettingsHandler);
 		static void windowSizeCallback(GLFWwindow* windowHandle, GLint windowWidth, GLint windowHeight);
 
 		~WindowSizeCallback();
 
 	private:
-		WindowSizeCallback();
+		GameSettingsHandler& mGameSettingsHandler;
+
+		WindowSizeCallback(GameSettingsHandler& gameSettingsHandler);
 	};
 }
 

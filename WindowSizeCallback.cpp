@@ -1,23 +1,26 @@
-#include "WindowSizeCallback.h"
-#include "GameSettingsHandler.h"
 #include <iostream>
+#include "WindowSizeCallback.h"
 
 namespace Bountive
 {
 	WindowSizeCallback* WindowSizeCallback::instance = nullptr;
 
-	WindowSizeCallback* WindowSizeCallback::init()
+	WindowSizeCallback* WindowSizeCallback::init(GameSettingsHandler& gameSettingsHandler)
 	{
 		if (instance == nullptr)
 		{
-			instance = new WindowSizeCallback();
+			instance = new WindowSizeCallback(gameSettingsHandler);
 		}
 
 		return instance;
 	}
 
 
-	WindowSizeCallback::WindowSizeCallback() {}
+	WindowSizeCallback::WindowSizeCallback(GameSettingsHandler& gameSettingsHandler) :
+		mGameSettingsHandler(gameSettingsHandler)
+	{
+
+	}
 
 
 	WindowSizeCallback::~WindowSizeCallback()
@@ -28,7 +31,7 @@ namespace Bountive
 
 	void WindowSizeCallback::windowSizeCallback(GLFWwindow* windowHandle, GLint windowWidth, GLint windowHeight)
 	{
-		GameSettingsHandler::instance->setWindowSizeX(windowWidth);
-		GameSettingsHandler::instance->setWindowSizeY(windowHeight);
+		instance->mGameSettingsHandler.setWindowSizeX(windowWidth);
+		instance->mGameSettingsHandler.setWindowSizeY(windowHeight);
 	}
 }

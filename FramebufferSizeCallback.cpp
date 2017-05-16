@@ -1,5 +1,5 @@
-#include "FramebufferSizeCallback.h"
 #include <iostream>
+#include "FramebufferSizeCallback.h"
 
 namespace Bountive
 {
@@ -27,7 +27,7 @@ namespace Bountive
 
 	void FramebufferSizeCallback::framebufferSizeCallback(GLFWwindow* windowHandle, GLint windowWidth, GLint windowHeight)
 	{
-		std::cout << "Framebuffer Width: " << windowWidth << " | Framebuffer Height: " << windowHeight << std::endl;
+		//std::cout << "Framebuffer Width: " << windowWidth << " | Framebuffer Height: " << windowHeight << std::endl;
 		glViewport(0, 0, windowWidth, windowHeight);
 	}
 }

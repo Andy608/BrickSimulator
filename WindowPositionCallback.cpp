@@ -1,23 +1,26 @@
-#include "WindowPositionCallback.h"
-#include "GameSettingsHandler.h"
 #include <iostream>
+#include "WindowPositionCallback.h"
 
 namespace Bountive
 {
 	WindowPositionCallback* WindowPositionCallback::instance = nullptr;
 
-	WindowPositionCallback* WindowPositionCallback::init()
+	WindowPositionCallback* WindowPositionCallback::init(GameSettingsHandler& gameSettingsHandler)
 	{
 		if (instance == nullptr)
 		{
-			instance = new WindowPositionCallback();
+			instance = new WindowPositionCallback(gameSettingsHandler);
 		}
 
 		return instance;
 	}
 
 
-	WindowPositionCallback::WindowPositionCallback() {}
+	WindowPositionCallback::WindowPositionCallback(GameSettingsHandler& gameSettingsHandler) :
+		mGameSettingsHandler(gameSettingsHandler)
+	{
+		
+	}
 
 
 	WindowPositionCallback::~WindowPositionCallback()
@@ -28,7 +31,7 @@ namespace Bountive
 
 	void WindowPositionCallback::windowPositionCallback(GLFWwindow* windowHandle, GLint xPosition, GLint yPosition)
 	{
-		GameSettingsHandler::instance->setWindowPositionX(xPosition);
-		GameSettingsHandler::instance->setWindowPositionY(yPosition);
+		instance->mGameSettingsHandler.setWindowPositionX(xPosition);
+		instance->mGameSettingsHandler.setWindowPositionY(yPosition);
 	}
 }

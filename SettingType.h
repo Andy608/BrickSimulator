@@ -2,8 +2,8 @@
 #ifndef BOUNTIVE_SETTINGTYPE_H_
 #define BOUNTIVE_SETTINGTYPE_H_
 
-#include <string>
 #include <glew.h>
+#include <string>
 
 namespace Bountive
 {

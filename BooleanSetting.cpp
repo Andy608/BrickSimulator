@@ -1,5 +1,5 @@
-#include "BooleanSetting.h"
 #include <iostream>
+#include "BooleanSetting.h"
 
 namespace Bountive
 {
@@ -28,11 +28,11 @@ namespace Bountive
 	{
 		if (fileValue.compare(SETTING_TRUE) == 0)
 		{
-			setCustomBoolean(true);
+			setCustomBoolean(GL_TRUE);
 		}
 		else if (fileValue.compare(SETTING_FALSE) == 0)
 		{
-			setCustomBoolean(false);
+			setCustomBoolean(GL_FALSE);
 		}
 		else
 		{
@@ -54,13 +54,13 @@ namespace Bountive
 	}
 
 
-	const GLboolean& BooleanSetting::getDefaultBoolean()
+	const GLboolean& BooleanSetting::getDefaultBoolean() const
 	{
 		return mDEFAULT_BOOLEAN;
 	}
 	
 	
-	const GLboolean& BooleanSetting::getCustomBoolean()
+	const GLboolean& BooleanSetting::getCustomBoolean() const
 	{
 		return mCustomBoolean;
 	}

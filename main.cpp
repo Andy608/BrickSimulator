@@ -1,26 +1,26 @@
-#include "BrickSimulator.h"
-#include <string>
 #include <iostream>
+#include <string>
+#include "BrickSimulator.h"
 
 using namespace Bountive;
 
 int main()
 {
+	GLint exitResult = EXIT_SUCCESS;
 	BrickSimulator* simulator = nullptr;
 
 	try
 	{
-		simulator = new BrickSimulator();
+		simulator = BrickSimulator::init();
 		simulator->start();
 	}
 	catch (std::string e)
 	{
-		delete simulator;
 		std::cout << e << std::endl;
-		return -1;
+		exitResult = EXIT_FAILURE;
 	}
 	
 	delete simulator;
 	std::cin.get();
-	return 0;
+	return exitResult;
 }

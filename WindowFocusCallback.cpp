@@ -1,5 +1,5 @@
-#include "WindowFocusCallback.h"
 #include <iostream>
+#include "WindowFocusCallback.h"
 
 namespace Bountive
 {

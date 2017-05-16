@@ -1,7 +1,7 @@
-#include "FileDirectory.h"
+#include <glew.h>
 #include <iostream>
 #include <Windows.h>
-#include <glew.h>
+#include "FileDirectory.h"
 
 namespace Bountive
 {
@@ -25,7 +25,7 @@ namespace Bountive
 	}
 
 
-	std::wstring FileDirectory::getDirectoryPath() const
+	std::wstring FileDirectory::getParentDirectory() const
 	{
 		return mFILE_PATH;
 	}
@@ -44,7 +44,7 @@ namespace Bountive
 			if (CreateDirectoryW(getDirectory().c_str(), NULL) || ERROR_ALREADY_EXISTS == GetLastError())
 			{
 				std::wcout << "Valid directory at: " << getDirectory() << std::endl;
-				return true;
+				return GL_TRUE;
 			}
 			else
 			{
@@ -54,7 +54,7 @@ namespace Bountive
 		catch (std::wstring e)
 		{
 			std::wcout << e << std::endl;
-			return false;
+			return GL_FALSE;
 		}
 	}
 

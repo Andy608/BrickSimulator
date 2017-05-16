@@ -1,23 +1,26 @@
-#include "KeyboardCallback.h"
 #include <iostream>
+#include "KeyboardCallback.h"
+#include "GameSettingsHandler.h"
 
 namespace Bountive
 {
 	const GLint KeyboardCallback::MAX_KEYS_PRESSED = 6;
 	KeyboardCallback* KeyboardCallback::instance = nullptr;
 
-	KeyboardCallback* KeyboardCallback::init()
+	KeyboardCallback* KeyboardCallback::init(GameSettingsHandler& gameSettingsHandler)
 	{
 		if (instance == nullptr)
 		{
-			instance = new KeyboardCallback();
+			instance = new KeyboardCallback(gameSettingsHandler);
 		}
 
 		return instance;
 	}
 
 
-	KeyboardCallback::KeyboardCallback() : mPressedKeys(new int[MAX_KEYS_PRESSED]) 
+	KeyboardCallback::KeyboardCallback(GameSettingsHandler& gameSettingsHandler) :
+		mGameSettingsHandler(gameSettingsHandler),
+		mPressedKeys(new int[MAX_KEYS_PRESSED])
 	{
 		for (int i = 0; i < MAX_KEYS_PRESSED; ++i)
 		{
@@ -39,18 +42,16 @@ namespace Bountive
 		{
 			if (mPressedKeys[i] == asciiValue)
 			{
-				//std::cout << "Key is already pressed." << std::endl;
 				break;
 			}
 			else if (mPressedKeys[i] == NULL)
 			{
-				//std::cout << "Adding key to the list." << std::endl;
 				mPressedKeys[i] = asciiValue;
 				break;
 			}
 		}
 
-		printPressedKeysDebug(true);
+		//printPressedKeysDebug(true);
 	}
 
 
@@ -60,7 +61,6 @@ namespace Bountive
 		{
 			if (mPressedKeys[i] == asciiValue)
 			{
-				//std::cout << "Removing key from the list." << std::endl;
 				mPressedKeys[i] = NULL;
 				
 				for (int j = i; j < MAX_KEYS_PRESSED - 1; ++j)
@@ -78,7 +78,7 @@ namespace Bountive
 			}
 		}
 
-		printPressedKeysDebug(false);
+		//printPressedKeysDebug(false);
 	}
 
 
@@ -109,17 +109,28 @@ namespace Bountive
 		if (action == GLFW_PRESS)
 		{
 			instance->addKeyPressed(asciiValue);
+
+			std::wcout << asciiValue << std::endl;
+
+			if (asciiValue == instance->mGameSettingsHandler.getKeyEscape())
+			{
+				instance->mIsEscapePressed = GL_TRUE;
+			}
 		}
 		else if (action == GLFW_RELEASE)
 		{
 			instance->removeKeyPressed(asciiValue);
 
-			if (asciiValue == GLFW_KEY_ESCAPE)
+			if (asciiValue == instance->mGameSettingsHandler.getKeyEscape())
 			{
-				//TODO: Make a boolean in the settings file and set this to true and then handle this somewhere else.
-				//TODO: Send keys to input handler
-				glfwSetWindowShouldClose(windowHandle, GL_TRUE);
+				instance->mIsEscapePressed = GL_FALSE;
 			}
 		}
+	}
+
+
+	const GLboolean& KeyboardCallback::isKeyEscapePressed()
+	{
+		return instance->mIsEscapePressed;
 	}
 }

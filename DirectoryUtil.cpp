@@ -1,6 +1,6 @@
-#include "DirectoryUtil.h"
 #include <iostream>
 #include <sstream>
+#include "DirectoryUtil.h"
 
 namespace Bountive
 {

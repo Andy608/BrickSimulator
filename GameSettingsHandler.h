@@ -2,41 +2,52 @@
 #ifndef BOUNTIVE_GAMESETTINGSHANDLER_H_
 #define BOUNTIVE_GAMESETTINGSHANDLER_H_
 
-#include "FileWriter.h"
-#include "FileReader.h"
-#include "FileLocation.h"
 #include "BooleanSetting.h"
 #include "ClampedIntegerSetting.h"
 #include <glm\vec2.hpp>
 
 namespace Bountive
 {
+	class FileWriter;
+	class FileReader;
+	class FileLocation;
+	class FileDirectory;
+
 	class GameSettingsHandler
 	{
 	public:
-		static GameSettingsHandler* instance;
-		static GameSettingsHandler* init();
-
+		GameSettingsHandler();
 		~GameSettingsHandler();
 
 		void updateSettings();
 		void loadOptionsFromFile();
-		void saveOptionsInFile();
+		void saveOptionsToFile();
 
 		void setDefaultSettings();
 		void setDefaultWindowState();
 
+		const GLboolean& isSaveWindowState() const;
 		const GLint& getWindowWidth() const;
 		const GLint& getWindowHeight() const;
-
 		const GLint& getWindowPositionX() const;
 		const GLint& getWindowPositionY() const;
 
+		const GLboolean& isVsyncEnabled() const;
+		const GLboolean& isFullscreenEnabled() const;
+		const GLint& getFieldOfView() const;
+
+		const GLint& getKeyEscape() const;
+
+
+		void setSaveWindowState(GLboolean saveWindowState);
 		void setWindowSizeX(GLint windowSizeX);
 		void setWindowSizeY(GLint windowSizeY);
-
 		void setWindowPositionX(GLint windowPositionX);
 		void setWindowPositionY(GLint windowPositionY);
+
+		void setVsyncEnabled(GLboolean vsyncEnabled);
+		void setFullscreenEnabled(GLboolean fullscreenEnabled);
+		void setFieldOfView(GLint fieldOfView);
 
 	private:
 		static const std::wstring SETTINGS_FOLDER_NAME;
@@ -60,11 +71,11 @@ namespace Bountive
 		ClampedIntegerSetting mWindowSizeY;
 
 		BooleanSetting mVsyncEnabled;
-		BooleanSetting mFullScreenEnabled;
+		BooleanSetting mFullscreenEnabled;
 
 		ClampedIntegerSetting mFieldOfView;
-		
-		GameSettingsHandler();
+
+		IntegerSetting mKeyEscape;
 
 		void setWindowInBounds();
 	};

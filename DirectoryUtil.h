@@ -2,10 +2,11 @@
 #ifndef BOUNTIVE_DIRECTORYUTIL_H_
 #define BOUNTIVE_DIRECTORYUTIL_H_
 
-#include "FileDirectory.h"
-#include <shlobj.h>
 #include <glew.h>
+#include <shlobj.h>
 #include <string>
+
+#include "FileDirectory.h"
 
 namespace Bountive
 {

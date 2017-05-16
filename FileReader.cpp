@@ -1,5 +1,5 @@
-#include "FileReader.h"
 #include <iostream>
+#include "FileReader.h"
 
 namespace Bountive
 {

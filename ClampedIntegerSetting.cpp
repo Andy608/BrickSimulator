@@ -1,5 +1,5 @@
-#include "ClampedIntegerSetting.h"
 #include <iostream>
+#include "ClampedIntegerSetting.h"
 
 namespace Bountive
 {

@@ -1,6 +1,6 @@
-#include "IntegerSetting.h"
 #include <stdexcept> 
 #include <iostream>
+#include "IntegerSetting.h"
 
 namespace Bountive
 {

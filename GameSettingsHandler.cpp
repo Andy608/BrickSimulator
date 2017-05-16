@@ -1,53 +1,46 @@
+#include <iostream>
 #include "GameSettingsHandler.h"
 #include "DirectoryUtil.h"
+#include "FileLocation.h"
+#include "FileWriter.h"
+#include "FileReader.h"
 #include "Window.h"
-#include <iostream>
 
 namespace Bountive
 {
-	GameSettingsHandler* GameSettingsHandler::instance = nullptr;
 	const std::wstring GameSettingsHandler::SETTINGS_FOLDER_NAME = L"settings";
 	const std::wstring GameSettingsHandler::SETTINGS_FILE_NAME = L"options";
 
-	GameSettingsHandler* GameSettingsHandler::init()
-	{
-		if (instance == nullptr)
-		{
-			try
-			{
-				instance = new GameSettingsHandler();
-				instance->updateSettings();
-			}
-			catch (std::wstring e)
-			{
-				std::wcout << e << std::endl;
-			}
-		}
-
-		return instance;
-	}
-
-
 	GameSettingsHandler::GameSettingsHandler()
-		try : mSETTINGS_DIRECTORY(DirectoryUtil::createDirectory(DirectoryUtil::instance->getmAppdataDir()->getDirectory(), SETTINGS_FOLDER_NAME)),
+		try : 
+		mSETTINGS_DIRECTORY(DirectoryUtil::createDirectory(DirectoryUtil::instance->getmAppdataDir()->getDirectory(), SETTINGS_FOLDER_NAME)),
 		mSettingsFile(new FileLocation(mSETTINGS_DIRECTORY, SETTINGS_FILE_NAME, FileLocation::TXT_EXT)),
 		mFileWriter(new FileWriter()),
 		mFileReader(new FileReader()),
-		mSaveWindowState(BooleanSetting(L"save_window_state", false)),
-		mDEFAULT_WINDOW_SIZE(glm::vec2(Window::instance->mVIDEO_MODE->width / 2.0f, Window::instance->mVIDEO_MODE->height / 2.0f)),
-		mDEFAULT_WINDOW_POSITION(glm::vec2((Window::instance->mVIDEO_MODE->width - mDEFAULT_WINDOW_SIZE.x) / 2.0f, (Window::instance->mVIDEO_MODE->height - mDEFAULT_WINDOW_SIZE.y) / 2.0f)),
-		mWindowPositionX(ClampedIntegerSetting(L"window_position_x", static_cast<GLint>(mDEFAULT_WINDOW_POSITION.x), 0, static_cast<GLint>(Window::instance->getMaximumWindowPosition().x))),
-		mWindowPositionY(ClampedIntegerSetting(L"window_position_y", static_cast<GLint>(mDEFAULT_WINDOW_POSITION.y), 0, static_cast<GLint>(Window::instance->getMaximumWindowPosition().y))),
-		mWindowSizeX(ClampedIntegerSetting(L"window_size_x", static_cast<GLint>(mDEFAULT_WINDOW_SIZE.x), static_cast<GLint>(Window::instance->mMINIMUM_SIZE_X), static_cast<GLint>(Window::instance->mMAXIMUM_SIZE_X))),
-		mWindowSizeY(ClampedIntegerSetting(L"window_size_y", static_cast<GLint>(mDEFAULT_WINDOW_SIZE.y), static_cast<GLint>(Window::instance->mMINIMUM_SIZE_Y), static_cast<GLint>(Window::instance->mMAXIMUM_SIZE_Y))),
-		mVsyncEnabled(BooleanSetting(L"vsync", true)),
-		mFullScreenEnabled(BooleanSetting(L"fullscreen", false)),
-		mFieldOfView(ClampedIntegerSetting(L"fov", 67, 30, 120))
-	{
-		std::wcout << "SIZE: " << mDEFAULT_WINDOW_SIZE.x << ", " << mDEFAULT_WINDOW_SIZE.y << std::endl;
-		std::wcout << "POS: " << mDEFAULT_WINDOW_POSITION.x << ", " << mDEFAULT_WINDOW_POSITION.y << std::endl;
-		std::wcout << "RIP: " << mWindowPositionX.getCustomInteger() << std::endl;
+		mSaveWindowState(BooleanSetting(L"save_window_state", GL_FALSE)),
 
+		mDEFAULT_WINDOW_SIZE(glm::vec2(Window::instance->mVIDEO_MODE->width / 2.0f, Window::instance->mVIDEO_MODE->height / 2.0f)),
+
+		mDEFAULT_WINDOW_POSITION(glm::vec2((Window::instance->mVIDEO_MODE->width - mDEFAULT_WINDOW_SIZE.x) / 2.0f, 
+			(Window::instance->mVIDEO_MODE->height - mDEFAULT_WINDOW_SIZE.y) / 2.0f)),
+
+		mWindowPositionX(ClampedIntegerSetting(L"window_position_x", static_cast<GLint>(mDEFAULT_WINDOW_POSITION.x), 0, 
+			static_cast<GLint>(Window::instance->getMaximumWindowPosition().x))),
+
+		mWindowPositionY(ClampedIntegerSetting(L"window_position_y", static_cast<GLint>(mDEFAULT_WINDOW_POSITION.y), 0, 
+			static_cast<GLint>(Window::instance->getMaximumWindowPosition().y))),
+
+		mWindowSizeX(ClampedIntegerSetting(L"window_size_x", static_cast<GLint>(mDEFAULT_WINDOW_SIZE.x), 
+			static_cast<GLint>(Window::instance->mMINIMUM_SIZE_X), static_cast<GLint>(Window::instance->mMAXIMUM_SIZE_X))),
+
+		mWindowSizeY(ClampedIntegerSetting(L"window_size_y", static_cast<GLint>(mDEFAULT_WINDOW_SIZE.y), 
+			static_cast<GLint>(Window::instance->mMINIMUM_SIZE_Y), static_cast<GLint>(Window::instance->mMAXIMUM_SIZE_Y))),
+
+		mVsyncEnabled(BooleanSetting(L"vsync", GL_TRUE)),
+		mFullscreenEnabled(BooleanSetting(L"fullscreen", GL_FALSE)),
+		mFieldOfView(ClampedIntegerSetting(L"fov", 67, 30, 120)),
+		mKeyEscape(IntegerSetting(L"key_escape", GLFW_KEY_ESCAPE))
+	{
 		mSettingsFile->createFile(mFileWriter->getWriteStream());
 
 		if (mSettingsFile->isCreated())
@@ -75,7 +68,6 @@ namespace Bountive
 
 	GameSettingsHandler::~GameSettingsHandler()
 	{
-		saveOptionsInFile();
 		std::wcout << "Deleting SettingsHandler." << std::endl;
 		delete mSETTINGS_DIRECTORY;
 		delete mSettingsFile;
@@ -135,9 +127,9 @@ namespace Bountive
 					{
 						mWindowSizeY.IntegerSetting::setCustomInteger(settingVar);
 					}
-					else if (settingName.compare(mFullScreenEnabled.getSettingName()) == 0)
+					else if (settingName.compare(mFullscreenEnabled.getSettingName()) == 0)
 					{
-						mFullScreenEnabled.setCustomBoolean(settingVar);
+						mFullscreenEnabled.setCustomBoolean(settingVar);
 					}
 					else if (settingName.compare(mVsyncEnabled.getSettingName()) == 0)
 					{
@@ -146,6 +138,10 @@ namespace Bountive
 					else if (settingName.compare(mFieldOfView.getSettingName()) == 0)
 					{
 						mFieldOfView.IntegerSetting::setCustomInteger(settingVar);
+					}
+					else if (settingName.compare(mKeyEscape.getSettingName()) == 0)
+					{
+						mKeyEscape.setCustomInteger(settingVar);
 					}
 					else
 					{
@@ -157,7 +153,7 @@ namespace Bountive
 	}
 
 
-	void GameSettingsHandler::saveOptionsInFile()
+	void GameSettingsHandler::saveOptionsToFile()
 	{
 		std::vector<std::wstring> settingsFile;
 
@@ -173,10 +169,11 @@ namespace Bountive
 		settingsFile.push_back(mWindowSizeX);
 		settingsFile.push_back(mWindowSizeY);
 
-		settingsFile.push_back(mFullScreenEnabled);
+		settingsFile.push_back(mFullscreenEnabled);
 		settingsFile.push_back(mVsyncEnabled);
 		
 		settingsFile.push_back(mFieldOfView);
+		settingsFile.push_back(mKeyEscape);
 
 		mFileWriter->writeLinesInFile(*mSettingsFile, settingsFile);
 	}
@@ -187,10 +184,12 @@ namespace Bountive
 		mSaveWindowState.resetCustomValue();
 		setDefaultWindowState();
 
-		mFullScreenEnabled.resetCustomValue();
+		mFullscreenEnabled.resetCustomValue();
 		mVsyncEnabled.resetCustomValue();
 
 		mFieldOfView.resetCustomValue();
+
+		mKeyEscape.resetCustomValue();
 	}
 
 
@@ -227,6 +226,12 @@ namespace Bountive
 	}
 
 
+	const GLboolean& GameSettingsHandler::isSaveWindowState() const
+	{
+		return mSaveWindowState.getCustomBoolean();
+	}
+
+
 	const GLint& GameSettingsHandler::getWindowWidth() const
 	{
 		return mWindowSizeX.getCustomInteger();
@@ -247,6 +252,36 @@ namespace Bountive
 	const GLint& GameSettingsHandler::getWindowPositionY() const
 	{
 		return mWindowPositionY.getCustomInteger();
+	}
+
+
+	const GLboolean& GameSettingsHandler::isVsyncEnabled() const
+	{
+		return mVsyncEnabled.getCustomBoolean();
+	}
+
+
+	const GLboolean& GameSettingsHandler::isFullscreenEnabled() const
+	{
+		return mFullscreenEnabled.getCustomBoolean();
+	}
+
+
+	const GLint& GameSettingsHandler::getFieldOfView() const
+	{
+		return mFieldOfView.getCustomInteger();
+	}
+
+
+	const GLint& GameSettingsHandler::getKeyEscape() const
+	{
+		return mKeyEscape.getCustomInteger();
+	}
+
+
+	void GameSettingsHandler::setSaveWindowState(GLboolean saveWindowState)
+	{
+		mSaveWindowState.setCustomBoolean(saveWindowState);
 	}
 
 
@@ -271,5 +306,23 @@ namespace Bountive
 	void GameSettingsHandler::setWindowPositionY(GLint windowPositionY)
 	{
 		mWindowPositionY.setCustomInteger(windowPositionY);
+	}
+
+
+	void GameSettingsHandler::setVsyncEnabled(GLboolean vsyncEnabled)
+	{
+		mVsyncEnabled.setCustomBoolean(vsyncEnabled);
+	}
+
+
+	void GameSettingsHandler::setFullscreenEnabled(GLboolean fullscreenEnabled)
+	{
+		mFullscreenEnabled.setCustomBoolean(fullscreenEnabled);
+	}
+
+
+	void GameSettingsHandler::setFieldOfView(GLint fieldOfView)
+	{
+		mFieldOfView.setCustomInteger(fieldOfView);
 	}
 }

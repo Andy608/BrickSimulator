@@ -2,20 +2,25 @@
 #ifndef BOUNTIVE_CALLBACKMANAGER_H_
 #define BOUNTIVE_CALLBACKMANAGER_H_
 
-#include "KeyboardCallback.h"
-#include "WindowFocusCallback.h"
-#include "FramebufferSizeCallback.h"
-#include "WindowSizeCallback.h"
-#include "WindowPositionCallback.h"
-#include "CursorPositionCallback.h"
-#include "MouseScrollCallback.h"
+#include <glew.h>
+#include <glfw\glfw3.h>
 
 namespace Bountive
 {
+	class KeyboardCallback;
+	class WindowFocusCallback;
+	class FramebufferSizeCallback;
+	class WindowSizeCallback;
+	class WindowPositionCallback;
+	class CursorPositionCallback;
+	class MouseScrollCallback;
+	class Window;
+	class GameSettingsHandler;
+
 	class CallbackManager
 	{
 	public:
-		CallbackManager(GLFWwindow* windowHandle);
+		CallbackManager(Window* window, GameSettingsHandler& gameSettingsHandler);
 		~CallbackManager();
 
 		static void errorCallback(GLint error, const GLchar* description);
@@ -24,8 +29,8 @@ namespace Bountive
 		GLFWwindow* mWindowHandle;
 		KeyboardCallback* mKeyboardCallback;
 		WindowFocusCallback* mWindowFocusCallback;
-		FramebufferSizeCallback* mFramebufferSizeCallback;
 		WindowSizeCallback* mWindowSizeCallback;
+		FramebufferSizeCallback* mFramebufferSizeCallback;
 		WindowPositionCallback* mWindowPositionCallback;
 		CursorPositionCallback* mCursorPositionCallback;
 		MouseScrollCallback* mMouseScrollCallback;

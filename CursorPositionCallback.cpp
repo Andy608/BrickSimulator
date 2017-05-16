@@ -1,5 +1,5 @@
-#include "CursorPositionCallback.h"
 #include <iostream>
+#include "CursorPositionCallback.h"
 
 namespace Bountive
 {
@@ -28,6 +28,6 @@ namespace Bountive
 	void CursorPositionCallback::cursorPositionCallback(GLFWwindow* windowHandle, GLdouble xPosition, GLdouble yPosition)
 	{
 		//TODO: Save position in options
-		std::cout << "Cursor Position: (" << xPosition << ", " << yPosition << ")" << std::endl;
+		//std::cout << "Cursor Position: (" << xPosition << ", " << yPosition << ")" << std::endl;
 	}
 }

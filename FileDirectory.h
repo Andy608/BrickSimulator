@@ -14,7 +14,7 @@ namespace Bountive
 		~FileDirectory();
 
 		std::wstring getDirectory() const;
-		std::wstring getDirectoryPath() const;
+		std::wstring getParentDirectory() const;
 		std::wstring getFolderName() const;
 
 		GLboolean createDirectory() const;

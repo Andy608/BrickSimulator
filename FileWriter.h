@@ -2,10 +2,10 @@
 #ifndef BOUNTIVE_FILEWRITER_H_
 #define BOUNTIVE_FILEWRITER_H_
 
-#include "FileLocation.h"
-#include <fstream>
 #include <glew.h>
+#include <fstream>
 #include <vector>
+#include "FileLocation.h"
 
 namespace Bountive
 {

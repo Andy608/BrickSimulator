@@ -9,7 +9,7 @@ namespace Bountive
 		mPARENT_DIRECTORY(parentDirectory), 
 		mFILE_NAME(fileName), 
 		mFILE_EXTENSION(fileExtension),
-		mIsCreated(false)
+		mIsCreated(GL_FALSE)
 	{
 		
 	}
@@ -59,15 +59,15 @@ namespace Bountive
 		{
 			std::wcout << "Creating file: " << getFullPath() << std::endl;
 			fileWriter.close();
-			setCreated(true);
-			return true;
+			setCreated(GL_TRUE);
+			return GL_TRUE;
 		}
 		else
 		{
 			std::wcout << "Error creating file: " << getFullPath() << std::endl;
 			fileWriter.close();
-			setCreated(false);
-			return false;
+			setCreated(GL_FALSE);
+			return GL_FALSE;
 		}
 	}
 }

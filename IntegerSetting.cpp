@@ -1,24 +1,32 @@
 #include <stdexcept> 
 #include <iostream>
 #include "IntegerSetting.h"
+#include "Logger.h"
 
 namespace Bountive
 {
+	Logger IntegerSetting::logger = Logger("IntegerSetting", Logger::Level::LEVEL_ALL);
+
 	IntegerSetting::IntegerSetting(std::wstring settingName, const GLint DEFAULT_INTEGER) :
 		SettingType(settingName), 
 		mDEFAULT_INTEGER(DEFAULT_INTEGER), 
 		mCustomInteger(DEFAULT_INTEGER)
 	{
-
+		logger.log(Logger::Level::LEVEL_TRACE, L"Creating IntegerSetting: " + mSettingName);
 	}
 
 
-	IntegerSetting::~IntegerSetting() {}
+	IntegerSetting::~IntegerSetting() 
+	{
+		logger.log(Logger::Level::LEVEL_TRACE, L"Deleting IntegerSetting: " + mSettingName);
+	}
 
 
 	void IntegerSetting::setCustomInteger(GLint customInteger)
 	{
 		mCustomInteger = customInteger;
+		logger.log(Logger::Level::LEVEL_TRACE, L"IntegerSetting: " + mSettingName + L" Default: " +
+			toString(mDEFAULT_INTEGER) + L" Custom: " + toString(mCustomInteger));
 	}
 
 
@@ -30,7 +38,7 @@ namespace Bountive
 		}
 		catch (const std::invalid_argument e)
 		{
-			std::wcout << "Could not convert \'" << fileValue << "\'. to integer." << std::endl;
+			logger.log(Logger::Level::LEVEL_WARN, L"Could not convert \'" + fileValue + L"\' to integer. Returning default value.");
 			setCustomInteger(mDEFAULT_INTEGER);
 		}
 	}
@@ -66,9 +74,15 @@ namespace Bountive
 	}
 
 
-	std::wstring IntegerSetting::toString() const
+	std::wstring IntegerSetting::toString(GLint integerValue)
 	{
-		return mSettingName + DELIMITER + std::to_wstring(mCustomInteger);
+		return std::to_wstring(integerValue);
+	}
+
+
+	std::wstring IntegerSetting::toFileString() const
+	{
+		return mSettingName + DELIMITER + toString(mCustomInteger);
 	}
 
 

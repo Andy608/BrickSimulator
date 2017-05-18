@@ -18,16 +18,4 @@ namespace Bountive
 	{
 		return mSettingName;
 	}
-
-
-	SettingType::operator std::wstring() const
-	{
-		return toString();
-	}
-
-
-	std::wstring operator+(std::wstring another, SettingType& setting)
-	{
-		return another + setting.toString();
-	}
 }

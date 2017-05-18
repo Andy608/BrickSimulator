@@ -6,9 +6,13 @@
 
 namespace Bountive
 {
+	class Logger;
+
 	class IntegerSetting : public SettingType
 	{
 	public:
+		static std::wstring toString(GLint integerValue);
+
 		IntegerSetting(std::wstring settingName, const GLint DEFAULT_INTEGER);
 		virtual ~IntegerSetting();
 
@@ -21,11 +25,12 @@ namespace Bountive
 		const GLint& getDefaultInteger() const;
 		const GLint& getCustomInteger() const;
 
-		virtual std::wstring toString() const;
+		virtual std::wstring toFileString() const;
 		virtual GLboolean isModified() const;
 		void resetCustomValue();
 
 	protected:
+		static Logger logger;
 		const GLint mDEFAULT_INTEGER;
 		GLint mCustomInteger;
 	};

@@ -6,6 +6,8 @@
 
 namespace Bountive
 {
+	class Logger;
+
 	class ClampedIntegerSetting : public IntegerSetting
 	{
 	public:
@@ -20,6 +22,7 @@ namespace Bountive
 		GLint& clamp(GLint& customInteger) const;
 
 	private:
+		static Logger logger;
 		const GLint mMIN_INTEGER;
 		const GLint mMAX_INTEGER;
 	};

@@ -16,16 +16,19 @@ namespace Bountive
 	class MouseScrollCallback;
 	class Window;
 	class GameSettingsHandler;
+	class Logger;
 
 	class CallbackManager
 	{
 	public:
+		static void errorCallback(GLint error, const GLchar* description);
+
 		CallbackManager(Window* window, GameSettingsHandler& gameSettingsHandler);
 		~CallbackManager();
 
-		static void errorCallback(GLint error, const GLchar* description);
-
 	private:
+		static Logger logger;
+
 		GLFWwindow* mWindowHandle;
 		KeyboardCallback* mKeyboardCallback;
 		WindowFocusCallback* mWindowFocusCallback;

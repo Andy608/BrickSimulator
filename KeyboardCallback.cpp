@@ -1,11 +1,13 @@
 #include <iostream>
 #include "KeyboardCallback.h"
 #include "GameSettingsHandler.h"
+#include "Logger.h"
 
 namespace Bountive
 {
-	const GLint KeyboardCallback::MAX_KEYS_PRESSED = 6;
 	KeyboardCallback* KeyboardCallback::instance = nullptr;
+	Logger KeyboardCallback::logger = Logger("KeyboardCallback", Logger::Level::LEVEL_ALL);
+	const GLint KeyboardCallback::MAX_KEYS_PRESSED = 6;
 
 	KeyboardCallback* KeyboardCallback::init(GameSettingsHandler& gameSettingsHandler)
 	{
@@ -22,6 +24,8 @@ namespace Bountive
 		mGameSettingsHandler(gameSettingsHandler),
 		mPressedKeys(new int[MAX_KEYS_PRESSED])
 	{
+		logger.log(Logger::Level::LEVEL_DEBUG, "Creating KeyboardCallback...");
+
 		for (int i = 0; i < MAX_KEYS_PRESSED; ++i)
 		{
 			mPressedKeys[i] = NULL;
@@ -31,7 +35,7 @@ namespace Bountive
 
 	KeyboardCallback::~KeyboardCallback()
 	{
-		std::cout << "Deleting KeyboardCallback." << std::endl;
+		logger.log(Logger::Level::LEVEL_DEBUG, "Deleting KeyboardCallback...");
 		delete[] mPressedKeys;
 	}
 
@@ -51,7 +55,10 @@ namespace Bountive
 			}
 		}
 
-		//printPressedKeysDebug(true);
+		if (logger.getMinimumLevel() <= Logger::Level::LEVEL_DEBUG)
+		{
+			printPressedKeysDebug(GL_TRUE);
+		}
 	}
 
 
@@ -62,7 +69,7 @@ namespace Bountive
 			if (mPressedKeys[i] == asciiValue)
 			{
 				mPressedKeys[i] = NULL;
-				
+
 				for (int j = i; j < MAX_KEYS_PRESSED - 1; ++j)
 				{
 					if (mPressedKeys[j + 1] == NULL)
@@ -78,29 +85,36 @@ namespace Bountive
 			}
 		}
 
-		//printPressedKeysDebug(false);
+		if (logger.getMinimumLevel() <= Logger::Level::LEVEL_DEBUG)
+		{
+			printPressedKeysDebug(GL_FALSE);
+		}
 	}
 
 
 	void KeyboardCallback::printPressedKeysDebug(GLboolean isPressed) const
 	{
+		std::string keyList;
+
 		if (isPressed)
 		{
-			std::cout << "Key Added... | ";
+			keyList.append("Key Added... | ");
 		}
 		else
 		{
-			std::cout << "Key Removed... | ";
+			keyList.append("Key Removed... | ");
 		}
 
-		std::cout << "(" << 0 << ": " << instance->mPressedKeys[0];
+		keyList.append("(0: " + std::to_string(instance->mPressedKeys[0]));
 
 		for (int i = 1; i < MAX_KEYS_PRESSED; ++i)
 		{
-			std::cout << ", " << i << ": " << instance->mPressedKeys[i];
+			keyList.append(", " + std::to_string(i) + ": " + std::to_string(instance->mPressedKeys[i]));
 		}
 
-		std::cout << ")" << std::endl;
+		keyList.append(")");
+
+		logger.log(Logger::Level::LEVEL_DEBUG, keyList);
 	}
 
 
@@ -110,9 +124,7 @@ namespace Bountive
 		{
 			instance->addKeyPressed(asciiValue);
 
-			std::wcout << asciiValue << std::endl;
-
-			if (asciiValue == instance->mGameSettingsHandler.getKeyEscape())
+			if (asciiValue == instance->mGameSettingsHandler.getKeyEscape().getCustomInteger())
 			{
 				instance->mIsEscapePressed = GL_TRUE;
 			}
@@ -121,7 +133,7 @@ namespace Bountive
 		{
 			instance->removeKeyPressed(asciiValue);
 
-			if (asciiValue == instance->mGameSettingsHandler.getKeyEscape())
+			if (asciiValue == instance->mGameSettingsHandler.getKeyEscape().getCustomInteger())
 			{
 				instance->mIsEscapePressed = GL_FALSE;
 			}

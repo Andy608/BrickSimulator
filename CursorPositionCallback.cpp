@@ -1,9 +1,11 @@
 #include <iostream>
 #include "CursorPositionCallback.h"
+#include "Logger.h"
 
 namespace Bountive
 {
 	CursorPositionCallback* CursorPositionCallback::instance = nullptr;
+	Logger CursorPositionCallback::logger = Logger("CursorPositionCallback", Logger::Level::LEVEL_ALL);
 
 	CursorPositionCallback* CursorPositionCallback::init()
 	{
@@ -16,18 +18,20 @@ namespace Bountive
 	}
 
 
-	CursorPositionCallback::CursorPositionCallback() {}
+	CursorPositionCallback::CursorPositionCallback() 
+	{
+		logger.log(Logger::Level::LEVEL_DEBUG, "Creating CursorPositionCallback...");
+	}
 
 
 	CursorPositionCallback::~CursorPositionCallback()
 	{
-		std::cout << "Deleting CursorPositionCallback." << std::endl;
+		logger.log(Logger::Level::LEVEL_DEBUG, "Deleting CursorPositionCallback...");
 	}
 
 
 	void CursorPositionCallback::cursorPositionCallback(GLFWwindow* windowHandle, GLdouble xPosition, GLdouble yPosition)
 	{
-		//TODO: Save position in options
-		//std::cout << "Cursor Position: (" << xPosition << ", " << yPosition << ")" << std::endl;
+		logger.log(Logger::Level::LEVEL_TRACE, "Cursor Position: (" + std::to_string(xPosition) + ", " + std::to_string(yPosition) + ")");
 	}
 }

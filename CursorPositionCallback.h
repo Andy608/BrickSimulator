@@ -7,6 +7,8 @@
 
 namespace Bountive
 {
+	class Logger;
+
 	class CursorPositionCallback
 	{
 	public:
@@ -18,6 +20,7 @@ namespace Bountive
 		~CursorPositionCallback();
 
 	private:
+		static Logger logger;
 		CursorPositionCallback();
 	};
 }

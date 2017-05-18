@@ -1,8 +1,10 @@
-#include "FileLocation.h"
 #include <iostream>
+#include "FileLocation.h"
+#include "Logger.h"
 
 namespace Bountive
 {
+	Logger FileLocation::logger = Logger("FileLocation", Logger::Level::LEVEL_ALL);
 	std::wstring FileLocation::TXT_EXT = L".txt";
 
 	FileLocation::FileLocation(const FileDirectory* parentDirectory, const std::wstring fileName, const std::wstring fileExtension) :
@@ -11,13 +13,13 @@ namespace Bountive
 		mFILE_EXTENSION(fileExtension),
 		mIsCreated(GL_FALSE)
 	{
-		
+		logger.log(Logger::Level::LEVEL_DEBUG, "Creating FileLocation...");
 	}
 
 
 	FileLocation::~FileLocation() 
 	{
-		std::wcout << "Deleting FileLocation." << std::endl;
+		logger.log(Logger::Level::LEVEL_DEBUG, "Deleting FileLocation...");
 	}
 
 
@@ -57,14 +59,14 @@ namespace Bountive
 
 		if (fileWriter.good())
 		{
-			std::wcout << "Creating file: " << getFullPath() << std::endl;
+			logger.log(Logger::Level::LEVEL_DEBUG, L"Creating file: " + getFullPath());
 			fileWriter.close();
 			setCreated(GL_TRUE);
 			return GL_TRUE;
 		}
 		else
 		{
-			std::wcout << "Error creating file: " << getFullPath() << std::endl;
+			logger.log(Logger::Level::LEVEL_FATAL, L"Error creating file: " + getFullPath());
 			fileWriter.close();
 			setCreated(GL_FALSE);
 			return GL_FALSE;

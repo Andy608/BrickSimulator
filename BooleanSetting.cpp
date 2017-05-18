@@ -1,8 +1,10 @@
 #include <iostream>
 #include "BooleanSetting.h"
+#include "Logger.h"
 
 namespace Bountive
 {
+	Logger BooleanSetting::logger = Logger("BooleanSetting", Logger::Level::LEVEL_ALL);
 	const std::wstring BooleanSetting::SETTING_TRUE = L"true";
 	const std::wstring BooleanSetting::SETTING_FALSE = L"false";
 
@@ -11,16 +13,21 @@ namespace Bountive
 		mDEFAULT_BOOLEAN(DEFAULT_BOOLEAN), 
 		mCustomBoolean(DEFAULT_BOOLEAN)
 	{
-
+		logger.log(Logger::Level::LEVEL_TRACE, L"Creating BooleanSetting: " + mSettingName);
 	}
 
 
-	BooleanSetting::~BooleanSetting() {}
+	BooleanSetting::~BooleanSetting() 
+	{
+		logger.log(Logger::Level::LEVEL_TRACE, L"Deleting BooleanSetting: " + mSettingName);
+	}
 
 
 	void BooleanSetting::setCustomBoolean(GLboolean customBoolean)
 	{
 		mCustomBoolean = customBoolean;
+		logger.log(Logger::Level::LEVEL_TRACE, L"BooleanSetting: " + mSettingName + L" Default: " +
+			toString(mDEFAULT_BOOLEAN) + L" Custom: " + toString(mCustomBoolean));
 	}
 
 
@@ -36,7 +43,7 @@ namespace Bountive
 		}
 		else
 		{
-			std::wcout << "Error reading value \'" << fileValue << "\'. Returning default value." << std::endl;
+			logger.log(Logger::Level::LEVEL_WARN, L"Could not read value: '" + fileValue + L"'. Returning default value.");
 			return setCustomBoolean(mDEFAULT_BOOLEAN);
 		}
 	}
@@ -72,9 +79,15 @@ namespace Bountive
 	}
 
 
-	std::wstring BooleanSetting::toString() const
+	std::wstring BooleanSetting::toString(GLboolean booleanValue)
 	{
-		return mSettingName + DELIMITER + (mCustomBoolean ? SETTING_TRUE : SETTING_FALSE);
+		return (booleanValue ? SETTING_TRUE : SETTING_FALSE);
+	}
+
+
+	std::wstring BooleanSetting::toFileString() const
+	{
+		return mSettingName + DELIMITER + toString(mCustomBoolean);
 	}
 
 

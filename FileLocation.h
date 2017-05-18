@@ -9,6 +9,8 @@
 
 namespace Bountive
 {
+	class Logger;
+
 	class FileLocation
 	{
 	public:
@@ -27,6 +29,7 @@ namespace Bountive
 		GLboolean createFile(std::wofstream& fileWriter);
 
 	private:
+		static Logger logger;
 		GLboolean mIsCreated;
 
 		const std::wstring mFILE_NAME;

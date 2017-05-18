@@ -6,9 +6,13 @@
 
 namespace Bountive
 {
+	class Logger;
+
 	class BooleanSetting : public SettingType
 	{
 	public:
+		static std::wstring toString(GLboolean booleanValue);
+
 		BooleanSetting(std::wstring settingName, const GLboolean DEFAULT_BOOLEAN);
 		virtual ~BooleanSetting();
 
@@ -21,11 +25,12 @@ namespace Bountive
 		const GLboolean& getDefaultBoolean() const;
 		const GLboolean& getCustomBoolean() const;
 
-		virtual std::wstring toString() const;
+		virtual std::wstring toFileString() const;
 		virtual GLboolean isModified() const;
 		virtual void resetCustomValue();
 
 	private:
+		static Logger logger;
 		static const std::wstring SETTING_TRUE;
 		static const std::wstring SETTING_FALSE;
 

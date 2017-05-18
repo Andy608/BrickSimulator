@@ -1,12 +1,12 @@
 #include <iostream>
 #include <sstream>
 #include "DirectoryUtil.h"
+#include "Logger.h"
 
 namespace Bountive
 {
 	DirectoryUtil* DirectoryUtil::instance = nullptr;
-
-	const FileDirectory* DirectoryUtil::APPDATA_DIRECTORY = nullptr;
+	Logger DirectoryUtil::logger = Logger("DirectoryUtil", Logger::Level::LEVEL_ALL);
 
 	DirectoryUtil* DirectoryUtil::init()
 	{
@@ -15,8 +15,6 @@ namespace Bountive
 			try
 			{
 				instance = new DirectoryUtil();
-				APPDATA_DIRECTORY = createDirectory(FOLDERID_RoamingAppData, L"Brick Simulator");
-				std::wcout << APPDATA_DIRECTORY->getDirectory() << std::endl;
 			}
 			catch (std::wstring e)
 			{
@@ -27,12 +25,6 @@ namespace Bountive
 		}
 
 		return instance;
-	}
-
-
-	const FileDirectory* const DirectoryUtil::getmAppdataDir()
-	{
-		return APPDATA_DIRECTORY;
 	}
 
 
@@ -51,13 +43,17 @@ namespace Bountive
 
 			if (!dir->createDirectory())
 			{
-				throw (std::wstring(L"Could not create directory."));
+				std::wstring error = L"Could not create directory.";
+				logger.log(Logger::Level::LEVEL_FATAL, error);
+				throw (std::wstring(error));
 			}
 		}
 		else
 		{
 			CoTaskMemFree(static_cast<void*>(path));
-			throw (std::wstring(L"Could not find path with that GUID."));
+			std::wstring error = L"Could not find path with that GUID.";
+			logger.log(Logger::Level::LEVEL_FATAL, error);
+			throw (std::wstring(error));
 		}
 
 		CoTaskMemFree(static_cast<void*>(path));
@@ -73,12 +69,25 @@ namespace Bountive
 	}
 
 
-	DirectoryUtil::DirectoryUtil() {}
+	DirectoryUtil::DirectoryUtil() 
+	try : 
+		mAPPDATA_DIRECTORY(createDirectory(FOLDERID_RoamingAppData, L"Brick Simulator")),
+		mSETTINGS_DIRECTORY(createDirectory(mAPPDATA_DIRECTORY->getDirectory(), L"settings")),
+		mLOGGER_DIRECTORY(createDirectory(mAPPDATA_DIRECTORY->getDirectory(), L"logger"))
+	{
+		logger.log(Logger::Level::LEVEL_INFO, "Creating DirectoryUtil...");
+	}
+	catch (std::wstring e)
+	{
+		throw e;
+	}
 
 
 	DirectoryUtil::~DirectoryUtil()
 	{
-		std::cout << "Deleting DirectoryUtil." << std::endl;
-		delete APPDATA_DIRECTORY;
+		logger.log(Logger::Level::LEVEL_INFO, "Deleting DirectoryUtil...");
+		delete mAPPDATA_DIRECTORY;
+		delete mSETTINGS_DIRECTORY;
+		delete mLOGGER_DIRECTORY;
 	}
 }

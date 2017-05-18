@@ -21,6 +21,7 @@ namespace Bountive
 		~WindowPositionCallback();
 
 	private:
+		static Logger logger;
 		GameSettingsHandler& mGameSettingsHandler;
 
 		WindowPositionCallback(GameSettingsHandler& gameSettingsHandler);

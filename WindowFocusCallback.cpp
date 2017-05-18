@@ -1,9 +1,11 @@
 #include <iostream>
 #include "WindowFocusCallback.h"
+#include "Logger.h"
 
 namespace Bountive
 {
 	WindowFocusCallback* WindowFocusCallback::instance = nullptr;
+	Logger WindowFocusCallback::logger = Logger("WindowFocusCallback", Logger::Level::LEVEL_ALL);
 
 	WindowFocusCallback* WindowFocusCallback::init()
 	{
@@ -16,12 +18,15 @@ namespace Bountive
 	}
 
 
-	WindowFocusCallback::WindowFocusCallback() {}
+	WindowFocusCallback::WindowFocusCallback() 
+	{
+		logger.log(Logger::Level::LEVEL_DEBUG, "Creating WindowFocusCallback...");
+	}
 
 
 	WindowFocusCallback::~WindowFocusCallback() 
 	{
-		std::cout << "Deleting WindowFocusCallback." << std::endl;
+		logger.log(Logger::Level::LEVEL_DEBUG, "Deleting WindowFocusCallback...");
 	}
 
 
@@ -30,11 +35,11 @@ namespace Bountive
 		//TODO: Set focus variable in settings file.
 		if (isFocused)
 		{
-			std::cout << "Window focused." << std::endl;
+			logger.log(Logger::Level::LEVEL_TRACE, "Window focused.");
 		}
 		else
 		{
-			std::cout << "Window unfocused." << std::endl;
+			logger.log(Logger::Level::LEVEL_TRACE, "Window unfocused.");
 		}
 	}
 }

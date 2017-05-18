@@ -10,11 +10,14 @@ namespace Bountive
 {
 	class CallbackManager;
 	class GameSettingsHandler;
+	class Logger;
 
 	class Window
 	{
 	public:
+		static GLint DECORATION_HEIGHT;
 		static Window* instance;
+
 		static Window* init();
 
 		const GLFWvidmode* mVIDEO_MODE;
@@ -31,6 +34,7 @@ namespace Bountive
 		glm::vec2 getMaximumWindowPosition() const;
 
 	private:
+		static Logger logger;
 		static const GLFWvidmode* initGLFW();
 
 		GLFWwindow* mWindowHandle;

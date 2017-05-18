@@ -10,9 +10,13 @@
 #include "MouseScrollCallback.h"
 #include "Window.h"
 #include "GameSettingsHandler.h"
+#include "Logger.h"
+#include "LoggerUtil.h"
 
 namespace Bountive
 {
+	Logger CallbackManager::logger = Logger("CallbackManager", Logger::Level::LEVEL_ALL);
+
 	CallbackManager::CallbackManager(Window* window, GameSettingsHandler& gameSettingsHandler) :
 		mWindowHandle(window->getWindowHandle()),
 		mKeyboardCallback(KeyboardCallback::init(gameSettingsHandler)),
@@ -23,11 +27,12 @@ namespace Bountive
 		mCursorPositionCallback(CursorPositionCallback::init()),
 		mMouseScrollCallback(MouseScrollCallback::init())
 	{
+		logger.log(Logger::Level::LEVEL_DEBUG, "Creating CallbackManager...");
 		glfwSetErrorCallback(errorCallback);
 		glfwSetKeyCallback(mWindowHandle, mKeyboardCallback->keyCallback);
 		glfwSetWindowFocusCallback(mWindowHandle, mWindowFocusCallback->windowFocusCallback);
-		glfwSetWindowSizeCallback(mWindowHandle, mWindowSizeCallback->windowSizeCallback);
 		glfwSetFramebufferSizeCallback(mWindowHandle, mFramebufferSizeCallback->framebufferSizeCallback);
+		glfwSetWindowSizeCallback(mWindowHandle, mWindowSizeCallback->windowSizeCallback);
 		glfwSetWindowPosCallback(mWindowHandle, mWindowPositionCallback->windowPositionCallback);
 		glfwSetCursorPosCallback(mWindowHandle, mCursorPositionCallback->cursorPositionCallback);
 		glfwSetScrollCallback(mWindowHandle, mMouseScrollCallback->mouseScrollCallback);
@@ -36,11 +41,11 @@ namespace Bountive
 
 	CallbackManager::~CallbackManager()
 	{
-		std::cout << "Deleting Window Callbacks." << std::endl;
+		logger.log(Logger::Level::LEVEL_DEBUG, "Deleting CallbackManager...");
 		delete mKeyboardCallback;
 		delete mWindowFocusCallback;
-		delete mWindowSizeCallback;
 		delete mFramebufferSizeCallback;
+		delete mWindowSizeCallback;
 		delete mWindowPositionCallback;
 		delete mCursorPositionCallback;
 		delete mMouseScrollCallback;
@@ -49,6 +54,6 @@ namespace Bountive
 
 	void CallbackManager::errorCallback(GLint error, const GLchar* description)
 	{
-		std::cout << "Error #" << error << ": " << description << std::endl;
+		logger.log(Logger::Level::LEVEL_ERROR, "#" + std::to_string(error) + ": " + description);
 	}
 }

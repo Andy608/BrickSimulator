@@ -5,29 +5,33 @@
 #include "FileWriter.h"
 #include "FileReader.h"
 #include "Window.h"
+#include "Logger.h"
 
 namespace Bountive
 {
-	const std::wstring GameSettingsHandler::SETTINGS_FOLDER_NAME = L"settings";
+	Logger GameSettingsHandler::logger = Logger("GameSettingsHandler", Logger::Level::LEVEL_ALL);
 	const std::wstring GameSettingsHandler::SETTINGS_FILE_NAME = L"options";
 
 	GameSettingsHandler::GameSettingsHandler()
 		try : 
-		mSETTINGS_DIRECTORY(DirectoryUtil::createDirectory(DirectoryUtil::instance->getmAppdataDir()->getDirectory(), SETTINGS_FOLDER_NAME)),
+		mSETTINGS_DIRECTORY(DirectoryUtil::instance->mSETTINGS_DIRECTORY),
 		mSettingsFile(new FileLocation(mSETTINGS_DIRECTORY, SETTINGS_FILE_NAME, FileLocation::TXT_EXT)),
 		mFileWriter(new FileWriter()),
 		mFileReader(new FileReader()),
 		mSaveWindowState(BooleanSetting(L"save_window_state", GL_FALSE)),
+		mWindowMaximized(BooleanSetting(L"window_maximized", GL_FALSE)),
 
 		mDEFAULT_WINDOW_SIZE(glm::vec2(Window::instance->mVIDEO_MODE->width / 2.0f, Window::instance->mVIDEO_MODE->height / 2.0f)),
 
 		mDEFAULT_WINDOW_POSITION(glm::vec2((Window::instance->mVIDEO_MODE->width - mDEFAULT_WINDOW_SIZE.x) / 2.0f, 
 			(Window::instance->mVIDEO_MODE->height - mDEFAULT_WINDOW_SIZE.y) / 2.0f)),
 
-		mWindowPositionX(ClampedIntegerSetting(L"window_position_x", static_cast<GLint>(mDEFAULT_WINDOW_POSITION.x), 0, 
+		mWindowPositionX(ClampedIntegerSetting(L"window_position_x", static_cast<GLint>(mDEFAULT_WINDOW_POSITION.x), 
+			static_cast<GLint>(Window::instance->getMinimumWindowPosition().x),
 			static_cast<GLint>(Window::instance->getMaximumWindowPosition().x))),
 
-		mWindowPositionY(ClampedIntegerSetting(L"window_position_y", static_cast<GLint>(mDEFAULT_WINDOW_POSITION.y), 0, 
+		mWindowPositionY(ClampedIntegerSetting(L"window_position_y", static_cast<GLint>(mDEFAULT_WINDOW_POSITION.y), 
+			static_cast<GLint>(Window::instance->getMinimumWindowPosition().y),
 			static_cast<GLint>(Window::instance->getMaximumWindowPosition().y))),
 
 		mWindowSizeX(ClampedIntegerSetting(L"window_size_x", static_cast<GLint>(mDEFAULT_WINDOW_SIZE.x), 
@@ -41,35 +45,29 @@ namespace Bountive
 		mFieldOfView(ClampedIntegerSetting(L"fov", 67, 30, 120)),
 		mKeyEscape(IntegerSetting(L"key_escape", GLFW_KEY_ESCAPE))
 	{
+		logger.log(Logger::Level::LEVEL_DEBUG, "Creating GameSettingsHandler...");
 		mSettingsFile->createFile(mFileWriter->getWriteStream());
 
 		if (mSettingsFile->isCreated())
 		{
-			std::wcout << "Successfully created settings file! : " << mSettingsFile->getFullPath() << std::endl;
+			logger.log(Logger::Level::LEVEL_INFO, L"Successfully created settings file! : " + mSettingsFile->getFullPath());
 		}
 		else
 		{
-			std::wcout << "There was an error creating the settings file: " << mSettingsFile->getFullPath() << std::endl;
+			std::wstring error = L"Error creating settings file. : " + mSettingsFile->getFullPath();
+			logger.log(Logger::Level::LEVEL_ERROR, error);
+			throw (error);
 		}
 	}
 	catch (std::wstring e)
 	{
-		delete mSETTINGS_DIRECTORY;
-		delete mSettingsFile;
-		delete mFileWriter;
-		delete mFileReader;
-
-		mSETTINGS_DIRECTORY = nullptr;
-		mSettingsFile = nullptr;
-
 		throw (e);
 	}
 
 
 	GameSettingsHandler::~GameSettingsHandler()
 	{
-		std::wcout << "Deleting SettingsHandler." << std::endl;
-		delete mSETTINGS_DIRECTORY;
+		logger.log(Logger::Level::LEVEL_DEBUG, "Deleting SettingsHandler.");
 		delete mSettingsFile;
 		delete mFileWriter;
 		delete mFileReader;
@@ -84,7 +82,7 @@ namespace Bountive
 
 			if (mSaveWindowState.getCustomBoolean())
 			{
-				setWindowInBounds();
+				checkToResetInvalidWindow();
 			}
 		}
 	}
@@ -93,8 +91,6 @@ namespace Bountive
 	void GameSettingsHandler::loadOptionsFromFile()
 	{
 		std::vector<std::wstring> lines = mFileReader->getLinesInFile(*mSettingsFile);
-
-		std::wcout << "LINES LENGTH: " << lines.size() << std::endl;
 
 		for (GLuint i = 0; i < lines.size(); ++i)
 		{
@@ -110,6 +106,10 @@ namespace Bountive
 					if (settingName.compare(mSaveWindowState.getSettingName()) == 0)
 					{
 						mSaveWindowState.setCustomBoolean(settingVar);
+					}
+					else if (settingName.compare(mWindowMaximized.getSettingName()) == 0)
+					{
+						mWindowMaximized.setCustomBoolean(settingVar);
 					}
 					else if (settingName.compare(mWindowPositionX.getSettingName()) == 0)
 					{
@@ -145,7 +145,7 @@ namespace Bountive
 					}
 					else
 					{
-						std::wcout << "Unknown setting \'" << settingName << "\'. Skipping." << std::endl;
+						logger.log(Logger::Level::LEVEL_WARN, L"Skipping unknown setting: \'" + settingName + L"\'.");
 					}
 				}
 			}
@@ -157,23 +157,24 @@ namespace Bountive
 	{
 		std::vector<std::wstring> settingsFile;
 
-		settingsFile.push_back(mSaveWindowState);
+		settingsFile.push_back(mSaveWindowState.toFileString());
 
 		if (!mSaveWindowState.getCustomBoolean())
 		{
 			setDefaultWindowState();
 		}
 
-		settingsFile.push_back(mWindowPositionX);
-		settingsFile.push_back(mWindowPositionY);
-		settingsFile.push_back(mWindowSizeX);
-		settingsFile.push_back(mWindowSizeY);
+		settingsFile.push_back(mWindowMaximized.toFileString());
+		settingsFile.push_back(mWindowPositionX.toFileString());
+		settingsFile.push_back(mWindowPositionY.toFileString());
+		settingsFile.push_back(mWindowSizeX.toFileString());
+		settingsFile.push_back(mWindowSizeY.toFileString());
 
-		settingsFile.push_back(mFullscreenEnabled);
-		settingsFile.push_back(mVsyncEnabled);
+		settingsFile.push_back(mFullscreenEnabled.toFileString());
+		settingsFile.push_back(mVsyncEnabled.toFileString());
 		
-		settingsFile.push_back(mFieldOfView);
-		settingsFile.push_back(mKeyEscape);
+		settingsFile.push_back(mFieldOfView.toFileString());
+		settingsFile.push_back(mKeyEscape.toFileString());
 
 		mFileWriter->writeLinesInFile(*mSettingsFile, settingsFile);
 	}
@@ -182,6 +183,7 @@ namespace Bountive
 	void GameSettingsHandler::setDefaultSettings()
 	{
 		mSaveWindowState.resetCustomValue();
+		mWindowMaximized.resetCustomValue();
 		setDefaultWindowState();
 
 		mFullscreenEnabled.resetCustomValue();
@@ -195,6 +197,7 @@ namespace Bountive
 
 	void GameSettingsHandler::setDefaultWindowState()
 	{
+		mWindowMaximized.resetCustomValue();
 		mWindowPositionX.resetCustomValue();
 		mWindowPositionY.resetCustomValue();
 		mWindowSizeX.resetCustomValue();
@@ -204,84 +207,107 @@ namespace Bountive
 
 	void GameSettingsHandler::setWindowInBounds()
 	{
-		if (mWindowPositionX.getCustomInteger() < 0)
+		if (mWindowPositionX.getCustomInteger() <= mWindowPositionX.getMinInteger())
 		{
-			mWindowPositionX.setCustomInteger(0);
+			mWindowPositionX.setCustomInteger(mWindowPositionX.getMinInteger());
 		}
-		else if (mWindowPositionX.getCustomInteger() + mWindowSizeX.getCustomInteger() > Window::instance->mVIDEO_MODE->width)
+		else if (mWindowPositionX.getCustomInteger() + mWindowSizeX.getCustomInteger() > mWindowPositionX.getMaxInteger())
 		{
-			mWindowPositionX.setCustomInteger(mWindowPositionX.getCustomInteger() - 
-				(mWindowPositionX.getCustomInteger() + mWindowSizeX.getCustomInteger() - Window::instance->mVIDEO_MODE->width));
+			mWindowPositionX.setCustomInteger(-mWindowSizeX.getCustomInteger() + mWindowPositionX.getMaxInteger());
 		}
 
-		if (mWindowPositionY.getCustomInteger() < 0)
+		std::wcout << mWindowPositionY.getCustomInteger() << std::endl;
+		if (mWindowPositionY.getCustomInteger() <= mWindowPositionY.getMinInteger())
 		{
-			mWindowPositionY.setCustomInteger(0);
+			mWindowPositionY.setCustomInteger(mWindowPositionY.getMinInteger());
 		}
-		else if (mWindowPositionY.getCustomInteger() + mWindowSizeY.getCustomInteger() > Window::instance->mVIDEO_MODE->height)
+		else if (mWindowPositionY.getCustomInteger() + mWindowSizeY.getCustomInteger() > mWindowPositionY.getMaxInteger())
 		{
-			mWindowPositionY.setCustomInteger(mWindowPositionY.getCustomInteger() -
-				(mWindowPositionY.getCustomInteger() + mWindowSizeY.getCustomInteger() - Window::instance->mVIDEO_MODE->height));
+			mWindowPositionY.setCustomInteger(-mWindowSizeY.getCustomInteger() + mWindowPositionY.getMaxInteger());
 		}
 	}
 
 
-	const GLboolean& GameSettingsHandler::isSaveWindowState() const
+	void GameSettingsHandler::checkToResetInvalidWindow()
 	{
-		return mSaveWindowState.getCustomBoolean();
+		if ((mWindowPositionX.getCustomInteger() <= mWindowPositionX.getMinInteger())
+			|| (mWindowPositionX.getCustomInteger() + mWindowSizeX.getCustomInteger() > mWindowPositionX.getMaxInteger())
+			|| (mWindowPositionY.getCustomInteger() <= mWindowPositionY.getMinInteger())
+			|| (mWindowPositionY.getCustomInteger() + mWindowSizeY.getCustomInteger() > mWindowPositionY.getMaxInteger()))
+		{
+			setDefaultWindowState();
+		}
 	}
 
 
-	const GLint& GameSettingsHandler::getWindowWidth() const
+	const BooleanSetting& GameSettingsHandler::isSaveWindowState() const
 	{
-		return mWindowSizeX.getCustomInteger();
+		return mSaveWindowState;
 	}
 
 
-	const GLint& GameSettingsHandler::getWindowHeight() const
+	const BooleanSetting& GameSettingsHandler::isWindowMaximized() const
 	{
-		return mWindowSizeY.getCustomInteger();
-	}
-
-	const GLint& GameSettingsHandler::getWindowPositionX() const
-	{
-		return mWindowPositionX.getCustomInteger();
+		return mWindowMaximized;
 	}
 
 
-	const GLint& GameSettingsHandler::getWindowPositionY() const
+	const ClampedIntegerSetting& GameSettingsHandler::getWindowWidth() const
 	{
-		return mWindowPositionY.getCustomInteger();
+		return mWindowSizeX;
 	}
 
 
-	const GLboolean& GameSettingsHandler::isVsyncEnabled() const
+	const ClampedIntegerSetting& GameSettingsHandler::getWindowHeight() const
 	{
-		return mVsyncEnabled.getCustomBoolean();
+		return mWindowSizeY;
+	}
+
+	const ClampedIntegerSetting& GameSettingsHandler::getWindowPositionX() const
+	{
+		return mWindowPositionX;
 	}
 
 
-	const GLboolean& GameSettingsHandler::isFullscreenEnabled() const
+	const ClampedIntegerSetting& GameSettingsHandler::getWindowPositionY() const
 	{
-		return mFullscreenEnabled.getCustomBoolean();
+		return mWindowPositionY;
 	}
 
 
-	const GLint& GameSettingsHandler::getFieldOfView() const
+	const BooleanSetting& GameSettingsHandler::isVsyncEnabled() const
 	{
-		return mFieldOfView.getCustomInteger();
+		return mVsyncEnabled;
 	}
 
 
-	const GLint& GameSettingsHandler::getKeyEscape() const
+	const BooleanSetting& GameSettingsHandler::isFullscreenEnabled() const
 	{
-		return mKeyEscape.getCustomInteger();
+		return mFullscreenEnabled;
+	}
+
+
+	const ClampedIntegerSetting& GameSettingsHandler::getFieldOfView() const
+	{
+		return mFieldOfView;
+	}
+
+
+	const IntegerSetting& GameSettingsHandler::getKeyEscape() const
+	{
+		return mKeyEscape;
 	}
 
 
 	void GameSettingsHandler::setSaveWindowState(GLboolean saveWindowState)
 	{
 		mSaveWindowState.setCustomBoolean(saveWindowState);
+	}
+
+
+	void GameSettingsHandler::setWindowMaximized(GLboolean windowMaximized)
+	{
+		mWindowMaximized.setCustomBoolean(windowMaximized);
 	}
 
 

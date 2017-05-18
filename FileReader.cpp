@@ -1,18 +1,21 @@
 #include <iostream>
 #include "FileReader.h"
+#include "Logger.h"
 
 namespace Bountive
 {
+	Logger FileReader::logger = Logger("FileReader", Logger::Level::LEVEL_ALL);
+
 	FileReader::FileReader() :
 		mReadStream(new std::wifstream())
 	{
-
+		logger.log(Logger::Level::LEVEL_DEBUG, "Creating FileReader...");
 	}
 
 
 	FileReader::~FileReader()
 	{
-		std::wcout << "Deleting FileReader." << std::endl;
+		logger.log(Logger::Level::LEVEL_DEBUG, "Deleting FileReader...");
 		delete mReadStream;
 	}
 

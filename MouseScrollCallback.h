@@ -7,6 +7,8 @@
 
 namespace Bountive
 {
+	class Logger;
+
 	class MouseScrollCallback
 	{
 	public:
@@ -18,6 +20,7 @@ namespace Bountive
 		~MouseScrollCallback();
 
 	private:
+		static Logger logger;
 		MouseScrollCallback();
 	};
 }

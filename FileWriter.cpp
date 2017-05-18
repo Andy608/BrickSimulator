@@ -1,18 +1,21 @@
 #include <iostream>
 #include "FileWriter.h"
+#include "Logger.h"
 
 namespace Bountive
 {
+	Logger FileWriter::logger = Logger("FileWriter", Logger::Level::LEVEL_ALL);
+
 	FileWriter::FileWriter() :
 		mWriteStream(new std::wofstream())
 	{
-
+		logger.log(Logger::Level::LEVEL_ALL, "Creating FileWriter...");
 	}
 
 
 	FileWriter::~FileWriter() 
 	{
-		std::wcout << "Deleting FileWriter." << std::endl;
+		logger.log(Logger::Level::LEVEL_ALL, "Deleting FileWriter...");
 		delete mWriteStream;
 	}
 
@@ -29,7 +32,7 @@ namespace Bountive
 
 		if (mWriteStream->good())
 		{
-			std::wcout << "Writing to file: " << file.getFullPath() << std::endl;
+			logger.log(Logger::Level::LEVEL_DEBUG, L"Writing to file: " + file.getFullPath());
 
 			if (lines.size() > 0)
 			{
@@ -46,7 +49,7 @@ namespace Bountive
 		}
 		else
 		{
-			std::wcout << "Error writing to file: " << file.getFullPath() << std::endl;
+			logger.log(Logger::Level::LEVEL_DEBUG, L"Error writing to file: " + file.getFullPath());
 			mWriteStream->close();
 			return GL_FALSE;
 		}

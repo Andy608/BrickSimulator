@@ -7,6 +7,8 @@
 
 namespace Bountive
 {
+	class Logger;
+
 	class WindowFocusCallback
 	{
 	public:
@@ -18,6 +20,7 @@ namespace Bountive
 		~WindowFocusCallback();
 
 	private:
+		static Logger logger;
 		WindowFocusCallback();
 	};
 }

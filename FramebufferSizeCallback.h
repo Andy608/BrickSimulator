@@ -7,6 +7,8 @@
 
 namespace Bountive
 {
+	class Logger;
+
 	class FramebufferSizeCallback
 	{
 	public:
@@ -18,6 +20,8 @@ namespace Bountive
 		~FramebufferSizeCallback();
 
 	private:
+		static Logger logger;
+
 		FramebufferSizeCallback();
 	};
 }

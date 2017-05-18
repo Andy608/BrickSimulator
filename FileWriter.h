@@ -9,6 +9,8 @@
 
 namespace Bountive
 {
+	class Logger;
+
 	class FileWriter
 	{
 	public:
@@ -19,6 +21,7 @@ namespace Bountive
 		GLboolean writeLinesInFile(const FileLocation& file, const std::vector<std::wstring>& lines);
 
 	private:
+		static Logger logger;
 		std::wofstream* mWriteStream;
 	};
 }

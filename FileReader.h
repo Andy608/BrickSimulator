@@ -8,6 +8,8 @@
 
 namespace Bountive
 {
+	class Logger;
+
 	class FileReader
 	{
 	public:
@@ -17,6 +19,7 @@ namespace Bountive
 		std::vector<std::wstring> getLinesInFile(const FileLocation& file);
 
 	private:
+		static Logger logger;
 		std::wifstream* mReadStream;
 	};
 }

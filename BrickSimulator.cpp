@@ -1,7 +1,6 @@
 #include <glew.h>
 #include <iostream>
-#include <log4cxx/propertyconfigurator.h>
-#include <log4cxx/helpers/exception.h>
+#include <log4cxx\helpers\exception.h>
 #include "DirectoryUtil.h"
 #include "BrickSimulator.h"
 #include "Window.h"
@@ -9,12 +8,13 @@
 #include "InputHandler.h"
 #include "BrickSimulator.h"
 #include "FileLocation.h"
+#include "Logger.h"
+#include "LoggerUtil.h"
 
 namespace Bountive
 {
 	BrickSimulator* BrickSimulator::instance = nullptr;
-	log4cxx::LoggerPtr BrickSimulator::brickSimulatorLogger = log4cxx::LoggerPtr(log4cxx::Logger::getLogger("brickSimulatorLogger"));
-
+	Logger BrickSimulator::logger = Logger("BrickSimulator", Logger::Level::LEVEL_ALL);
 	const GLint BrickSimulator::TICKS_PER_SECOND = 60;
 	const GLfloat BrickSimulator::TIME_SLICE = 1.0f / static_cast<GLfloat>(TICKS_PER_SECOND);
 	const GLfloat BrickSimulator::LAG_CAP = 0.15f;
@@ -23,7 +23,11 @@ namespace Bountive
 	{
 		if (instance == nullptr)
 		{
-			std::wcout << "Creating BrickSimulator by Andy608..." << std::endl;
+			LoggerUtil::init();
+			LoggerUtil::initConsoleAppender();
+			DirectoryUtil::init();
+			LoggerUtil::initFileAppender();
+			logger.log(Logger::Level::LEVEL_INFO, "Initializing BrickSimulator by Andy608...");
 			instance = new BrickSimulator();
 		}
 
@@ -33,41 +37,30 @@ namespace Bountive
 
 	BrickSimulator::BrickSimulator()
 	try : 
-		mDIRECTORY_UTIL(DirectoryUtil::init()),
+		mDIRECTORY_UTIL(DirectoryUtil::instance),
+		mLOGGER_UTIL(LoggerUtil::instance),
 		mWindowHandle(Window::init()),
 		mGameSettingsHandler(new GameSettingsHandler()),
 		mInputHandler(new InputHandler())
 	{
-		FileDirectory dir = FileDirectory(mDIRECTORY_UTIL->getmAppdataDir()->getDirectory(), L"logger");
-		FileLocation loggerProperties = FileLocation(&dir, L"logger", FileLocation::TXT_EXT);
-		log4cxx::PropertyConfigurator::configure(loggerProperties.getFullPath());
-		LOG4CXX_DEBUG(brickSimulatorLogger, "Entering application...");
-
 		mGameSettingsHandler->updateSettings();
 		mWindowHandle->buildWindow(*mGameSettingsHandler);
 	}
 	catch (std::wstring e)
 	{
-		delete mDIRECTORY_UTIL;
-		delete mWindowHandle;
-		delete mGameSettingsHandler;
-		delete mInputHandler;
-		throw(std::wstring(L"[BrickSimulator] Could not create BrickSimulator. " + e));
+		throw(std::wstring(L"Could not create BrickSimulator. " + e));
 	}
-	catch (log4cxx::helpers::Exception&)
+	catch (log4cxx::helpers::Exception& e)
 	{
-		delete mDIRECTORY_UTIL;
-		delete mWindowHandle;
-		delete mGameSettingsHandler;
-		delete mInputHandler;
-		throw(std::wstring(L"[BrickSimulator] Could not create BrickSimulator due to logger error. "));
+		throw (e);
 	}
 
 
 	BrickSimulator::~BrickSimulator()
 	{
-		std::cout << "Deleting BrickSimulator" << std::endl;
+		logger.log(Logger::Level::LEVEL_DEBUG, "Deleting BrickSimulator...");
 		delete mDIRECTORY_UTIL;
+		delete mLOGGER_UTIL;
 		delete mWindowHandle;
 		delete mGameSettingsHandler;
 		delete mInputHandler;
@@ -76,11 +69,10 @@ namespace Bountive
 
 	void BrickSimulator::start()
 	{
-		std::wcout << L"Directory: " << mDIRECTORY_UTIL->getmAppdataDir()->getDirectory() << std::endl;
+		logger.log(Logger::Level::LEVEL_DEBUG, L"Directory: " + mDIRECTORY_UTIL->mAPPDATA_DIRECTORY->getDirectory());
 		//TODO: Create a ScreenManager class and set the screen
 		loop();
 		saveSettings();
-		LOG4CXX_INFO(brickSimulatorLogger, "Exited application!");
 	}
 
 
@@ -121,7 +113,9 @@ namespace Bountive
 
 		if (mTickCount % TICKS_PER_SECOND == 0)
 		{
-			std::cout << "Ticks: " << mTickCount << " | Frames: " << mFramesPerSecond << std::endl;
+			logger.log(Logger::Level::LEVEL_TRACE,
+				"Ticks: " + std::to_string(mTickCount) + " | Frames: " + std::to_string(mFramesPerSecond));
+
 			mTickCount = 0;
 			mFramesPerSecond = 0;
 		}
@@ -142,7 +136,7 @@ namespace Bountive
 
 	void BrickSimulator::saveSettings() const
 	{
-		std::wcout << "SAVING GAME SETTINGS..." << std::endl;
+		logger.log(Logger::Level::LEVEL_INFO, "Saving settings to file...");
 		mGameSettingsHandler->saveOptionsToFile();
 	}
 }

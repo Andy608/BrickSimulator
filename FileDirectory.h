@@ -7,6 +7,8 @@
 
 namespace Bountive
 {
+	class Logger;
+
 	class FileDirectory
 	{
 	public:
@@ -21,6 +23,8 @@ namespace Bountive
 		operator std::wstring() const;
 
 	private:
+		static Logger logger;
+
 		const std::wstring mFILE_PATH;
 		const std::wstring mFOLDER_NAME;
 	};

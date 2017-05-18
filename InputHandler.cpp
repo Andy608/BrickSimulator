@@ -2,18 +2,21 @@
 #include "InputHandler.h"
 #include "KeyboardCallback.h"
 #include "Window.h"
+#include "Logger.h"
 
 namespace Bountive
 {
+	Logger InputHandler::logger = Logger("InputHandler", Logger::Level::LEVEL_ALL);
+
 	InputHandler::InputHandler()
 	{
-
+		logger.log(Logger::Level::LEVEL_DEBUG, "Creating InputHandler...");
 	}
 
 
 	InputHandler::~InputHandler()
 	{
-		std::wcout << "Deleting InputHandler." << std::endl;
+		logger.log(Logger::Level::LEVEL_DEBUG, "Deleting InputHandler...");
 	}
 
 

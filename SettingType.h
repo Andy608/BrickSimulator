@@ -17,9 +17,7 @@ namespace Bountive
 
 		const std::wstring& getSettingName() const;
 
-		virtual operator std::wstring() const;
-		virtual std::wstring toString() const = 0;
-		friend std::wstring operator+(std::wstring another, SettingType& setting);
+		virtual std::wstring toFileString() const = 0;
 
 		virtual GLboolean isModified()const = 0;
 		virtual void resetCustomValue() = 0;

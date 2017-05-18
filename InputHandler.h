@@ -4,6 +4,8 @@
 
 namespace Bountive
 {
+	class Logger;
+
 	class InputHandler
 	{
 	public:
@@ -11,6 +13,9 @@ namespace Bountive
 		~InputHandler();
 
 		void update();
+
+	private:
+		static Logger logger;
 	};
 }
 

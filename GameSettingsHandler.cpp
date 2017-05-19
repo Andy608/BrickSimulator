@@ -1,4 +1,3 @@
-#include <iostream>
 #include "GameSettingsHandler.h"
 #include "DirectoryUtil.h"
 #include "FileLocation.h"
@@ -101,7 +100,7 @@ namespace Bountive
 				{
 					std::wstring settingName = line.substr(0, j);
 					std::wstring settingVar = line.substr(j + 1);
-					std::wcout << settingName << "=" << settingVar << std::endl;
+					logger.log(Logger::Level::LEVEL_DEBUG, settingName + L"=" + settingVar);
 
 					if (settingName.compare(mSaveWindowState.getSettingName()) == 0)
 					{
@@ -216,7 +215,6 @@ namespace Bountive
 			mWindowPositionX.setCustomInteger(-mWindowSizeX.getCustomInteger() + mWindowPositionX.getMaxInteger());
 		}
 
-		std::wcout << mWindowPositionY.getCustomInteger() << std::endl;
 		if (mWindowPositionY.getCustomInteger() <= mWindowPositionY.getMinInteger())
 		{
 			mWindowPositionY.setCustomInteger(mWindowPositionY.getMinInteger());

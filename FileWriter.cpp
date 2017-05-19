@@ -1,4 +1,3 @@
-#include <iostream>
 #include "FileWriter.h"
 #include "Logger.h"
 

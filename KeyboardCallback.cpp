@@ -1,4 +1,3 @@
-#include <iostream>
 #include "KeyboardCallback.h"
 #include "GameSettingsHandler.h"
 #include "Logger.h"

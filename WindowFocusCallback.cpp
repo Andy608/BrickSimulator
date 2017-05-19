@@ -1,4 +1,3 @@
-#include <iostream>
 #include "WindowFocusCallback.h"
 #include "Logger.h"
 

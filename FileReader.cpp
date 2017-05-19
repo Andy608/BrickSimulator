@@ -1,4 +1,3 @@
-#include <iostream>
 #include "FileReader.h"
 #include "Logger.h"
 

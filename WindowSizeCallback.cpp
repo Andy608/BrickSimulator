@@ -1,4 +1,3 @@
-#include <iostream>
 #include "WindowSizeCallback.h"
 #include "Window.h"
 #include "Logger.h"

@@ -1,4 +1,3 @@
-#include <iostream>
 #include "MouseScrollCallback.h"
 #include "Logger.h"
 

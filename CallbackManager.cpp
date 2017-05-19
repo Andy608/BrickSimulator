@@ -1,5 +1,4 @@
 #include <glew.h>
-#include <iostream>
 #include "CallbackManager.h"
 #include "KeyboardCallback.h"
 #include "WindowFocusCallback.h"

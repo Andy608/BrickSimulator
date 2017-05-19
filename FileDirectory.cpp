@@ -1,5 +1,4 @@
 #include <glew.h>
-#include <iostream>
 #include <Windows.h>
 #include "FileDirectory.h"
 #include "Logger.h"

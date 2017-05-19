@@ -1,4 +1,3 @@
-#include <iostream>
 #include "WindowPositionCallback.h"
 #include "Logger.h"
 

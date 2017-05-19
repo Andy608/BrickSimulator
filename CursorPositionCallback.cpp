@@ -1,4 +1,3 @@
-#include <iostream>
 #include "CursorPositionCallback.h"
 #include "Logger.h"
 

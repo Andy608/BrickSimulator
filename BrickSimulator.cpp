@@ -1,5 +1,4 @@
 #include <glew.h>
-#include <iostream>
 #include <log4cxx\helpers\exception.h>
 #include "DirectoryUtil.h"
 #include "BrickSimulator.h"

@@ -1,4 +1,3 @@
-#include <iostream>
 #include "ClampedIntegerSetting.h"
 #include "Logger.h"
 

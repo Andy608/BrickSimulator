@@ -1,5 +1,4 @@
 #include <glm\vec2.hpp>
-#include <iostream>
 #include <string>
 #include "BrickSimulator.h"
 #include "CallbackManager.h"

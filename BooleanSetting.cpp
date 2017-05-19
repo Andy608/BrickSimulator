@@ -1,4 +1,3 @@
-#include <iostream>
 #include "BooleanSetting.h"
 #include "Logger.h"
 

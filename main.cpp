@@ -1,4 +1,3 @@
-#include <iostream>
 #include <string>
 #include <log4cxx\helpers\exception.h>
 #include "BrickSimulator.h"
@@ -30,6 +29,5 @@ int main()
 	}
 	
 	delete simulator;
-	std::cin.get();
 	return exitResult;
 }

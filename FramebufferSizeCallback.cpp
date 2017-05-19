@@ -1,4 +1,3 @@
-#include <iostream>
 #include "FramebufferSizeCallback.h"
 #include "Logger.h"
 

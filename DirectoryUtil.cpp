@@ -1,4 +1,3 @@
-#include <iostream>
 #include <sstream>
 #include "DirectoryUtil.h"
 #include "Logger.h"
@@ -20,7 +19,7 @@ namespace Bountive
 			{
 				delete instance;
 				instance = nullptr;
-				std::wcout << e << std::endl;
+				logger.log(Logger::Level::LEVEL_FATAL, L"Could not initialize DirectoryUtil. Error: " + e);
 			}
 		}
 

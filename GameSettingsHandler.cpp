@@ -11,7 +11,7 @@ namespace Bountive
 	Logger GameSettingsHandler::logger = Logger("GameSettingsHandler", Logger::Level::LEVEL_ALL);
 	const std::wstring GameSettingsHandler::SETTINGS_FILE_NAME = L"options";
 
-	GameSettingsHandler::GameSettingsHandler()
+	GameSettingsHandler::GameSettingsHandler(const Window& window)
 		try : 
 		mSETTINGS_DIRECTORY(DirectoryUtil::instance->mSETTINGS_DIRECTORY),
 		mSettingsFile(new FileLocation(mSETTINGS_DIRECTORY, SETTINGS_FILE_NAME, FileLocation::TXT_EXT)),
@@ -20,24 +20,24 @@ namespace Bountive
 		mSaveWindowState(BooleanSetting(L"save_window_state", GL_FALSE)),
 		mWindowMaximized(BooleanSetting(L"window_maximized", GL_FALSE)),
 
-		mDEFAULT_WINDOW_SIZE(glm::vec2(Window::instance->mVIDEO_MODE->width / 2.0f, Window::instance->mVIDEO_MODE->height / 2.0f)),
+		mDEFAULT_WINDOW_SIZE(glm::vec2(window.mVIDEO_MODE->width / 2.0f, window.mVIDEO_MODE->height / 2.0f)),
 
-		mDEFAULT_WINDOW_POSITION(glm::vec2((Window::instance->mVIDEO_MODE->width - mDEFAULT_WINDOW_SIZE.x) / 2.0f, 
-			(Window::instance->mVIDEO_MODE->height - mDEFAULT_WINDOW_SIZE.y) / 2.0f)),
+		mDEFAULT_WINDOW_POSITION(glm::vec2((window.mVIDEO_MODE->width - mDEFAULT_WINDOW_SIZE.x) / 2.0f,
+			(window.mVIDEO_MODE->height - mDEFAULT_WINDOW_SIZE.y) / 2.0f)),
 
 		mWindowPositionX(ClampedIntegerSetting(L"window_position_x", static_cast<GLint>(mDEFAULT_WINDOW_POSITION.x), 
-			static_cast<GLint>(Window::instance->getMinimumWindowPosition().x),
-			static_cast<GLint>(Window::instance->getMaximumWindowPosition().x))),
+			static_cast<GLint>(window.getMinimumWindowPosition().x),
+			static_cast<GLint>(window.getMaximumWindowPosition().x))),
 
 		mWindowPositionY(ClampedIntegerSetting(L"window_position_y", static_cast<GLint>(mDEFAULT_WINDOW_POSITION.y), 
-			static_cast<GLint>(Window::instance->getMinimumWindowPosition().y),
-			static_cast<GLint>(Window::instance->getMaximumWindowPosition().y))),
+			static_cast<GLint>(window.getMinimumWindowPosition().y),
+			static_cast<GLint>(window.getMaximumWindowPosition().y))),
 
 		mWindowSizeX(ClampedIntegerSetting(L"window_size_x", static_cast<GLint>(mDEFAULT_WINDOW_SIZE.x), 
-			static_cast<GLint>(Window::instance->mMINIMUM_SIZE_X), static_cast<GLint>(Window::instance->mMAXIMUM_SIZE_X))),
+			static_cast<GLint>(window.mMINIMUM_SIZE_X), static_cast<GLint>(window.mMAXIMUM_SIZE_X))),
 
 		mWindowSizeY(ClampedIntegerSetting(L"window_size_y", static_cast<GLint>(mDEFAULT_WINDOW_SIZE.y), 
-			static_cast<GLint>(Window::instance->mMINIMUM_SIZE_Y), static_cast<GLint>(Window::instance->mMAXIMUM_SIZE_Y))),
+			static_cast<GLint>(window.mMINIMUM_SIZE_Y), static_cast<GLint>(window.mMAXIMUM_SIZE_Y))),
 
 		mVsyncEnabled(BooleanSetting(L"vsync", GL_TRUE)),
 		mFullscreenEnabled(BooleanSetting(L"fullscreen", GL_FALSE)),
@@ -75,6 +75,8 @@ namespace Bountive
 
 	void GameSettingsHandler::updateSettings()
 	{
+		logger.log(Logger::Level::LEVEL_DEBUG, "Loading game options from the settings file...");
+
 		if (mSettingsFile->isCreated())
 		{
 			loadOptionsFromFile();

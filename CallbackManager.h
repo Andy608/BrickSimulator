@@ -23,7 +23,7 @@ namespace Bountive
 	public:
 		static void errorCallback(GLint error, const GLchar* description);
 
-		CallbackManager(Window* window, GameSettingsHandler& gameSettingsHandler);
+		CallbackManager(const Window& window, GameSettingsHandler& gameSettingsHandler);
 		~CallbackManager();
 
 	private:

@@ -4,11 +4,11 @@
 #include "BrickSimulator.h"
 #include "Window.h"
 #include "GameSettingsHandler.h"
-#include "InputHandler.h"
 #include "BrickSimulator.h"
 #include "FileLocation.h"
 #include "Logger.h"
 #include "LoggerUtil.h"
+#include "SceneManager.h"
 
 namespace Bountive
 {
@@ -38,12 +38,11 @@ namespace Bountive
 	try : 
 		mDIRECTORY_UTIL(DirectoryUtil::instance),
 		mLOGGER_UTIL(LoggerUtil::instance),
-		mWindowHandle(Window::init()),
-		mGameSettingsHandler(new GameSettingsHandler()),
-		mInputHandler(new InputHandler())
+		mWindow(new Window()),
+		mGameSettingsHandler(new GameSettingsHandler(*mWindow))
 	{
 		mGameSettingsHandler->updateSettings();
-		mWindowHandle->buildWindow(*mGameSettingsHandler);
+		mWindow->buildWindow(*mGameSettingsHandler);
 	}
 	catch (std::wstring e)
 	{
@@ -60,16 +59,14 @@ namespace Bountive
 		logger.log(Logger::Level::LEVEL_DEBUG, "Deleting BrickSimulator...");
 		delete mDIRECTORY_UTIL;
 		delete mLOGGER_UTIL;
-		delete mWindowHandle;
+		delete mWindow;
 		delete mGameSettingsHandler;
-		delete mInputHandler;
 	}
 
 
 	void BrickSimulator::start()
 	{
 		logger.log(Logger::Level::LEVEL_DEBUG, L"Directory: " + mDIRECTORY_UTIL->mAPPDATA_DIRECTORY->getDirectory());
-		//TODO: Create a ScreenManager class and set the screen
 		loop();
 		saveSettings();
 	}
@@ -82,7 +79,7 @@ namespace Bountive
 		GLdouble mDeltaTime = 0.0f;
 		GLdouble mAccumulatedTime = 0.0f;
 
-		while (!glfwWindowShouldClose(mWindowHandle->getWindowHandle()))
+		while (!glfwWindowShouldClose(mWindow->getWindowHandle()))
 		{
 			mCurrentTime = glfwGetTime();
 			mDeltaTime = mCurrentTime - mLastTime;
@@ -98,15 +95,15 @@ namespace Bountive
 			{
 				mAccumulatedTime -= TIME_SLICE;
 				glfwPollEvents();
-				update();
+				update(mDeltaTime);
 			}
 
-			render();
+			render(mDeltaTime);
 		}
 	}
 
 
-	void BrickSimulator::update()
+	void BrickSimulator::update(const GLdouble& DELTA_TIME)
 	{
 		++mTickCount;
 
@@ -119,17 +116,16 @@ namespace Bountive
 			mFramesPerSecond = 0;
 		}
 
-		mInputHandler->update();
+		mWindow->update(DELTA_TIME);
 	}
 
 
-	void BrickSimulator::render()
+	void BrickSimulator::render(const GLdouble& DELTA_TIME)
 	{
 		++mFramesPerSecond;
 
-		glClearColor(0.8f, 0.8f, 0.8f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		glfwSwapBuffers(mWindowHandle->getWindowHandle());
+		mWindow->render(DELTA_TIME);
+		glfwSwapBuffers(mWindow->getWindowHandle());
 	}
 
 

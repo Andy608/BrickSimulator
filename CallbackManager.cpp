@@ -16,11 +16,11 @@ namespace Bountive
 {
 	Logger CallbackManager::logger = Logger("CallbackManager", Logger::Level::LEVEL_ALL);
 
-	CallbackManager::CallbackManager(Window* window, GameSettingsHandler& gameSettingsHandler) :
-		mWindowHandle(window->getWindowHandle()),
+	CallbackManager::CallbackManager(const Window& window, GameSettingsHandler& gameSettingsHandler) :
+		mWindowHandle(window.getWindowHandle()),
 		mKeyboardCallback(KeyboardCallback::init(gameSettingsHandler)),
 		mWindowFocusCallback(WindowFocusCallback::init()),
-		mWindowSizeCallback(WindowSizeCallback::init(gameSettingsHandler)),
+		mWindowSizeCallback(WindowSizeCallback::init(window, gameSettingsHandler)),
 		mFramebufferSizeCallback(FramebufferSizeCallback::init()),
 		mWindowPositionCallback(WindowPositionCallback::init(gameSettingsHandler)),
 		mCursorPositionCallback(CursorPositionCallback::init()),

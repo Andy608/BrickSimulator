@@ -7,18 +7,19 @@ namespace Bountive
 	WindowSizeCallback* WindowSizeCallback::instance = nullptr;
 	Logger WindowSizeCallback::logger = Logger("WindowSizeCallback", Logger::Level::LEVEL_ALL);
 
-	WindowSizeCallback* WindowSizeCallback::init(GameSettingsHandler& gameSettingsHandler)
+	WindowSizeCallback* WindowSizeCallback::init(const Window& window, GameSettingsHandler& gameSettingsHandler)
 	{
 		if (instance == nullptr)
 		{
-			instance = new WindowSizeCallback(gameSettingsHandler);
+			instance = new WindowSizeCallback(window, gameSettingsHandler);
 		}
 
 		return instance;
 	}
 
 
-	WindowSizeCallback::WindowSizeCallback(GameSettingsHandler& gameSettingsHandler) :
+	WindowSizeCallback::WindowSizeCallback(const Window& window, GameSettingsHandler& gameSettingsHandler) :
+		mWindow(window),
 		mGameSettingsHandler(gameSettingsHandler)
 	{
 		logger.log(Logger::Level::LEVEL_DEBUG, "Creating WindowSizeCallback...");
@@ -33,8 +34,8 @@ namespace Bountive
 
 	void WindowSizeCallback::windowSizeCallback(GLFWwindow* windowHandle, GLint windowWidth, GLint windowHeight)
 	{
-		if (Window::instance->mMAXIMUM_SIZE_X == windowWidth
-			&& Window::instance->mMAXIMUM_SIZE_Y - (Window::instance->mMAXIMUM_SIZE_Y / 8) < windowHeight)
+		if (instance->mWindow.mMAXIMUM_SIZE_X == windowWidth
+			&& instance->mWindow.mMAXIMUM_SIZE_Y - (instance->mWindow.mMAXIMUM_SIZE_Y / 8) < windowHeight)
 		{
 			instance->mGameSettingsHandler.setWindowMaximized(GL_TRUE);
 			instance->mGameSettingsHandler.setDefaultWindowState();

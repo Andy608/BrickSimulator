@@ -10,15 +10,16 @@ namespace Bountive
 {
 	class CallbackManager;
 	class GameSettingsHandler;
+	class SceneManager;
 	class Logger;
 
 	class Window
 	{
 	public:
 		static GLint DECORATION_HEIGHT;
-		static Window* instance;
+		//static Window* instance;
 
-		static Window* init();
+		//static Window* init();
 
 		const GLFWvidmode* mVIDEO_MODE;
 		const GLint mMINIMUM_SIZE_X;
@@ -26,12 +27,17 @@ namespace Bountive
 		const GLint mMAXIMUM_SIZE_X;
 		const GLint mMAXIMUM_SIZE_Y;
 
+		Window();
 		~Window();
 
 		void buildWindow(GameSettingsHandler& gameSettingsHandler);
+		void update(const GLdouble& DELTA_TIME);
+		void render(const GLdouble& DELTA_TIME);
+
 		GLFWwindow* getWindowHandle() const;
 		glm::vec2 getMinimumWindowPosition() const;
 		glm::vec2 getMaximumWindowPosition() const;
+
 
 	private:
 		static Logger logger;
@@ -39,8 +45,7 @@ namespace Bountive
 
 		GLFWwindow* mWindowHandle;
 		CallbackManager* mCallbackManager;
-
-		Window();
+		SceneManager* mSceneManager;
 	};
 }
 

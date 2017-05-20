@@ -3,23 +3,24 @@
 #include "BrickSimulator.h"
 #include "CallbackManager.h"
 #include "GameSettingsHandler.h"
+#include "SceneManager.h"
 #include "Logger.h"
 
 namespace Bountive
 {
-	Window* Window::instance = nullptr;
+	//Window* Window::instance = nullptr;
 	Logger Window::logger = Logger("Window", Logger::Level::LEVEL_ALL);
 	GLint Window::DECORATION_HEIGHT = 23;
 
-	Window* Window::init()
-	{
-		if (instance == nullptr)
-		{
-			instance = new Window();
-		}
+	//Window* Window::init()
+	//{
+	//	if (instance == nullptr)
+	//	{
+	//		instance = new Window();
+	//	}
 
-		return instance;
-	}
+	//	return instance;
+	//}
 
 
 	const GLFWvidmode* Window::initGLFW()
@@ -50,6 +51,7 @@ namespace Bountive
 	Window::~Window()
 	{
 		logger.log(Logger::Level::LEVEL_DEBUG, "Deleting Window...");
+		delete mSceneManager;
 		delete mCallbackManager;
 		glfwTerminate();
 	}
@@ -102,10 +104,23 @@ namespace Bountive
 			glfwGetFramebufferSize(mWindowHandle, &windowWidth, &windowHeight);
 			glfwSwapInterval(gameSettingsHandler.isVsyncEnabled().getCustomBoolean());
 			glViewport(0, 0, windowWidth, windowHeight);
-		}
 
-		mCallbackManager = new CallbackManager(this, gameSettingsHandler);
-		glfwShowWindow(mWindowHandle);
+			mCallbackManager = new CallbackManager(*this, gameSettingsHandler);
+			mSceneManager = new SceneManager();
+			glfwShowWindow(mWindowHandle);
+		}
+	}
+
+
+	void Window::update(const GLdouble& DELTA_TIME)
+	{
+		mSceneManager->update(*this, DELTA_TIME);
+	}
+
+
+	void Window::render(const GLdouble& DELTA_TIME)
+	{
+		mSceneManager->render(DELTA_TIME);
 	}
 
 

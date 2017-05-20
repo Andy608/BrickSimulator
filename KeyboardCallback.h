@@ -9,6 +9,7 @@ namespace Bountive
 {
 	class Logger;
 	class GameSettingsHandler;
+	class InputTracker;
 
 	class KeyboardCallback
 	{
@@ -16,24 +17,16 @@ namespace Bountive
 		static KeyboardCallback* instance;
 
 		static KeyboardCallback* init(GameSettingsHandler& gameSettingsHandler);
-
 		static void keyCallback(GLFWwindow* windowHandle, GLint key, GLint scancode, GLint action, GLint mode);
-		static const GLboolean& isKeyEscapePressed();
+		static const InputTracker& getInputTracker();
 		
 		~KeyboardCallback();
 
-		void addKeyPressed(GLint asciiValue);
-		void removeKeyPressed(GLint asciiValue);
-
-		void printPressedKeysDebug(GLboolean isPressed) const;
-
 	private:
 		static Logger logger;
-		static const GLint MAX_KEYS_PRESSED;
 
 		GameSettingsHandler& mGameSettingsHandler;
-		GLint* mPressedKeys;
-		GLboolean mIsEscapePressed;
+		InputTracker* const mInputTracker;
 
 		KeyboardCallback(GameSettingsHandler& gameSettingsHandler);
 	};

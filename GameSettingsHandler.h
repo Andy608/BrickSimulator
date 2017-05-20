@@ -12,12 +12,13 @@ namespace Bountive
 	class FileReader;
 	class FileLocation;
 	class FileDirectory;
+	class Window;
 	class Logger;
 
 	class GameSettingsHandler
 	{
 	public:
-		GameSettingsHandler();
+		GameSettingsHandler(const Window& window);
 		~GameSettingsHandler();
 
 		void updateSettings();

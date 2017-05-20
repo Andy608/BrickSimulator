@@ -9,21 +9,26 @@
 
 namespace Bountive
 {
+	class Window;
+
 	class WindowSizeCallback
 	{
 	public:
 		static WindowSizeCallback* instance;
 
-		static WindowSizeCallback* init(GameSettingsHandler& gameSettingsHandler);
+		static WindowSizeCallback* init(const Window& window, GameSettingsHandler& gameSettingsHandler);
 		static void windowSizeCallback(GLFWwindow* windowHandle, GLint windowWidth, GLint windowHeight);
 
 		~WindowSizeCallback();
 
 	private:
 		static Logger logger;
+		
+		const Window& mWindow;
 		GameSettingsHandler& mGameSettingsHandler;
 
-		WindowSizeCallback(GameSettingsHandler& gameSettingsHandler);
+
+		WindowSizeCallback(const Window& window, GameSettingsHandler& gameSettingsHandler);
 	};
 }
 

@@ -3,7 +3,6 @@
 #define BOUNTIVE_BRICKSIMULATOR_H_
 
 #include "DirectoryUtil.h"
-#include "InputHandler.h"
 #include "Window.h"
 #include "GameSettingsHandler.h"
 
@@ -36,15 +35,14 @@ namespace Bountive
 		const DirectoryUtil* const mDIRECTORY_UTIL;
 		const LoggerUtil* const mLOGGER_UTIL;
 
-		Window* mWindowHandle;
+		Window* const mWindow;
 		GameSettingsHandler* const mGameSettingsHandler;
-		InputHandler* const mInputHandler;
 
 		BrickSimulator();
 
 		void loop();
-		void update();
-		void render();
+		void update(const GLdouble& DELTA_TIME);
+		void render(const GLdouble& DELTA_TIME);
 	};
 }
 

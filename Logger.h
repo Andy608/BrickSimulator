@@ -2,6 +2,7 @@
 #ifndef BOUNTIVE_LOGGER_H_
 #define BOUNTIVE_LOGGER_H_
 
+#include <glew.h>
 #include <string>
 #include <log4cxx\logger.h>
 
@@ -10,7 +11,7 @@ namespace Bountive
 	class Logger
 	{
 	public:
-		enum class Level
+		enum class Level : GLint
 		{
 			LEVEL_ALL,
 			LEVEL_TRACE,

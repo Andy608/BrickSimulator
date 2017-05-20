@@ -19,7 +19,7 @@ namespace Bountive
 
 		virtual std::wstring toFileString() const = 0;
 
-		virtual GLboolean isModified()const = 0;
+		virtual GLboolean isModified() const = 0;
 		virtual void resetCustomValue() = 0;
 
 	protected:

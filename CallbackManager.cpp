@@ -18,7 +18,7 @@ namespace Bountive
 
 	CallbackManager::CallbackManager(const Window& window, GameSettingsHandler& gameSettingsHandler) :
 		mWindowHandle(window.getWindowHandle()),
-		mKeyboardCallback(KeyboardCallback::init(gameSettingsHandler)),
+		mKeyboardCallback(KeyboardCallback::init(window, gameSettingsHandler)),
 		mWindowFocusCallback(WindowFocusCallback::init()),
 		mWindowSizeCallback(WindowSizeCallback::init(window, gameSettingsHandler)),
 		mFramebufferSizeCallback(FramebufferSizeCallback::init()),

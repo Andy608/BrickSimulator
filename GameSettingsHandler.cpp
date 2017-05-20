@@ -42,7 +42,7 @@ namespace Bountive
 		mVsyncEnabled(BooleanSetting(L"vsync", GL_TRUE)),
 		mFullscreenEnabled(BooleanSetting(L"fullscreen", GL_FALSE)),
 		mFieldOfView(ClampedIntegerSetting(L"fov", 67, 30, 120)),
-		mKeyEscape(IntegerSetting(L"key_escape", GLFW_KEY_ESCAPE))
+		mKeyEscape(SingleKeySetting(L"key_escape", GLFW_KEY_ESCAPE))
 	{
 		logger.log(Logger::Level::LEVEL_DEBUG, "Creating GameSettingsHandler...");
 		mSettingsFile->createFile(mFileWriter->getWriteStream());
@@ -293,7 +293,7 @@ namespace Bountive
 	}
 
 
-	const IntegerSetting& GameSettingsHandler::getKeyEscape() const
+	const SingleKeySetting& GameSettingsHandler::getKeyEscape() const
 	{
 		return mKeyEscape;
 	}

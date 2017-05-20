@@ -5,6 +5,7 @@
 #include <glm\vec2.hpp>
 #include "BooleanSetting.h"
 #include "ClampedIntegerSetting.h"
+#include "SingleKeySetting.h"
 
 namespace Bountive
 {
@@ -39,7 +40,7 @@ namespace Bountive
 		const BooleanSetting& isFullscreenEnabled() const;
 		const ClampedIntegerSetting& getFieldOfView() const;
 
-		const IntegerSetting& getKeyEscape() const;
+		const SingleKeySetting& getKeyEscape() const;
 
 
 		void setSaveWindowState(GLboolean saveWindowState);
@@ -81,7 +82,7 @@ namespace Bountive
 
 		ClampedIntegerSetting mFieldOfView;
 
-		IntegerSetting mKeyEscape;
+		SingleKeySetting mKeyEscape;
 
 		void setWindowInBounds();
 		void checkToResetInvalidWindow();

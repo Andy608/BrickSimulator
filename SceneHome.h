@@ -1,27 +1,28 @@
 #pragma once
-#ifndef BOUNTIVE_HOMESCENE_H_
-#define BOUNTIVE_HOMESCENE_H_
+#ifndef BOUNTIVE_SCENEHOME_H_
+#define BOUNTIVE_SCENEHOME_H_
 
 #include "Scene.h"
 
 namespace Bountive
 {
-	class Logger;
+	class Window;
 	class HomeSceneInput;
+	class Logger;
 
 	class HomeScene : public Scene
 	{
 	public:
-		static Logger logger;
 		static const std::string NAME;
 
-		HomeScene(GLint id);
+		HomeScene(Window* window, GLint id);
 		~HomeScene();
 
-		virtual void HomeScene::update(const Window& window, const GLdouble& DELTA_TIME);
+		virtual void update(const Window& window, const GLdouble& DELTA_TIME);
 		virtual void render(const GLdouble& DELTA_TIME);
 
 	private:
+		static Logger logger;
 		HomeSceneInput* mInputHandler;
 	};
 }

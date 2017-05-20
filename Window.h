@@ -5,21 +5,19 @@
 #include <glew.h>
 #include <glfw\glfw3.h>
 #include <glm\vec2.hpp>
+#include "SceneManager.h"
+#include "InputTracker.h"
 
 namespace Bountive
 {
 	class CallbackManager;
 	class GameSettingsHandler;
-	class SceneManager;
 	class Logger;
 
 	class Window
 	{
 	public:
 		static GLint DECORATION_HEIGHT;
-		//static Window* instance;
-
-		//static Window* init();
 
 		const GLFWvidmode* mVIDEO_MODE;
 		const GLint mMINIMUM_SIZE_X;
@@ -35,9 +33,10 @@ namespace Bountive
 		void render(const GLdouble& DELTA_TIME);
 
 		GLFWwindow* getWindowHandle() const;
+		SceneManager& getSceneManager() const;
 		glm::vec2 getMinimumWindowPosition() const;
 		glm::vec2 getMaximumWindowPosition() const;
-
+		InputTracker& Window::getInputTracker() const;
 
 	private:
 		static Logger logger;
@@ -46,6 +45,7 @@ namespace Bountive
 		GLFWwindow* mWindowHandle;
 		CallbackManager* mCallbackManager;
 		SceneManager* mSceneManager;
+		InputTracker* mInputTracker;
 	};
 }
 

@@ -30,9 +30,11 @@ namespace Bountive
 		void resetCustomValue();
 
 	protected:
-		static Logger logger;
 		const GLint mDEFAULT_INTEGER;
 		GLint mCustomInteger;
+
+	private:
+		static Logger logger;
 	};
 }
 

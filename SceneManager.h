@@ -13,7 +13,7 @@ namespace Bountive
 	class SceneManager
 	{
 	public:
-		SceneManager();
+		SceneManager(Window* window);
 		~SceneManager();
 
 		void update(const Window& window, const GLdouble& DELTA_TIME);
@@ -22,7 +22,7 @@ namespace Bountive
 		Scene* getSceneById(const GLint& SCENE_ID);
 		Scene* getSceneByName(const std::string& SCENE_NAME);
 		Scene* getActiveScene();
-		void setActiveScene(Scene* nextScene);
+		void setActiveScene(const std::string& NEXT_SCENE_NAME);
 
 	private:
 		static Logger logger;
@@ -32,7 +32,7 @@ namespace Bountive
 		Scene* mActiveScene;
 		Scene* mLastScene;
 
-		std::vector<Scene*>* createScenes();
+		std::vector<Scene*>* createScenes(Window* window);
 		void clearScenesList();
 	};
 }

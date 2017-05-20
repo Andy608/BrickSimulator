@@ -3,6 +3,7 @@
 #define BOUNTIVE_INPUTTRACKER_H_
 
 #include <glew.h>
+#include "SingleKeySetting.h"
 
 namespace Bountive
 {
@@ -20,7 +21,10 @@ namespace Bountive
 
 		void setKeyPressed(GLint keyCode);
 		void setKeyReleased(GLint keyCode);
-		const GLboolean& isKeyEscapePressed() const;
+
+		void update(const GLdouble& DELTA_TIME);
+
+		const SingleKeySetting& getEscapeKey() const;
 
 	private:
 		static Logger logger;
@@ -28,7 +32,8 @@ namespace Bountive
 
 		GLint* mPressedKeys;
 		const GameSettingsHandler& mGAME_SETTINGS_HANDLER;
-		GLboolean mKeyEscapePressed;
+
+		SingleKeySetting mKeyEscape;
 
 		InputTracker(const GameSettingsHandler& GAME_SETTINGS_HANDLER);
 

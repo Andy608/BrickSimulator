@@ -4,6 +4,7 @@
 
 #include <glew.h>
 #include <glfw\glfw3.h>
+#include "Window.h"
 
 namespace Bountive
 {
@@ -16,9 +17,8 @@ namespace Bountive
 	public:
 		static KeyboardCallback* instance;
 
-		static KeyboardCallback* init(GameSettingsHandler& gameSettingsHandler);
+		static KeyboardCallback* init(const Window& window, GameSettingsHandler& gameSettingsHandler);
 		static void keyCallback(GLFWwindow* windowHandle, GLint key, GLint scancode, GLint action, GLint mode);
-		static const InputTracker& getInputTracker();
 		
 		~KeyboardCallback();
 
@@ -26,9 +26,9 @@ namespace Bountive
 		static Logger logger;
 
 		GameSettingsHandler& mGameSettingsHandler;
-		InputTracker* const mInputTracker;
+		InputTracker& mInputTracker;
 
-		KeyboardCallback(GameSettingsHandler& gameSettingsHandler);
+		KeyboardCallback(const Window& window, GameSettingsHandler& gameSettingsHandler);
 	};
 }
 

@@ -1,5 +1,7 @@
 #include "SceneManager.h"
-#include "HomeScene.h"
+#include "SceneHome.h"
+#include "SceneSplash.h"
+#include "Window.h"
 #include "Logger.h"
 
 namespace Bountive
@@ -7,9 +9,9 @@ namespace Bountive
 	Logger SceneManager::logger = Logger("SceneManager", Logger::Level::LEVEL_ALL);
 	GLint SceneManager::sceneIdCounter = -1;
 
-	SceneManager::SceneManager() :
-		mGameScenes(createScenes()),
-		mActiveScene(getSceneByName(HomeScene::NAME)),
+	SceneManager::SceneManager(Window* window) :
+		mGameScenes(createScenes(window)),
+		mActiveScene(getSceneByName(SplashScene::NAME)),
 		mLastScene(getSceneByName(HomeScene::NAME))
 	{
 		logger.log(Logger::Level::LEVEL_DEBUG, "Creating SceneManager...");
@@ -72,19 +74,21 @@ namespace Bountive
 	}
 
 
-	void SceneManager::setActiveScene(Scene* nextScene)
+	void SceneManager::setActiveScene(const std::string& NEXT_SCENE_NAME)
 	{
 		mLastScene = mActiveScene;
-		mActiveScene = nextScene;
+		mActiveScene = getSceneByName(NEXT_SCENE_NAME);
+		logger.log(Logger::Level::LEVEL_DEBUG, "Switching Scene!");
 	}
 
 
-	std::vector<Scene*>* SceneManager::createScenes()
+	std::vector<Scene*>* SceneManager::createScenes(Window* window)
 	{
 		std::vector<Scene*>* gameScenes = new std::vector<Scene*>();
 
-		gameScenes->push_back(new HomeScene(++sceneIdCounter));
-		
+		gameScenes->push_back(new HomeScene(window, ++sceneIdCounter));
+		gameScenes->push_back(new SplashScene(window, ++sceneIdCounter));
+
 		return gameScenes;
 	}
 

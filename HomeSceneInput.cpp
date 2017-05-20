@@ -8,7 +8,7 @@ namespace Bountive
 	Logger HomeSceneInput::logger = Logger("HomeSceneInput", Logger::Level::LEVEL_ALL);
 
 	HomeSceneInput::HomeSceneInput(const InputTracker& INPUT_TRACKER) :
-		mINPUT_TRACKER(INPUT_TRACKER)
+		SceneInput(INPUT_TRACKER)
 	{
 		logger.log(Logger::Level::LEVEL_DEBUG, "Creating HomeSceneInput...");
 	}
@@ -22,9 +22,7 @@ namespace Bountive
 
 	void HomeSceneInput::update(const Window& window, const GLdouble& DELTA_TIME)
 	{
-		//Depending on screen do something else.
-
-		if (mINPUT_TRACKER.isKeyEscapePressed())
+		if (mINPUT_TRACKER.getEscapeKey().isPressed() && mINPUT_TRACKER.getEscapeKey().isNewPress())
 		{
 			glfwSetWindowShouldClose(window.getWindowHandle(), GL_TRUE);
 		}

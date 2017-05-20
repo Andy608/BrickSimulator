@@ -24,7 +24,7 @@ namespace Bountive
 	InputTracker::InputTracker(const GameSettingsHandler& GAME_SETTINGS_HANDLER) :
 		mGAME_SETTINGS_HANDLER(GAME_SETTINGS_HANDLER),
 		mPressedKeys(new int[MAX_KEYS_PRESSED]),
-		mKeyEscapePressed(GL_FALSE)
+		mKeyEscape(GAME_SETTINGS_HANDLER.getKeyEscape())
 	{
 		logger.log(Logger::Level::LEVEL_DEBUG, "Creating InputHandler...");
 	
@@ -45,14 +45,32 @@ namespace Bountive
 	void InputTracker::setKeyPressed(GLint keyCode)
 	{
 		addKeyPressed(keyCode);
-		if (keyCode = mGAME_SETTINGS_HANDLER.getKeyEscape().getCustomInteger()) mKeyEscapePressed = GL_TRUE;
+
+		if (keyCode == mGAME_SETTINGS_HANDLER.getKeyEscape().getCustomInteger())
+		{
+			mKeyEscape.setNewPress(GL_TRUE);
+			mKeyEscape.setPressed(GL_TRUE);
+		}
 	}
 
 
 	void InputTracker::setKeyReleased(GLint keyCode)
 	{
 		removeKeyPressed(keyCode);
-		if (keyCode = mGAME_SETTINGS_HANDLER.getKeyEscape().getCustomInteger()) mKeyEscapePressed = GL_FALSE;
+
+		if (keyCode == mGAME_SETTINGS_HANDLER.getKeyEscape().getCustomInteger())
+		{
+			mKeyEscape.setPressed(GL_FALSE);
+		}
+	}
+
+
+	void InputTracker::update(const GLdouble& DELTA_TIME)
+	{
+		if (mKeyEscape.isNewPress())
+		{
+			mKeyEscape.setNewPress(GL_FALSE);
+		}
 	}
 
 
@@ -134,8 +152,8 @@ namespace Bountive
 	}
 
 
-	const GLboolean& InputTracker::isKeyEscapePressed() const
+	const SingleKeySetting& InputTracker::getEscapeKey() const
 	{
-		return mKeyEscapePressed;
+		return mKeyEscape;
 	}
 }

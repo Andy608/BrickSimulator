@@ -3,25 +3,13 @@
 #include "BrickSimulator.h"
 #include "CallbackManager.h"
 #include "GameSettingsHandler.h"
-#include "SceneManager.h"
+#include "InputTracker.h"
 #include "Logger.h"
 
 namespace Bountive
 {
-	//Window* Window::instance = nullptr;
 	Logger Window::logger = Logger("Window", Logger::Level::LEVEL_ALL);
 	GLint Window::DECORATION_HEIGHT = 23;
-
-	//Window* Window::init()
-	//{
-	//	if (instance == nullptr)
-	//	{
-	//		instance = new Window();
-	//	}
-
-	//	return instance;
-	//}
-
 
 	const GLFWvidmode* Window::initGLFW()
 	{
@@ -53,6 +41,7 @@ namespace Bountive
 		logger.log(Logger::Level::LEVEL_DEBUG, "Deleting Window...");
 		delete mSceneManager;
 		delete mCallbackManager;
+		delete mInputTracker;
 		glfwTerminate();
 	}
 
@@ -105,8 +94,9 @@ namespace Bountive
 			glfwSwapInterval(gameSettingsHandler.isVsyncEnabled().getCustomBoolean());
 			glViewport(0, 0, windowWidth, windowHeight);
 
+			mInputTracker = InputTracker::init(gameSettingsHandler);
 			mCallbackManager = new CallbackManager(*this, gameSettingsHandler);
-			mSceneManager = new SceneManager();
+			mSceneManager = new SceneManager(this);
 			glfwShowWindow(mWindowHandle);
 		}
 	}
@@ -115,12 +105,19 @@ namespace Bountive
 	void Window::update(const GLdouble& DELTA_TIME)
 	{
 		mSceneManager->update(*this, DELTA_TIME);
+		mInputTracker->update(DELTA_TIME);
 	}
 
 
 	void Window::render(const GLdouble& DELTA_TIME)
 	{
 		mSceneManager->render(DELTA_TIME);
+	}
+
+
+	SceneManager& Window::getSceneManager() const
+	{
+		return *mSceneManager;
 	}
 
 
@@ -139,5 +136,11 @@ namespace Bountive
 	glm::vec2 Window::getMaximumWindowPosition() const
 	{
 		return glm::vec2(mVIDEO_MODE->width, mVIDEO_MODE->height);
+	}
+
+
+	InputTracker& Window::getInputTracker() const
+	{
+		return *mInputTracker;
 	}
 }

@@ -1,6 +1,7 @@
-#include "HomeScene.h"
+#include "SceneHome.h"
 #include "HomeSceneInput.h"
 #include "KeyboardCallback.h"
+#include "Window.h"
 #include "Logger.h"
 
 namespace Bountive
@@ -8,9 +9,9 @@ namespace Bountive
 	Logger HomeScene::logger = Logger("HomeScene", Logger::Level::LEVEL_ALL);
 	const std::string HomeScene::NAME = "home_scene";
 
-	HomeScene::HomeScene(GLint id) :
+	HomeScene::HomeScene(Window* window, GLint id) :
 		Scene(id, NAME),
-		mInputHandler(new HomeSceneInput(KeyboardCallback::getInputTracker()))
+		mInputHandler(new HomeSceneInput(window->getInputTracker()))
 	{
 		logger.log(Logger::Level::LEVEL_DEBUG, "Creating HomeScene...");
 	}

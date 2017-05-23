@@ -27,7 +27,7 @@ namespace Bountive
 	}
 
 
-	FileDirectory* DirectoryUtil::createDirectory(const GUID& folderId, const std::wstring& dirName)
+	FileDirectory* DirectoryUtil::createDirectory(const GUID& folderId, const std::wstring& dirName, GLboolean isPathRelative)
 	{
 		FileDirectory* dir = nullptr;
 
@@ -38,7 +38,7 @@ namespace Bountive
 		{
 			std::wstringstream pathDir;
 			pathDir << path;
-			dir = new FileDirectory(pathDir.str(), dirName);
+			dir = new FileDirectory(pathDir.str(), dirName, isPathRelative);
 
 			if (!dir->createDirectory())
 			{
@@ -60,9 +60,9 @@ namespace Bountive
 	}
 
 
-	FileDirectory* DirectoryUtil::createDirectory(const std::wstring &folderPath, const std::wstring& dirName)
+	FileDirectory* DirectoryUtil::createDirectory(const std::wstring &folderPath, const std::wstring& dirName, GLboolean isPathRelative)
 	{
-		FileDirectory* dir = new FileDirectory(folderPath, dirName);
+		FileDirectory* dir = new FileDirectory(folderPath, dirName, isPathRelative);
 		dir->createDirectory();
 		return dir;
 	}
@@ -70,9 +70,14 @@ namespace Bountive
 
 	DirectoryUtil::DirectoryUtil() 
 	try : 
-		mAPPDATA_DIRECTORY(createDirectory(FOLDERID_RoamingAppData, L"Brick Simulator")),
-		mSETTINGS_DIRECTORY(createDirectory(mAPPDATA_DIRECTORY->getDirectory(), L"settings")),
-		mLOGGER_DIRECTORY(createDirectory(mAPPDATA_DIRECTORY->getDirectory(), L"logger"))
+		mAPPDATA(createDirectory(FOLDERID_RoamingAppData, L"Brick Simulator", GL_FALSE)),
+		mUSER_CONFIG(createDirectory(mAPPDATA->getDirectory(), L"config", GL_FALSE)),
+		mUSER_LOGGER(createDirectory(mAPPDATA->getDirectory(), L"logger", GL_FALSE)),
+		
+		mEXE_ROOT(new FileDirectory(L"", L"bountive", GL_TRUE)),
+		mEXE_BIN(new FileDirectory(mEXE_ROOT->getDirectory(), L"bin", GL_TRUE)),
+		mEXE_ASSETS(new FileDirectory(mEXE_ROOT->getDirectory(), L"assets", GL_TRUE)),
+		mEXE_RESOURCES(new FileDirectory(mEXE_ROOT->getDirectory(), L"resources", GL_TRUE))
 	{
 		logger.log(Logger::Level::LEVEL_INFO, "Creating DirectoryUtil...");
 	}
@@ -85,8 +90,14 @@ namespace Bountive
 	DirectoryUtil::~DirectoryUtil()
 	{
 		logger.log(Logger::Level::LEVEL_INFO, "Deleting DirectoryUtil...");
-		delete mAPPDATA_DIRECTORY;
-		delete mSETTINGS_DIRECTORY;
-		delete mLOGGER_DIRECTORY;
+		
+		delete mUSER_CONFIG;
+		delete mUSER_LOGGER;
+		delete mAPPDATA;
+
+		delete mEXE_BIN;
+		delete mEXE_ASSETS;
+		delete mEXE_RESOURCES;
+		delete mEXE_ROOT;
 	}
 }

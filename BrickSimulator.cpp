@@ -66,7 +66,7 @@ namespace Bountive
 
 	void BrickSimulator::start()
 	{
-		logger.log(Logger::Level::LEVEL_DEBUG, L"Directory: " + mDIRECTORY_UTIL->mAPPDATA_DIRECTORY->getDirectory());
+		logger.log(Logger::Level::LEVEL_DEBUG, L"Directory: " + mDIRECTORY_UTIL->mAPPDATA->getDirectory());
 		loop();
 		saveSettings();
 	}

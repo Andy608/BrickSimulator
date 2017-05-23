@@ -9,8 +9,8 @@ namespace Bountive
 	Logger SceneManager::logger = Logger("SceneManager", Logger::Level::LEVEL_ALL);
 	GLint SceneManager::sceneIdCounter = -1;
 
-	SceneManager::SceneManager(Window* window) :
-		mGameScenes(createScenes(window)),
+	SceneManager::SceneManager(const Window& WINDOW_HANDLE) :
+		mSceneList(createScenes(WINDOW_HANDLE)),
 		mActiveScene(getSceneByName(SplashScene::NAME)),
 		mLastScene(getSceneByName(HomeScene::NAME))
 	{
@@ -22,13 +22,13 @@ namespace Bountive
 	{
 		logger.log(Logger::Level::LEVEL_DEBUG, "Deleting SceneManager...");
 		clearScenesList();
-		delete mGameScenes;
+		delete mSceneList;
 	}
 
 
-	void SceneManager::update(const Window& window, const GLdouble& DELTA_TIME)
+	void SceneManager::update(const GLdouble& DELTA_TIME)
 	{
-		mActiveScene->update(window, DELTA_TIME);
+		mActiveScene->update(DELTA_TIME);
 	}
 
 
@@ -40,11 +40,11 @@ namespace Bountive
 
 	Scene* SceneManager::getSceneById(const GLint& sceneId)
 	{
-		for (GLuint i = 0; i < mGameScenes->size(); ++i)
+		for (GLuint i = 0; i < mSceneList->size(); ++i)
 		{
-			if (mGameScenes->at(i)->mID == sceneId)
+			if (mSceneList->at(i)->mID == sceneId)
 			{
-				return mGameScenes->at(i);
+				return mSceneList->at(i);
 			}
 		}
 
@@ -55,11 +55,11 @@ namespace Bountive
 
 	Scene* SceneManager::getSceneByName(const std::string& sceneName)
 	{
-		for (GLuint i = 0; i < mGameScenes->size(); ++i)
+		for (GLuint i = 0; i < mSceneList->size(); ++i)
 		{
-			if (mGameScenes->at(i)->getName().compare(sceneName) == 0)
+			if (mSceneList->at(i)->getName().compare(sceneName) == 0)
 			{
-				return mGameScenes->at(i);
+				return mSceneList->at(i);
 			}
 		}
 
@@ -82,12 +82,12 @@ namespace Bountive
 	}
 
 
-	std::vector<Scene*>* SceneManager::createScenes(Window* window)
+	std::vector<Scene*>* SceneManager::createScenes(const Window& WINDOW_HANDLE)
 	{
 		std::vector<Scene*>* gameScenes = new std::vector<Scene*>();
 
-		gameScenes->push_back(new HomeScene(window, ++sceneIdCounter));
-		gameScenes->push_back(new SplashScene(window, ++sceneIdCounter));
+		gameScenes->push_back(new HomeScene(WINDOW_HANDLE, ++sceneIdCounter));
+		gameScenes->push_back(new SplashScene(WINDOW_HANDLE, ++sceneIdCounter));
 
 		return gameScenes;
 	}
@@ -95,16 +95,16 @@ namespace Bountive
 
 	void SceneManager::clearScenesList()
 	{
-		logger.log(Logger::Level::LEVEL_DEBUG, "Clearing Scenes! Scenes in list: " + std::to_string(mGameScenes->size()));
+		logger.log(Logger::Level::LEVEL_DEBUG, "Clearing Scenes! Scenes in list: " + std::to_string(mSceneList->size()));
 
-		for (GLuint i = 0; i < mGameScenes->size(); ++i)
+		for (GLuint i = 0; i < mSceneList->size(); ++i)
 		{
-			if (mGameScenes->at(i) != nullptr)
+			if (mSceneList->at(i) != nullptr)
 			{
-				delete mGameScenes->at(i);
+				delete mSceneList->at(i);
 			}
 		}
 
-		mGameScenes->clear();
+		mSceneList->clear();
 	}
 }

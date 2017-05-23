@@ -15,10 +15,10 @@ namespace Bountive
 	public:
 		static const std::string NAME;
 
-		SplashScene(Window* window, GLint id);
+		SplashScene(const Window& WINDOW_HANDLE, GLint id);
 		~SplashScene();
 
-		virtual void update(const Window& window, const GLdouble& DELTA_TIME);
+		virtual void update(const GLdouble& DELTA_TIME);
 		virtual void render(const GLdouble& DELTA_TIME);
 
 	private:

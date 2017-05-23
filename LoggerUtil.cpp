@@ -45,8 +45,8 @@ namespace Bountive
 		{
 			try
 			{
-				instance->mLOGGER_DIRECTORY = DirectoryUtil::instance->mLOGGER_DIRECTORY;
-				instance->mLOG_FILE = new FileLocation(instance->mLOGGER_DIRECTORY, L"log_report", FileLocation::TXT_EXT);
+				instance->mLOGGER_DIRECTORY = DirectoryUtil::instance->mUSER_LOGGER;
+				instance->mLOG_FILE = new FileLocation(instance->mLOGGER_DIRECTORY, L"log_report", FileLocation::TXT_EXTENSION);
 				instance->mFileAppender = new log4cxx::FileAppender(instance->mFileLayout, instance->mLOG_FILE->getFullPath(), GL_FALSE);
 
 				instance->mFileAppender->activateOptions(instance->mLoggerPool);

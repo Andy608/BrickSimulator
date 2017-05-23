@@ -4,12 +4,13 @@
 namespace Bountive
 {
 	Logger FileLocation::logger = Logger("FileLocation", Logger::Level::LEVEL_ALL);
-	std::wstring FileLocation::TXT_EXT = L".txt";
+	std::wstring FileLocation::TXT_EXTENSION = L".txt";
+	std::wstring FileLocation::PNG_EXTENSION = L".png";
 
-	FileLocation::FileLocation(const FileDirectory* parentDirectory, const std::wstring fileName, const std::wstring fileExtension) :
-		mPARENT_DIRECTORY(parentDirectory), 
-		mFILE_NAME(fileName), 
-		mFILE_EXTENSION(fileExtension),
+	FileLocation::FileLocation(const FileDirectory* PARENT_DIRECTORY, const std::wstring FILE_NAME, const std::wstring FILE_EXTENSION) :
+		mPARENT_DIRECTORY(PARENT_DIRECTORY),
+		mFILE_NAME(FILE_NAME),
+		mFILE_EXTENSION(FILE_EXTENSION),
 		mIsCreated(GL_FALSE)
 	{
 		logger.log(Logger::Level::LEVEL_DEBUG, "Creating FileLocation...");
@@ -37,6 +38,12 @@ namespace Bountive
 	std::wstring FileLocation::getFullPath() const
 	{
 		return mPARENT_DIRECTORY->getDirectory() + L"\\" + getFileName();
+	}
+
+
+	const FileDirectory& FileLocation::getParentDirectory() const
+	{
+		return *mPARENT_DIRECTORY;
 	}
 
 

@@ -12,12 +12,14 @@ namespace Bountive
 	class FileDirectory
 	{
 	public:
-		FileDirectory(std::wstring filePath, std::wstring folderName);
+		FileDirectory(std::wstring filePath, std::wstring folderName, GLboolean isPathRelative);
 		~FileDirectory();
 
 		std::wstring getDirectory() const;
-		std::wstring getParentDirectory() const;
-		std::wstring getFolderName() const;
+		const std::wstring& getParentDirectory() const;
+		const std::wstring& getFolderName() const;
+
+		const GLboolean& isPathRelative() const;
 
 		GLboolean createDirectory() const;
 		operator std::wstring() const;
@@ -27,6 +29,7 @@ namespace Bountive
 
 		const std::wstring mFILE_PATH;
 		const std::wstring mFOLDER_NAME;
+		const GLboolean mPATH_RELATIVE;
 	};
 }
 

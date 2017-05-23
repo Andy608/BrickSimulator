@@ -15,10 +15,10 @@ namespace Bountive
 	public:
 		static const std::string NAME;
 
-		HomeScene(Window* window, GLint id);
+		HomeScene(const Window& windowHandle, GLint id);
 		~HomeScene();
 
-		virtual void update(const Window& window, const GLdouble& DELTA_TIME);
+		virtual void update(const GLdouble& DELTA_TIME);
 		virtual void render(const GLdouble& DELTA_TIME);
 
 	private:

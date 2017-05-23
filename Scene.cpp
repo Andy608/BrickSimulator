@@ -2,7 +2,8 @@
 
 namespace Bountive
 {
-	Scene::Scene(GLint id, std::string name) :
+	Scene::Scene(const Window& WINDOW_HANDLE, GLint id, std::string name) :
+		mWINDOW_HANDLE(WINDOW_HANDLE),
 		mID(id), 
 		mNAME(name)
 	{

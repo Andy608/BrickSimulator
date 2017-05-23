@@ -9,9 +9,9 @@ namespace Bountive
 	Logger HomeScene::logger = Logger("HomeScene", Logger::Level::LEVEL_ALL);
 	const std::string HomeScene::NAME = "home_scene";
 
-	HomeScene::HomeScene(Window* window, GLint id) :
-		Scene(id, NAME),
-		mInputHandler(new HomeSceneInput(window->getInputTracker()))
+	HomeScene::HomeScene(const Window& WINDOW_HANDLE, GLint id) :
+		Scene(WINDOW_HANDLE, id, NAME),
+		mInputHandler(new HomeSceneInput(WINDOW_HANDLE.getInputTracker()))
 	{
 		logger.log(Logger::Level::LEVEL_DEBUG, "Creating HomeScene...");
 	}
@@ -24,9 +24,9 @@ namespace Bountive
 	}
 
 
-	void HomeScene::update(const Window& window, const GLdouble& DELTA_TIME)
+	void HomeScene::update(const GLdouble& DELTA_TIME)
 	{
-		mInputHandler->update(window, DELTA_TIME);
+		mInputHandler->update(mWINDOW_HANDLE, DELTA_TIME);
 	}
 
 

@@ -13,8 +13,8 @@ namespace Bountive
 
 	GameSettingsHandler::GameSettingsHandler(const Window& window)
 		try : 
-		mSETTINGS_DIRECTORY(DirectoryUtil::instance->mSETTINGS_DIRECTORY),
-		mSettingsFile(new FileLocation(mSETTINGS_DIRECTORY, SETTINGS_FILE_NAME, FileLocation::TXT_EXT)),
+		mSETTINGS_DIRECTORY(DirectoryUtil::instance->mUSER_CONFIG),
+		mSettingsFile(new FileLocation(mSETTINGS_DIRECTORY, SETTINGS_FILE_NAME, FileLocation::TXT_EXTENSION)),
 		mFileWriter(new FileWriter()),
 		mFileReader(new FileReader()),
 		mSaveWindowState(BooleanSetting(L"save_window_state", GL_FALSE)),

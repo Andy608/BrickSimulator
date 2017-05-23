@@ -30,7 +30,8 @@ namespace Bountive
 		mMINIMUM_SIZE_X(static_cast<GLint>(mVIDEO_MODE->width / 16.0f)),
 		mMINIMUM_SIZE_Y(1),
 		mMAXIMUM_SIZE_X(mVIDEO_MODE->width),
-		mMAXIMUM_SIZE_Y(mVIDEO_MODE->height - DECORATION_HEIGHT)
+		mMAXIMUM_SIZE_Y(mVIDEO_MODE->height - DECORATION_HEIGHT),
+		mAssetManager(new AssetManager())
 	{
 		logger.log(Logger::Level::LEVEL_DEBUG, "Creating Window...");
 	}
@@ -42,6 +43,7 @@ namespace Bountive
 		delete mSceneManager;
 		delete mCallbackManager;
 		delete mInputTracker;
+		delete mAssetManager;
 		glfwTerminate();
 	}
 
@@ -96,7 +98,8 @@ namespace Bountive
 
 			mInputTracker = InputTracker::init(gameSettingsHandler);
 			mCallbackManager = new CallbackManager(*this, gameSettingsHandler);
-			mSceneManager = new SceneManager(this);
+			mSceneManager = new SceneManager(*this);
+
 			glfwShowWindow(mWindowHandle);
 		}
 	}
@@ -104,7 +107,7 @@ namespace Bountive
 
 	void Window::update(const GLdouble& DELTA_TIME)
 	{
-		mSceneManager->update(*this, DELTA_TIME);
+		mSceneManager->update(DELTA_TIME);
 		mInputTracker->update(DELTA_TIME);
 	}
 

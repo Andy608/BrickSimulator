@@ -14,14 +14,17 @@ namespace Bountive
 	class FileLocation
 	{
 	public:
-		static std::wstring TXT_EXT;
+		static std::wstring TXT_EXTENSION;
+		static std::wstring PNG_EXTENSION;
 
-		FileLocation(const FileDirectory* parentDirectory, const std::wstring fileName, const std::wstring fileExtension);
+		FileLocation(const FileDirectory* PARENT_DIRECTORY, const std::wstring FILE_NAME, const std::wstring FILE_EXTENSION);
 		~FileLocation();
 
 		std::wstring getFileName() const;
 		const std::wstring& getFileNameNoExtension() const;
 		std::wstring getFullPath() const;
+
+		const FileDirectory& getParentDirectory() const;
 
 		void setCreated(GLboolean isCreated);
 		const GLboolean& isCreated() const;

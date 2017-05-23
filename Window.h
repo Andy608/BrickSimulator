@@ -7,6 +7,7 @@
 #include <glm\vec2.hpp>
 #include "SceneManager.h"
 #include "InputTracker.h"
+#include "AssetManager.h"
 
 namespace Bountive
 {
@@ -46,6 +47,7 @@ namespace Bountive
 		CallbackManager* mCallbackManager;
 		SceneManager* mSceneManager;
 		InputTracker* mInputTracker;
+		AssetManager* mAssetManager;
 	};
 }
 

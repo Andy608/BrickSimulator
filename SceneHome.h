@@ -6,7 +6,6 @@
 
 namespace Bountive
 {
-	class Window;
 	class HomeSceneInput;
 	class Logger;
 
@@ -15,8 +14,11 @@ namespace Bountive
 	public:
 		static const std::string NAME;
 
-		HomeScene(const Window& windowHandle, GLint id);
+		HomeScene(GLint id);
 		~HomeScene();
+
+		virtual void showScene();
+		virtual void hideScene();
 
 		virtual void update(const GLdouble& DELTA_TIME);
 		virtual void render(const GLdouble& DELTA_TIME);

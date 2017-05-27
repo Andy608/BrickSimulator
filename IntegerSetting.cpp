@@ -6,30 +6,30 @@ namespace Bountive
 {
 	Logger IntegerSetting::logger = Logger("IntegerSetting", Logger::Level::LEVEL_ALL);
 
-	IntegerSetting::IntegerSetting(std::wstring settingName, const GLint DEFAULT_INTEGER) :
+	IntegerSetting::IntegerSetting(std::string settingName, const GLint DEFAULT_INTEGER) :
 		SettingType(settingName), 
 		mDEFAULT_INTEGER(DEFAULT_INTEGER), 
 		mCustomInteger(DEFAULT_INTEGER)
 	{
-		logger.log(Logger::Level::LEVEL_TRACE, L"Creating IntegerSetting: " + mSettingName);
+		logger.log(Logger::Level::LEVEL_TRACE, "Creating IntegerSetting: " + mSettingName);
 	}
 
 
 	IntegerSetting::~IntegerSetting() 
 	{
-		logger.log(Logger::Level::LEVEL_TRACE, L"Deleting IntegerSetting: " + mSettingName);
+		logger.log(Logger::Level::LEVEL_TRACE, "Deleting IntegerSetting: " + mSettingName);
 	}
 
 
 	void IntegerSetting::setCustomInteger(GLint customInteger)
 	{
 		mCustomInteger = customInteger;
-		logger.log(Logger::Level::LEVEL_TRACE, L"IntegerSetting: " + mSettingName + L" Default: " +
-			toString(mDEFAULT_INTEGER) + L" Custom: " + toString(mCustomInteger));
+		logger.log(Logger::Level::LEVEL_TRACE, "IntegerSetting: " + mSettingName + " Default: " +
+			toString(mDEFAULT_INTEGER) + " Custom: " + toString(mCustomInteger));
 	}
 
 
-	void IntegerSetting::setCustomInteger(std::wstring fileValue)
+	void IntegerSetting::setCustomInteger(std::string fileValue)
 	{
 		try
 		{
@@ -37,7 +37,7 @@ namespace Bountive
 		}
 		catch (const std::invalid_argument e)
 		{
-			logger.log(Logger::Level::LEVEL_WARN, L"Could not convert \'" + fileValue + L"\' to integer. Returning default value.");
+			logger.log(Logger::Level::LEVEL_WARN, "Could not convert \'" + fileValue + "\' to integer. Returning default value.");
 			setCustomInteger(mDEFAULT_INTEGER);
 		}
 	}
@@ -73,13 +73,13 @@ namespace Bountive
 	}
 
 
-	std::wstring IntegerSetting::toString(GLint integerValue)
+	std::string IntegerSetting::toString(GLint integerValue)
 	{
-		return std::to_wstring(integerValue);
+		return std::to_string(integerValue);
 	}
 
 
-	std::wstring IntegerSetting::toFileString() const
+	std::string IntegerSetting::toFileString() const
 	{
 		return mSettingName + DELIMITER + toString(mCustomInteger);
 	}

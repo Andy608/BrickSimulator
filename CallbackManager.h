@@ -14,7 +14,6 @@ namespace Bountive
 	class WindowPositionCallback;
 	class CursorPositionCallback;
 	class MouseScrollCallback;
-	class Window;
 	class GameSettingsHandler;
 	class Logger;
 
@@ -23,7 +22,7 @@ namespace Bountive
 	public:
 		static void errorCallback(GLint error, const GLchar* description);
 
-		CallbackManager(const Window& window, GameSettingsHandler& gameSettingsHandler);
+		CallbackManager(GameSettingsHandler& gameSettingsHandler);
 		~CallbackManager();
 
 	private:

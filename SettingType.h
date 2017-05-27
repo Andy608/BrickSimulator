@@ -10,20 +10,20 @@ namespace Bountive
 	class SettingType
 	{
 	public:
-		static const wchar_t DELIMITER;
+		static const GLchar DELIMITER;
 
-		SettingType(std::wstring settingName);
+		SettingType(std::string settingName);
 		virtual ~SettingType() = 0;
 
-		const std::wstring& getSettingName() const;
+		const std::string& getSettingName() const;
 
-		virtual std::wstring toFileString() const = 0;
+		virtual std::string toFileString() const = 0;
 
 		virtual GLboolean isModified() const = 0;
 		virtual void resetCustomValue() = 0;
 
 	protected:
-		std::wstring mSettingName;
+		std::string mSettingName;
 	};
 }
 

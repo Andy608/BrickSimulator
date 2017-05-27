@@ -3,6 +3,7 @@
 #define BOUNTIVE_BRICKSIMULATOR_H_
 
 #include "DirectoryUtil.h"
+#include "RenderManager.h"
 #include "Window.h"
 #include "GameSettingsHandler.h"
 
@@ -23,6 +24,11 @@ namespace Bountive
 		void start();
 		void saveSettings() const;
 
+		Window* getWindow() const;
+		SceneManager* getSceneManager() const;
+		RenderManager* getRenderManager() const;
+		InputTracker* getInputTracker() const;
+
 	private:
 		static Logger logger;
 		static const GLint TICKS_PER_SECOND;
@@ -37,6 +43,10 @@ namespace Bountive
 
 		Window* const mWindow;
 		GameSettingsHandler* const mGameSettingsHandler;
+
+		RenderManager* mRenderManager;
+		SceneManager* mSceneManager;
+		InputTracker* mInputTracker;
 
 		BrickSimulator();
 

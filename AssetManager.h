@@ -2,7 +2,7 @@
 #ifndef BOUNTIVE_ASSETMANAGER_H_
 #define BOUNTIVE_ASSETMANAGER_H_
 
-#include "AssetLoader.h"
+#include "PregameAssetLoader.h"
 
 namespace Bountive
 {
@@ -17,9 +17,11 @@ namespace Bountive
 		void initAssets();
 		void loadAssets();
 
+		PregameAssetLoader* getPregameAssetLoader() const;
+
 	private:
 		static Logger logger;
-		AssetLoader* mPregameAssetManager;
+		PregameAssetLoader* mPregameAssetManager;
 		//AssetLoader* mGUIAssetLoader;
 		GLint mTotalPercentLoaded;
 	};

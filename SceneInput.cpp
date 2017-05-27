@@ -1,9 +1,9 @@
 #include "SceneInput.h"
+#include "InputTracker.h"
 
 namespace Bountive
 {
-	SceneInput::SceneInput(const InputTracker& INPUT_TRACKER) :
-		mINPUT_TRACKER(INPUT_TRACKER)
+	SceneInput::SceneInput()
 	{
 
 	}

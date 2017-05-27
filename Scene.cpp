@@ -1,11 +1,12 @@
+#include "BrickSimulator.h"
 #include "Scene.h"
 
 namespace Bountive
 {
-	Scene::Scene(const Window& WINDOW_HANDLE, GLint id, std::string name) :
-		mWINDOW_HANDLE(WINDOW_HANDLE),
+	Scene::Scene(GLint id, std::string name) :
 		mID(id), 
-		mNAME(name)
+		mNAME(name),
+		mRenderManager(*BrickSimulator::instance->getRenderManager())
 	{
 
 	}

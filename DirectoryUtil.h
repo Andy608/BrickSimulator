@@ -27,7 +27,9 @@ namespace Bountive
 		const FileDirectory* const mEXE_ROOT;		//Root directory
 		const FileDirectory* const mEXE_BIN;		//For dlls
 		const FileDirectory* const mEXE_RESOURCES;	//Top level resource directory
-		const FileDirectory* const mEXE_ASSETS;		//Top level image assets
+		const FileDirectory* const mEXE_ASSETS;		//Top level assets
+		const FileDirectory* const mEXE_IMAGES;		
+		const FileDirectory* const mEXE_SHADERS;
 
 		virtual ~DirectoryUtil();
 

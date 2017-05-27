@@ -2,9 +2,8 @@
 
 namespace Bountive
 {
-	Asset::Asset(const FileDirectory& DIRECTORY, const std::wstring FILE_NAME, const std::wstring& FILE_EXTENSION) :
-		mFILE_LOCATION(FileLocation(&DIRECTORY, FILE_NAME, FILE_EXTENSION)),
-		mASSET_ID(FILE_NAME),
+	Asset::Asset(const std::wstring ASSET_ID) :
+		mASSET_ID(ASSET_ID),
 		mIsLoaded(GL_FALSE)
 	{
 

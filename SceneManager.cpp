@@ -1,7 +1,6 @@
 #include "SceneManager.h"
 #include "SceneHome.h"
 #include "SceneSplash.h"
-#include "Window.h"
 #include "Logger.h"
 
 namespace Bountive
@@ -9,11 +8,12 @@ namespace Bountive
 	Logger SceneManager::logger = Logger("SceneManager", Logger::Level::LEVEL_ALL);
 	GLint SceneManager::sceneIdCounter = -1;
 
-	SceneManager::SceneManager(const Window& WINDOW_HANDLE) :
-		mSceneList(createScenes(WINDOW_HANDLE)),
-		mActiveScene(getSceneByName(SplashScene::NAME)),
-		mLastScene(getSceneByName(HomeScene::NAME))
+	SceneManager::SceneManager() :
+		mSceneList(createScenes()),
+		mLastScene(findSceneByName(HomeScene::NAME)),
+		mActiveScene(findSceneByName(HomeScene::NAME))
 	{
+		setActiveScene(SplashScene::NAME);
 		logger.log(Logger::Level::LEVEL_DEBUG, "Creating SceneManager...");
 	}
 
@@ -38,22 +38,28 @@ namespace Bountive
 	}
 
 
-	Scene* SceneManager::getSceneById(const GLint& sceneId)
+	const Scene& SceneManager::getSceneById(const GLint& sceneId) const
 	{
 		for (GLuint i = 0; i < mSceneList->size(); ++i)
 		{
 			if (mSceneList->at(i)->mID == sceneId)
 			{
-				return mSceneList->at(i);
+				return *mSceneList->at(i);
 			}
 		}
 
 		logger.log(Logger::Level::LEVEL_WARN, "Could not find scene. Returning the current active scene.");
-		return mActiveScene;
+		return *mActiveScene;
 	}
 
 
-	Scene* SceneManager::getSceneByName(const std::string& sceneName)
+	const Scene& SceneManager::getSceneByName(const std::string& sceneName) const
+	{
+		return *findSceneByName(sceneName);
+	}
+
+
+	Scene* SceneManager::findSceneByName(const std::string& sceneName) const
 	{
 		for (GLuint i = 0; i < mSceneList->size(); ++i)
 		{
@@ -68,26 +74,30 @@ namespace Bountive
 	}
 
 
-	Scene* SceneManager::getActiveScene()
+	const Scene& SceneManager::getActiveScene() const
 	{
-		return mActiveScene;
+		return *mActiveScene;
 	}
 
 
 	void SceneManager::setActiveScene(const std::string& NEXT_SCENE_NAME)
 	{
 		mLastScene = mActiveScene;
-		mActiveScene = getSceneByName(NEXT_SCENE_NAME);
+		mActiveScene = findSceneByName(NEXT_SCENE_NAME);
+
+		mLastScene->hideScene();
+		mActiveScene->showScene();
+
 		logger.log(Logger::Level::LEVEL_DEBUG, "Switching Scene!");
 	}
 
 
-	std::vector<Scene*>* SceneManager::createScenes(const Window& WINDOW_HANDLE)
+	std::vector<Scene*>* SceneManager::createScenes()
 	{
 		std::vector<Scene*>* gameScenes = new std::vector<Scene*>();
 
-		gameScenes->push_back(new HomeScene(WINDOW_HANDLE, ++sceneIdCounter));
-		gameScenes->push_back(new SplashScene(WINDOW_HANDLE, ++sceneIdCounter));
+		gameScenes->push_back(new HomeScene(++sceneIdCounter));
+		gameScenes->push_back(new SplashScene(++sceneIdCounter));
 
 		return gameScenes;
 	}

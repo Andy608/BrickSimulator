@@ -16,6 +16,8 @@ namespace Bountive
 	public:
 		static std::wstring TXT_EXTENSION;
 		static std::wstring PNG_EXTENSION;
+		static std::wstring VS_SHADER_EXTENSION;
+		static std::wstring FS_SHADER_EXTENSION;
 
 		FileLocation(const FileDirectory* PARENT_DIRECTORY, const std::wstring FILE_NAME, const std::wstring FILE_EXTENSION);
 		~FileLocation();
@@ -29,7 +31,7 @@ namespace Bountive
 		void setCreated(GLboolean isCreated);
 		const GLboolean& isCreated() const;
 
-		GLboolean createFile(std::wofstream& fileWriter);
+		GLboolean createFile(std::ofstream& fileWriter);
 
 	private:
 		static Logger logger;

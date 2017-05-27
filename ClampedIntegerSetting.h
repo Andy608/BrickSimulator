@@ -11,7 +11,7 @@ namespace Bountive
 	class ClampedIntegerSetting : public IntegerSetting
 	{
 	public:
-		ClampedIntegerSetting(std::wstring settingName, const GLint DEFAULT_INTEGER, const GLint MIN_INTEGER, const GLint MAX_INTEGER);
+		ClampedIntegerSetting(std::string settingName, const GLint DEFAULT_INTEGER, const GLint MIN_INTEGER, const GLint MAX_INTEGER);
 		virtual ~ClampedIntegerSetting();
 
 		virtual void setCustomInteger(GLint customInteger);

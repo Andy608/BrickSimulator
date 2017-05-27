@@ -7,7 +7,6 @@
 #include <glm\vec2.hpp>
 #include "SceneManager.h"
 #include "InputTracker.h"
-#include "AssetManager.h"
 
 namespace Bountive
 {
@@ -34,10 +33,8 @@ namespace Bountive
 		void render(const GLdouble& DELTA_TIME);
 
 		GLFWwindow* getWindowHandle() const;
-		SceneManager& getSceneManager() const;
 		glm::vec2 getMinimumWindowPosition() const;
 		glm::vec2 getMaximumWindowPosition() const;
-		InputTracker& Window::getInputTracker() const;
 
 	private:
 		static Logger logger;
@@ -45,9 +42,6 @@ namespace Bountive
 
 		GLFWwindow* mWindowHandle;
 		CallbackManager* mCallbackManager;
-		SceneManager* mSceneManager;
-		InputTracker* mInputTracker;
-		AssetManager* mAssetManager;
 	};
 }
 

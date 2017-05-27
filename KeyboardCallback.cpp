@@ -7,20 +7,20 @@ namespace Bountive
 	KeyboardCallback* KeyboardCallback::instance = nullptr;
 	Logger KeyboardCallback::logger = Logger("KeyboardCallback", Logger::Level::LEVEL_ALL);
 
-	KeyboardCallback* KeyboardCallback::init(const Window& window, GameSettingsHandler& gameSettingsHandler)
+	KeyboardCallback* KeyboardCallback::init(InputTracker& inputTracker, GameSettingsHandler& gameSettingsHandler)
 	{
 		if (instance == nullptr)
 		{
-			instance = new KeyboardCallback(window, gameSettingsHandler);
+			instance = new KeyboardCallback(inputTracker, gameSettingsHandler);
 		}
 
 		return instance;
 	}
 
 
-	KeyboardCallback::KeyboardCallback(const Window& window, GameSettingsHandler& gameSettingsHandler) :
+	KeyboardCallback::KeyboardCallback(InputTracker& inputTracker, GameSettingsHandler& gameSettingsHandler) :
 		mGameSettingsHandler(gameSettingsHandler),
-		mInputTracker(window.getInputTracker())
+		mInputTracker(inputTracker)
 	{
 		logger.log(Logger::Level::LEVEL_DEBUG, "Creating KeyboardCallback...");
 	}

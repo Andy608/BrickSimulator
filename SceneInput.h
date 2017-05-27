@@ -3,22 +3,15 @@
 #define BOUNTIVE_SCENEINPUT_H_
 
 #include <glew.h>
-#include "InputTracker.h"
+#include "IUpdatable.h"
 
 namespace Bountive
 {
-	class Window;
-
-	class SceneInput
+	class SceneInput : public IUpdatable
 	{
 	public:
-		SceneInput(const InputTracker& INPUT_TRACKER);
+		SceneInput();
 		virtual ~SceneInput();
-
-		virtual void update(const Window& window, const GLdouble& DELTA_TIME) = 0;
-
-	protected:
-		const InputTracker& mINPUT_TRACKER;
 	};
 }
 

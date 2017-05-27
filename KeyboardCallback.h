@@ -17,7 +17,7 @@ namespace Bountive
 	public:
 		static KeyboardCallback* instance;
 
-		static KeyboardCallback* init(const Window& window, GameSettingsHandler& gameSettingsHandler);
+		static KeyboardCallback* init(InputTracker& INPUT_TRACKER, GameSettingsHandler& gameSettingsHandler);
 		static void keyCallback(GLFWwindow* windowHandle, GLint key, GLint scancode, GLint action, GLint mode);
 		
 		~KeyboardCallback();
@@ -28,7 +28,7 @@ namespace Bountive
 		GameSettingsHandler& mGameSettingsHandler;
 		InputTracker& mInputTracker;
 
-		KeyboardCallback(const Window& window, GameSettingsHandler& gameSettingsHandler);
+		KeyboardCallback(InputTracker& INPUT_TRACKER, GameSettingsHandler& gameSettingsHandler);
 	};
 }
 

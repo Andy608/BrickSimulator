@@ -6,7 +6,6 @@
 
 namespace Bountive
 {
-	class Window;
 	class SplashSceneInput;
 	class Logger;
 
@@ -15,8 +14,11 @@ namespace Bountive
 	public:
 		static const std::string NAME;
 
-		SplashScene(const Window& WINDOW_HANDLE, GLint id);
+		SplashScene(GLint id);
 		~SplashScene();
+
+		virtual void showScene();
+		virtual void hideScene();
 
 		virtual void update(const GLdouble& DELTA_TIME);
 		virtual void render(const GLdouble& DELTA_TIME);

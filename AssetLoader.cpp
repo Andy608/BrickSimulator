@@ -16,7 +16,6 @@ namespace Bountive
 	AssetLoader::~AssetLoader()
 	{
 		logger.log(Logger::Level::LEVEL_DEBUG, "Deleting AssetLoader...");
-		unloadAssets();
 		clearAssetList();
 		delete mAssetList;
 	}
@@ -34,8 +33,9 @@ namespace Bountive
 		for (GLuint i = 0; i < mAssetList->size(); ++i)
 		{
 			mAssetList->at(i)->load();
-			mPercentLoaded = ((i + 1) / mAssetList->size()) * 100.0f;
-			logger.log(Logger::Level::LEVEL_DEBUG, L"Loaded asset: " + mAssetList->at(i)->getAssetId() + L" Percent Loaded = " + std::to_wstring(mPercentLoaded));
+			mPercentLoaded = ((i + 1) / static_cast<GLfloat>(mAssetList->size())) * 100.0f;
+			logger.log(Logger::Level::LEVEL_DEBUG, L"Loaded asset: " + mAssetList->at(i)->getAssetId() + 
+				L" Percent Loaded = " + std::to_wstring(mPercentLoaded));
 		}
 	}
 
@@ -46,8 +46,24 @@ namespace Bountive
 		{
 			mAssetList->at(i)->unload();
 			mPercentLoaded = (((mAssetList->size() - 1) - i) / mAssetList->size()) * 100.0f;
-			logger.log(Logger::Level::LEVEL_DEBUG, L"Unloaded asset: " + mAssetList->at(i)->getAssetId() + L" Percent Loaded = " + std::to_wstring(mPercentLoaded));
+			logger.log(Logger::Level::LEVEL_DEBUG, L"Unloaded asset: " + mAssetList->at(i)->getAssetId() + 
+				L" Percent Loaded = " + std::to_wstring(mPercentLoaded));
 		}
+	}
+
+
+	Asset* AssetLoader::findAsset(std::wstring assetId)
+	{
+		for (GLuint i = 0; i < mAssetList->size(); ++i)
+		{
+			if (mAssetList->at(i)->getAssetId().compare(assetId))
+			{
+				return mAssetList->at(i);
+			}
+		}
+
+		logger.log(Logger::Level::LEVEL_WARN, L"Could not find asset with id: " + assetId);
+		return nullptr;
 	}
 
 

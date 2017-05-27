@@ -4,33 +4,33 @@
 namespace Bountive
 {
 	Logger BooleanSetting::logger = Logger("BooleanSetting", Logger::Level::LEVEL_ALL);
-	const std::wstring BooleanSetting::SETTING_TRUE = L"true";
-	const std::wstring BooleanSetting::SETTING_FALSE = L"false";
+	const std::string BooleanSetting::SETTING_TRUE = "true";
+	const std::string BooleanSetting::SETTING_FALSE = "false";
 
-	BooleanSetting::BooleanSetting(std::wstring settingName, const GLboolean DEFAULT_BOOLEAN) :
+	BooleanSetting::BooleanSetting(std::string settingName, const GLboolean DEFAULT_BOOLEAN) :
 		SettingType(settingName), 
 		mDEFAULT_BOOLEAN(DEFAULT_BOOLEAN), 
 		mCustomBoolean(DEFAULT_BOOLEAN)
 	{
-		logger.log(Logger::Level::LEVEL_TRACE, L"Creating BooleanSetting: " + mSettingName);
+		logger.log(Logger::Level::LEVEL_TRACE, "Creating BooleanSetting: " + mSettingName);
 	}
 
 
 	BooleanSetting::~BooleanSetting() 
 	{
-		logger.log(Logger::Level::LEVEL_TRACE, L"Deleting BooleanSetting: " + mSettingName);
+		logger.log(Logger::Level::LEVEL_TRACE, "Deleting BooleanSetting: " + mSettingName);
 	}
 
 
 	void BooleanSetting::setCustomBoolean(GLboolean customBoolean)
 	{
 		mCustomBoolean = customBoolean;
-		logger.log(Logger::Level::LEVEL_TRACE, L"BooleanSetting: " + mSettingName + L" Default: " +
-			toString(mDEFAULT_BOOLEAN) + L" Custom: " + toString(mCustomBoolean));
+		logger.log(Logger::Level::LEVEL_TRACE, "BooleanSetting: " + mSettingName + " Default: " +
+			toString(mDEFAULT_BOOLEAN) + " Custom: " + toString(mCustomBoolean));
 	}
 
 
-	void BooleanSetting::setCustomBoolean(std::wstring fileValue)
+	void BooleanSetting::setCustomBoolean(std::string fileValue)
 	{
 		if (fileValue.compare(SETTING_TRUE) == 0)
 		{
@@ -42,7 +42,7 @@ namespace Bountive
 		}
 		else
 		{
-			logger.log(Logger::Level::LEVEL_WARN, L"Could not read value: '" + fileValue + L"'. Returning default value.");
+			logger.log(Logger::Level::LEVEL_WARN, "Could not read value: '" + fileValue + "'. Returning default value.");
 			return setCustomBoolean(mDEFAULT_BOOLEAN);
 		}
 	}
@@ -78,13 +78,13 @@ namespace Bountive
 	}
 
 
-	std::wstring BooleanSetting::toString(GLboolean booleanValue)
+	std::string BooleanSetting::toString(GLboolean booleanValue)
 	{
 		return (booleanValue ? SETTING_TRUE : SETTING_FALSE);
 	}
 
 
-	std::wstring BooleanSetting::toFileString() const
+	std::string BooleanSetting::toFileString() const
 	{
 		return mSettingName + DELIMITER + toString(mCustomBoolean);
 	}

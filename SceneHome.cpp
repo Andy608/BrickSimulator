@@ -1,7 +1,7 @@
+#include "BrickSimulator.h"
 #include "SceneHome.h"
 #include "HomeSceneInput.h"
 #include "KeyboardCallback.h"
-#include "Window.h"
 #include "Logger.h"
 
 namespace Bountive
@@ -9,9 +9,9 @@ namespace Bountive
 	Logger HomeScene::logger = Logger("HomeScene", Logger::Level::LEVEL_ALL);
 	const std::string HomeScene::NAME = "home_scene";
 
-	HomeScene::HomeScene(const Window& WINDOW_HANDLE, GLint id) :
-		Scene(WINDOW_HANDLE, id, NAME),
-		mInputHandler(new HomeSceneInput(WINDOW_HANDLE.getInputTracker()))
+	HomeScene::HomeScene(GLint id) :
+		Scene(id, NAME),
+		mInputHandler(new HomeSceneInput())
 	{
 		logger.log(Logger::Level::LEVEL_DEBUG, "Creating HomeScene...");
 	}
@@ -24,9 +24,20 @@ namespace Bountive
 	}
 
 
+	void HomeScene::showScene()
+	{
+
+	}
+
+	void HomeScene::hideScene()
+	{
+		mRenderManager.getGuiRenderer()->clearEntities();
+	}
+
+
 	void HomeScene::update(const GLdouble& DELTA_TIME)
 	{
-		mInputHandler->update(mWINDOW_HANDLE, DELTA_TIME);
+		mInputHandler->update(DELTA_TIME);
 	}
 
 

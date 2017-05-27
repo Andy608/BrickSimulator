@@ -16,11 +16,12 @@ namespace Bountive
 		FileReader();
 		~FileReader();
 
-		std::vector<std::wstring> getLinesInFile(const FileLocation& file);
+		void getFileContents(FileLocation& file, std::string& fileContents);
+		std::vector<std::string> getLinesInFile(const FileLocation& file);
 
 	private:
 		static Logger logger;
-		std::wifstream* mReadStream;
+		std::ifstream* mReadStream;
 	};
 }
 

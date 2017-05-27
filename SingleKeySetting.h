@@ -12,7 +12,7 @@ namespace Bountive
 	class SingleKeySetting : public IntegerSetting, public KeySetting
 	{
 	public:
-		SingleKeySetting(std::wstring settingName, const GLint DEFAULT_ASCII_VALUE);
+		SingleKeySetting(std::string settingName, const GLint DEFAULT_ASCII_VALUE);
 		~SingleKeySetting();
 
 		virtual const GLboolean& isPressed() const;

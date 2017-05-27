@@ -17,32 +17,32 @@ namespace Bountive
 		mSettingsFile(new FileLocation(mSETTINGS_DIRECTORY, SETTINGS_FILE_NAME, FileLocation::TXT_EXTENSION)),
 		mFileWriter(new FileWriter()),
 		mFileReader(new FileReader()),
-		mSaveWindowState(BooleanSetting(L"save_window_state", GL_FALSE)),
-		mWindowMaximized(BooleanSetting(L"window_maximized", GL_FALSE)),
+		mSaveWindowState(BooleanSetting("save_window_state", GL_FALSE)),
+		mWindowMaximized(BooleanSetting("window_maximized", GL_FALSE)),
 
 		mDEFAULT_WINDOW_SIZE(glm::vec2(window.mVIDEO_MODE->width / 2.0f, window.mVIDEO_MODE->height / 2.0f)),
 
 		mDEFAULT_WINDOW_POSITION(glm::vec2((window.mVIDEO_MODE->width - mDEFAULT_WINDOW_SIZE.x) / 2.0f,
 			(window.mVIDEO_MODE->height - mDEFAULT_WINDOW_SIZE.y) / 2.0f)),
 
-		mWindowPositionX(ClampedIntegerSetting(L"window_position_x", static_cast<GLint>(mDEFAULT_WINDOW_POSITION.x), 
+		mWindowPositionX(ClampedIntegerSetting("window_position_x", static_cast<GLint>(mDEFAULT_WINDOW_POSITION.x), 
 			static_cast<GLint>(window.getMinimumWindowPosition().x),
 			static_cast<GLint>(window.getMaximumWindowPosition().x))),
 
-		mWindowPositionY(ClampedIntegerSetting(L"window_position_y", static_cast<GLint>(mDEFAULT_WINDOW_POSITION.y), 
+		mWindowPositionY(ClampedIntegerSetting("window_position_y", static_cast<GLint>(mDEFAULT_WINDOW_POSITION.y), 
 			static_cast<GLint>(window.getMinimumWindowPosition().y),
 			static_cast<GLint>(window.getMaximumWindowPosition().y))),
 
-		mWindowSizeX(ClampedIntegerSetting(L"window_size_x", static_cast<GLint>(mDEFAULT_WINDOW_SIZE.x), 
+		mWindowSizeX(ClampedIntegerSetting("window_size_x", static_cast<GLint>(mDEFAULT_WINDOW_SIZE.x), 
 			static_cast<GLint>(window.mMINIMUM_SIZE_X), static_cast<GLint>(window.mMAXIMUM_SIZE_X))),
 
-		mWindowSizeY(ClampedIntegerSetting(L"window_size_y", static_cast<GLint>(mDEFAULT_WINDOW_SIZE.y), 
+		mWindowSizeY(ClampedIntegerSetting("window_size_y", static_cast<GLint>(mDEFAULT_WINDOW_SIZE.y), 
 			static_cast<GLint>(window.mMINIMUM_SIZE_Y), static_cast<GLint>(window.mMAXIMUM_SIZE_Y))),
 
-		mVsyncEnabled(BooleanSetting(L"vsync", GL_TRUE)),
-		mFullscreenEnabled(BooleanSetting(L"fullscreen", GL_FALSE)),
-		mFieldOfView(ClampedIntegerSetting(L"fov", 67, 30, 120)),
-		mKeyEscape(SingleKeySetting(L"key_escape", GLFW_KEY_ESCAPE))
+		mVsyncEnabled(BooleanSetting("vsync", GL_TRUE)),
+		mFullscreenEnabled(BooleanSetting("fullscreen", GL_FALSE)),
+		mFieldOfView(ClampedIntegerSetting("fov", 67, 30, 120)),
+		mKeyEscape(SingleKeySetting("key_escape", GLFW_KEY_ESCAPE))
 	{
 		logger.log(Logger::Level::LEVEL_DEBUG, "Creating GameSettingsHandler...");
 		mSettingsFile->createFile(mFileWriter->getWriteStream());
@@ -91,18 +91,18 @@ namespace Bountive
 
 	void GameSettingsHandler::loadOptionsFromFile()
 	{
-		std::vector<std::wstring> lines = mFileReader->getLinesInFile(*mSettingsFile);
+		std::vector<std::string> lines = mFileReader->getLinesInFile(*mSettingsFile);
 
 		for (GLuint i = 0; i < lines.size(); ++i)
 		{
-			std::wstring line = lines.at(i);
+			std::string line = lines.at(i);
 			for (GLuint j = 0; j < line.length(); ++j)
 			{
 				if (line.c_str()[j] == SettingType::DELIMITER)
 				{
-					std::wstring settingName = line.substr(0, j);
-					std::wstring settingVar = line.substr(j + 1);
-					logger.log(Logger::Level::LEVEL_DEBUG, settingName + L"=" + settingVar);
+					std::string settingName = line.substr(0, j);
+					std::string settingVar = line.substr(j + 1);
+					logger.log(Logger::Level::LEVEL_DEBUG, settingName + "=" + settingVar);
 
 					if (settingName.compare(mSaveWindowState.getSettingName()) == 0)
 					{
@@ -146,7 +146,7 @@ namespace Bountive
 					}
 					else
 					{
-						logger.log(Logger::Level::LEVEL_WARN, L"Skipping unknown setting: \'" + settingName + L"\'.");
+						logger.log(Logger::Level::LEVEL_WARN, "Skipping unknown setting: \'" + settingName + "\'.");
 					}
 				}
 			}
@@ -156,7 +156,7 @@ namespace Bountive
 
 	void GameSettingsHandler::saveOptionsToFile()
 	{
-		std::vector<std::wstring> settingsFile;
+		std::vector<std::string> settingsFile;
 
 		settingsFile.push_back(mSaveWindowState.toFileString());
 

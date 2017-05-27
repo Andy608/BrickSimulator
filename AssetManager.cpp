@@ -18,7 +18,7 @@ namespace Bountive
 
 	AssetManager::~AssetManager()
 	{
-		logger.log(Logger::Level::LEVEL_DEBUG, "Creating AssetManager...");
+		logger.log(Logger::Level::LEVEL_DEBUG, "Deleting AssetManager...");
 		delete mPregameAssetManager;
 	}
 
@@ -32,5 +32,11 @@ namespace Bountive
 	void AssetManager::loadAssets()
 	{
 		logger.log(Logger::Level::LEVEL_DEBUG, "Loading AssetLoaders...");
+	}
+
+
+	PregameAssetLoader* AssetManager::getPregameAssetLoader() const
+	{
+		return mPregameAssetManager;
 	}
 }

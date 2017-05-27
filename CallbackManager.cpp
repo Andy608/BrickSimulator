@@ -1,4 +1,5 @@
 #include <glew.h>
+#include "BrickSimulator.h"
 #include "CallbackManager.h"
 #include "KeyboardCallback.h"
 #include "WindowFocusCallback.h"
@@ -7,7 +8,6 @@
 #include "WindowPositionCallback.h"
 #include "CursorPositionCallback.h"
 #include "MouseScrollCallback.h"
-#include "Window.h"
 #include "GameSettingsHandler.h"
 #include "Logger.h"
 #include "LoggerUtil.h"
@@ -16,11 +16,11 @@ namespace Bountive
 {
 	Logger CallbackManager::logger = Logger("CallbackManager", Logger::Level::LEVEL_ALL);
 
-	CallbackManager::CallbackManager(const Window& window, GameSettingsHandler& gameSettingsHandler) :
-		mWindowHandle(window.getWindowHandle()),
-		mKeyboardCallback(KeyboardCallback::init(window, gameSettingsHandler)),
+	CallbackManager::CallbackManager(GameSettingsHandler& gameSettingsHandler) :
+		mWindowHandle(BrickSimulator::instance->getWindow()->getWindowHandle()),
+		mKeyboardCallback(KeyboardCallback::init(*BrickSimulator::instance->getInputTracker(), gameSettingsHandler)),
 		mWindowFocusCallback(WindowFocusCallback::init()),
-		mWindowSizeCallback(WindowSizeCallback::init(window, gameSettingsHandler)),
+		mWindowSizeCallback(WindowSizeCallback::init(*BrickSimulator::instance->getWindow(), gameSettingsHandler)),
 		mFramebufferSizeCallback(FramebufferSizeCallback::init()),
 		mWindowPositionCallback(WindowPositionCallback::init(gameSettingsHandler)),
 		mCursorPositionCallback(CursorPositionCallback::init()),

@@ -5,27 +5,27 @@ namespace Bountive
 {
 	Logger ClampedIntegerSetting::logger = Logger("ClampedIntegerSetting", Logger::Level::LEVEL_ALL);
 
-	ClampedIntegerSetting::ClampedIntegerSetting(std::wstring settingName, const GLint DEFAULT_INTEGER, const GLint MIN_INTEGER, const GLint MAX_INTEGER) :
+	ClampedIntegerSetting::ClampedIntegerSetting(std::string settingName, const GLint DEFAULT_INTEGER, const GLint MIN_INTEGER, const GLint MAX_INTEGER) :
 		IntegerSetting(settingName, DEFAULT_INTEGER),
 		mMIN_INTEGER(MIN_INTEGER),
 		mMAX_INTEGER(MAX_INTEGER)
 	{
-		logger.log(Logger::Level::LEVEL_TRACE, L"Creating ClampedIntegerSetting: " + mSettingName);
+		logger.log(Logger::Level::LEVEL_TRACE, "Creating ClampedIntegerSetting: " + mSettingName);
 	}
 
 
 	ClampedIntegerSetting::~ClampedIntegerSetting() 
 	{
-		logger.log(Logger::Level::LEVEL_TRACE, L"Creating ClampedIntegerSetting: " + mSettingName);
+		logger.log(Logger::Level::LEVEL_TRACE, "Creating ClampedIntegerSetting: " + mSettingName);
 	}
 
 
 	void ClampedIntegerSetting::setCustomInteger(GLint customInteger)
 	{
 		mCustomInteger = clamp(customInteger);
-		logger.log(Logger::Level::LEVEL_TRACE, L"ClampedIntegerSetting: " + mSettingName + L" Default: " +
-			toString(mDEFAULT_INTEGER) + L" Custom: " + toString(mCustomInteger) + 
-			L" MIN/MAX: [" + std::to_wstring(mMIN_INTEGER) + L", " + std::to_wstring(mMAX_INTEGER) + L"]");
+		logger.log(Logger::Level::LEVEL_TRACE, "ClampedIntegerSetting: " + mSettingName + " Default: " +
+			toString(mDEFAULT_INTEGER) + " Custom: " + toString(mCustomInteger) + 
+			" MIN/MAX: [" + std::to_string(mMIN_INTEGER) + ", " + std::to_string(mMAX_INTEGER) + "]");
 	}
 
 

@@ -4,27 +4,29 @@
 
 #include <glew.h>
 #include <string>
+#include "IUpdatable.h"
+#include "IRenderable.h"
+#include "RenderManager.h"
 
 namespace Bountive
 {
-	class Window;
-
-	class Scene
+	class Scene : public IUpdatable, public IRenderable
 	{
 	public:
 		const GLint mID;
 
-		Scene(const Window& WINDOW_HANDLE, GLint id, std::string name);
+		Scene(GLint id, std::string name);
 		virtual ~Scene();
 
-		virtual void update(const GLdouble& DELTA_TIME) = 0;
-		virtual void render(const GLdouble& DELTA_TIME) = 0;
+		virtual void showScene() = 0;
+		virtual void hideScene() = 0;
 
 		const std::string& getName() const;
 		
 	protected:
-		const Window& mWINDOW_HANDLE;
 		const std::string mNAME;
+
+		RenderManager& mRenderManager;
 	};
 }
 

@@ -1,14 +1,14 @@
 #include "HomeSceneInput.h"
 #include "InputTracker.h"
-#include "Window.h"
+#include "BrickSimulator.h"
 #include "Logger.h"
 
 namespace Bountive
 {
 	Logger HomeSceneInput::logger = Logger("HomeSceneInput", Logger::Level::LEVEL_ALL);
 
-	HomeSceneInput::HomeSceneInput(const InputTracker& INPUT_TRACKER) :
-		SceneInput(INPUT_TRACKER)
+	HomeSceneInput::HomeSceneInput() :
+		SceneInput()
 	{
 		logger.log(Logger::Level::LEVEL_DEBUG, "Creating HomeSceneInput...");
 	}
@@ -20,11 +20,11 @@ namespace Bountive
 	}
 
 
-	void HomeSceneInput::update(const Window& window, const GLdouble& DELTA_TIME)
+	void HomeSceneInput::update(const GLdouble& DELTA_TIME)
 	{
-		if (mINPUT_TRACKER.getEscapeKey().isPressed() && mINPUT_TRACKER.getEscapeKey().isNewPress())
+		if (BrickSimulator::instance->getInputTracker()->getEscapeKey().isPressed() && BrickSimulator::instance->getInputTracker()->getEscapeKey().isNewPress())
 		{
-			glfwSetWindowShouldClose(window.getWindowHandle(), GL_TRUE);
+			glfwSetWindowShouldClose(BrickSimulator::instance->getWindow()->getWindowHandle(), GL_TRUE);
 		}
 	}
 }

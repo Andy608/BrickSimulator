@@ -6,7 +6,7 @@ namespace Bountive
 	Logger FileWriter::logger = Logger("FileWriter", Logger::Level::LEVEL_ALL);
 
 	FileWriter::FileWriter() :
-		mWriteStream(new std::wofstream())
+		mWriteStream(new std::ofstream())
 	{
 		logger.log(Logger::Level::LEVEL_ALL, "Creating FileWriter...");
 	}
@@ -19,13 +19,13 @@ namespace Bountive
 	}
 
 
-	std::wofstream& FileWriter::getWriteStream() const
+	std::ofstream& FileWriter::getWriteStream() const
 	{
 		return *mWriteStream;
 	}
 
 
-	GLboolean FileWriter::writeLinesInFile(const FileLocation& file, const std::vector<std::wstring>& lines)
+	GLboolean FileWriter::writeLinesInFile(const FileLocation& file, const std::vector<std::string>& lines)
 	{
 		mWriteStream->open(file.getFullPath(), std::fstream::trunc);
 

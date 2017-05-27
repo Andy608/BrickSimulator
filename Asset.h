@@ -4,14 +4,13 @@
 
 #include <string>
 #include <glew.h>
-#include "FileLocation.h"
 
 namespace Bountive
 {
 	class Asset
 	{
 	public:
-		Asset(const FileDirectory& DIRECTORY, const std::wstring FILE_NAME, const std::wstring& FILE_EXTENSION);
+		Asset(const std::wstring FILE_NAME);
 		virtual ~Asset();
 
 		virtual GLboolean load() = 0;
@@ -21,7 +20,6 @@ namespace Bountive
 		const GLboolean& isLoaded() const;
 
 	protected:
-		const FileLocation mFILE_LOCATION;
 		const std::wstring mASSET_ID;
 		GLboolean mIsLoaded;
 	};

@@ -6,11 +6,11 @@ namespace Bountive
 {
 	Logger SingleKeySetting::logger = Logger("SingleKeySetting", Logger::Level::LEVEL_ALL);
 
-	SingleKeySetting::SingleKeySetting(std::wstring settingName, const GLint DEFAULT_ASCII_VALUE) :
+	SingleKeySetting::SingleKeySetting(std::string settingName, const GLint DEFAULT_ASCII_VALUE) :
 		IntegerSetting(settingName, DEFAULT_ASCII_VALUE),
 		mNewPress(GL_TRUE)
 	{
-		logger.log(Logger::Level::LEVEL_TRACE, L"Creating SingleKeySetting" + mSettingName);
+		logger.log(Logger::Level::LEVEL_TRACE, "Creating SingleKeySetting" + mSettingName);
 	}
 
 

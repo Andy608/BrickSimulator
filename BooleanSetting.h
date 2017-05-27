@@ -11,13 +11,13 @@ namespace Bountive
 	class BooleanSetting : public SettingType
 	{
 	public:
-		static std::wstring toString(GLboolean booleanValue);
+		static std::string toString(GLboolean booleanValue);
 
-		BooleanSetting(std::wstring settingName, const GLboolean DEFAULT_BOOLEAN);
+		BooleanSetting(std::string settingName, const GLboolean DEFAULT_BOOLEAN);
 		virtual ~BooleanSetting();
 
 		void setCustomBoolean(GLboolean customBoolean);
-		void setCustomBoolean(std::wstring fileValue);
+		void setCustomBoolean(std::string fileValue);
 
 		void operator=(GLboolean customBoolean);
 		GLboolean operator==(GLboolean anotherBoolean);
@@ -25,14 +25,14 @@ namespace Bountive
 		const GLboolean& getDefaultBoolean() const;
 		const GLboolean& getCustomBoolean() const;
 
-		virtual std::wstring toFileString() const;
+		virtual std::string toFileString() const;
 		virtual GLboolean isModified() const;
 		virtual void resetCustomValue();
 
 	private:
 		static Logger logger;
-		static const std::wstring SETTING_TRUE;
-		static const std::wstring SETTING_FALSE;
+		static const std::string SETTING_TRUE;
+		static const std::string SETTING_FALSE;
 
 		const GLboolean mDEFAULT_BOOLEAN;
 		GLboolean mCustomBoolean;

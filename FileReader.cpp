@@ -6,7 +6,7 @@ namespace Bountive
 	Logger FileReader::logger = Logger("FileReader", Logger::Level::LEVEL_ALL);
 
 	FileReader::FileReader() :
-		mReadStream(new std::wifstream())
+		mReadStream(new std::ifstream())
 	{
 		logger.log(Logger::Level::LEVEL_DEBUG, "Creating FileReader...");
 	}
@@ -19,10 +19,38 @@ namespace Bountive
 	}
 
 
-	std::vector<std::wstring> FileReader::getLinesInFile(const FileLocation& file)
+	void FileReader::getFileContents(FileLocation& file, std::string& fileContents)
 	{
-		std::vector<std::wstring> lines = std::vector<std::wstring>();
-		std::wstring line;
+		try
+		{
+			mReadStream->open(file.getFullPath(), std::ifstream::in);
+
+			if (mReadStream->is_open())
+			{
+				std::stringstream stream;
+
+				stream << mReadStream->rdbuf();
+			
+				fileContents = stream.str();
+			}
+			else
+			{
+				throw std::wstring(L"Unable to read file: " + file.getFullPath());
+			}
+		}
+		catch (std::wstring e)
+		{
+			logger.log(Logger::Level::LEVEL_ERROR, e);
+		}
+
+		mReadStream->close();
+	}
+
+
+	std::vector<std::string> FileReader::getLinesInFile(const FileLocation& file)
+	{
+		std::vector<std::string> lines = std::vector<std::string>();
+		std::string line;
 
 		mReadStream->open(file.getFullPath(), std::wifstream::in);
 
@@ -32,6 +60,10 @@ namespace Bountive
 			{
 				lines.push_back(line);
 			}
+		}
+		else
+		{
+			logger.log(Logger::Level::LEVEL_DEBUG, "Unable to read file.");
 		}
 
 		mReadStream->close();

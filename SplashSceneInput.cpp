@@ -1,6 +1,6 @@
 #include "SplashSceneInput.h"
 #include "InputTracker.h"
-#include "Window.h"
+#include "BrickSimulator.h"
 #include "SceneHome.h"
 #include "BooleanSetting.h"
 #include "Logger.h"
@@ -9,8 +9,8 @@ namespace Bountive
 {
 	Logger SplashSceneInput::logger = Logger("SplashSceneInput", Logger::Level::LEVEL_ALL);
 
-	SplashSceneInput::SplashSceneInput(const InputTracker& INPUT_TRACKER) :
-		SceneInput(INPUT_TRACKER)
+	SplashSceneInput::SplashSceneInput() :
+		SceneInput()
 	{
 		logger.log(Logger::Level::LEVEL_DEBUG, "Creating SplashSceneInput...");
 	}
@@ -22,11 +22,11 @@ namespace Bountive
 	}
 
 
-	void SplashSceneInput::update(const Window& window, const GLdouble& DELTA_TIME)
+	void SplashSceneInput::update(const GLdouble& DELTA_TIME)
 	{
-		if (mINPUT_TRACKER.getEscapeKey().isPressed() && mINPUT_TRACKER.getEscapeKey().isNewPress())
+		if (BrickSimulator::instance->getInputTracker()->getEscapeKey().isPressed() && BrickSimulator::instance->getInputTracker()->getEscapeKey().isNewPress())
 		{
-			window.getSceneManager().setActiveScene(HomeScene::NAME);
+			BrickSimulator::instance->getSceneManager()->setActiveScene(HomeScene::NAME);
 		}
 	}
 }

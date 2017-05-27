@@ -17,12 +17,12 @@ namespace Bountive
 		FileWriter();
 		~FileWriter();
 
-		std::wofstream& getWriteStream() const;
-		GLboolean writeLinesInFile(const FileLocation& file, const std::vector<std::wstring>& lines);
+		std::ofstream& getWriteStream() const;
+		GLboolean writeLinesInFile(const FileLocation& file, const std::vector<std::string>& lines);
 
 	private:
 		static Logger logger;
-		std::wofstream* mWriteStream;
+		std::ofstream* mWriteStream;
 	};
 }
 

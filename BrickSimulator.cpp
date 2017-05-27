@@ -28,6 +28,9 @@ namespace Bountive
 			LoggerUtil::initFileAppender();
 			logger.log(Logger::Level::LEVEL_INFO, "Initializing BrickSimulator by Andy608...");
 			instance = new BrickSimulator();
+			instance->mWindow->buildWindow(*instance->mGameSettingsHandler);
+			instance->mRenderManager = new RenderManager(*instance->mSceneManager);
+			instance->mSceneManager = new SceneManager();
 		}
 
 		return instance;
@@ -39,10 +42,10 @@ namespace Bountive
 		mDIRECTORY_UTIL(DirectoryUtil::instance),
 		mLOGGER_UTIL(LoggerUtil::instance),
 		mWindow(new Window()),
-		mGameSettingsHandler(new GameSettingsHandler(*mWindow))
+		mGameSettingsHandler(new GameSettingsHandler(*mWindow)),
+		mInputTracker(InputTracker::init(*mGameSettingsHandler))
 	{
 		mGameSettingsHandler->updateSettings();
-		mWindow->buildWindow(*mGameSettingsHandler);
 	}
 	catch (std::wstring e)
 	{
@@ -59,7 +62,10 @@ namespace Bountive
 		logger.log(Logger::Level::LEVEL_DEBUG, "Deleting BrickSimulator...");
 		delete mDIRECTORY_UTIL;
 		delete mLOGGER_UTIL;
+		delete mRenderManager;
 		delete mWindow;
+		delete mSceneManager;
+		delete mInputTracker;
 		delete mGameSettingsHandler;
 	}
 
@@ -117,6 +123,8 @@ namespace Bountive
 		}
 
 		mWindow->update(DELTA_TIME);
+		mSceneManager->update(DELTA_TIME);
+		mInputTracker->update(DELTA_TIME);
 	}
 
 
@@ -125,6 +133,8 @@ namespace Bountive
 		++mFramesPerSecond;
 
 		mWindow->render(DELTA_TIME);
+		mSceneManager->render(DELTA_TIME);
+
 		glfwSwapBuffers(mWindow->getWindowHandle());
 	}
 
@@ -134,4 +144,29 @@ namespace Bountive
 		logger.log(Logger::Level::LEVEL_INFO, "Saving settings to file...");
 		mGameSettingsHandler->saveOptionsToFile();
 	}
+
+
+	Window* BrickSimulator::getWindow() const
+	{
+		return mWindow;
+	}
+	
+
+	SceneManager* BrickSimulator::getSceneManager() const
+	{
+		return mSceneManager;
+	}
+
+	
+	RenderManager* BrickSimulator::getRenderManager() const
+	{
+		return mRenderManager;
+	}
+
+
+	InputTracker* BrickSimulator::getInputTracker() const
+	{
+		return mInputTracker;
+	}
+
 }

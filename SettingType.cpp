@@ -2,9 +2,9 @@
 
 namespace Bountive
 {
-	const wchar_t SettingType::DELIMITER = L'=';
+	const GLchar SettingType::DELIMITER = '=';
 
-	SettingType::SettingType(std::wstring settingName) :
+	SettingType::SettingType(std::string settingName) :
 		mSettingName(settingName)
 	{
 
@@ -14,7 +14,7 @@ namespace Bountive
 	SettingType::~SettingType() {}
 
 
-	const std::wstring& SettingType::getSettingName() const
+	const std::string& SettingType::getSettingName() const
 	{
 		return mSettingName;
 	}

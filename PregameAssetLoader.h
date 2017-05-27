@@ -3,6 +3,10 @@
 #define BOUNTIVE_PREGAMEASSETLOADER_H_
 
 #include "AssetLoader.h"
+#include "AssetImage.h"
+#include "AssetMesh.h"
+#include "AssetShader.h"
+#include "AssetShaderProgram.h"
 
 namespace Bountive
 {
@@ -11,6 +15,14 @@ namespace Bountive
 	class PregameAssetLoader : public AssetLoader
 	{
 	public:
+		AssetImage* mBountiveLogo;
+
+		AssetMesh* mGuiMesh;
+
+		AssetShader* mGuiVertexShader;
+		AssetShader* mGuiFragmentShader;
+		AssetShaderProgram* mGuiShaderProgram;
+
 		PregameAssetLoader();
 		~PregameAssetLoader();
 
@@ -18,6 +30,8 @@ namespace Bountive
 			
 	private:
 		static Logger logger;
+
+		void loadShaders();
 };
 
 }

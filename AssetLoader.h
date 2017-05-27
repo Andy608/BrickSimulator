@@ -22,6 +22,8 @@ namespace Bountive
 		void loadAssets();
 		void unloadAssets();
 
+		Asset* findAsset(std::wstring assetId);
+
 		void clearAssetList();
 
 	private:

@@ -6,6 +6,8 @@ namespace Bountive
 	Logger FileLocation::logger = Logger("FileLocation", Logger::Level::LEVEL_ALL);
 	std::wstring FileLocation::TXT_EXTENSION = L".txt";
 	std::wstring FileLocation::PNG_EXTENSION = L".png";
+	std::wstring FileLocation::VS_SHADER_EXTENSION = L".vs";
+	std::wstring FileLocation::FS_SHADER_EXTENSION = L".fs";
 
 	FileLocation::FileLocation(const FileDirectory* PARENT_DIRECTORY, const std::wstring FILE_NAME, const std::wstring FILE_EXTENSION) :
 		mPARENT_DIRECTORY(PARENT_DIRECTORY),
@@ -59,7 +61,7 @@ namespace Bountive
 	}
 
 
-	GLboolean FileLocation::createFile(std::wofstream& fileWriter)
+	GLboolean FileLocation::createFile(std::ofstream& fileWriter)
 	{
 		fileWriter.open(getFullPath(), std::fstream::app);
 

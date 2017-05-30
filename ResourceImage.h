@@ -1,19 +1,19 @@
 #pragma once
-#ifndef BOUNTIVE_ASSETIMAGE_H_
-#define BOUNTIVE_ASSETIMAGE_H_
+#ifndef BOUNTIVE_RESOURCEIMAGE_H_
+#define BOUNTIVE_RESOURCEIMAGE_H_
 
-#include "Asset.h"
+#include "Resource.h"
 #include "FileLocation.h"
 
 namespace Bountive
 {
 	class Logger;
 
-	class AssetImage : public Asset
+	class ResourceImage : public Resource
 	{
 	public:
-		AssetImage(const std::wstring ASSET_ID, const FileDirectory& DIRECTORY, const std::wstring FILE_NAME);
-		virtual ~AssetImage();
+		ResourceImage(const std::string RESOURCE_ID, const FileDirectory& DIRECTORY, const std::wstring FILE_NAME);
+		virtual ~ResourceImage();
 
 		virtual GLboolean load();
 		virtual void unload();
@@ -21,7 +21,7 @@ namespace Bountive
 		const GLint& getWidth() const;
 		const GLint& getHeight() const;
 
-		GLubyte* getGLImage() const;
+		GLubyte* getGLImageId() const;
 
 	private:
 		static Logger logger;
@@ -30,7 +30,7 @@ namespace Bountive
 		GLint mWidth;
 		GLint mHeight;
 		GLint mColorChannels;
-		GLubyte* mImage;
+		GLubyte* mImageId;
 	};
 }
 

@@ -16,7 +16,7 @@ namespace Bountive
 		~EntityRegistry();
 
 		void registerEntity(Entity* entity);
-		Entity* getEntityFromRegistry(std::wstring entityId);
+		Entity* getEntityFromRegistry(std::string entityId);
 
 	private:
 		static Logger logger;

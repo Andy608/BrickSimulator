@@ -1,10 +1,10 @@
 #pragma once
-#ifndef BOUNTIVE_ASSETMESH_H_
-#define BOUNTIVE_ASSETMESH_H_
+#ifndef BOUNTIVE_RESOURCEMESH_H_
+#define BOUNTIVE_RESOURCEMESH_H_
 
 #include <glew.h>
 #include <vector>
-#include "Asset.h"
+#include "Resource.h"
 #include "VertexArrayWrapper.h"
 #include "VertexBufferWrapper.h"
 #include "ElementBufferWrapper.h"
@@ -13,14 +13,14 @@ namespace Bountive
 {
 	class Logger;
 
-	class AssetMesh : public Asset
+	class ResourceMesh : public Resource
 	{
 	public:
-		AssetMesh(const std::wstring ASSET_ID);
-		virtual ~AssetMesh();
+		ResourceMesh(const std::string RESOURCE_ID);
+		virtual ~ResourceMesh();
 
-		virtual GLboolean load() = 0;
-		virtual void unload() = 0;
+		virtual GLboolean load();
+		virtual void unload();
 
 		void addVertexBuffer(VertexBufferWrapper* wrapper);
 		void setElementBuffer(ElementBufferWrapper* wrapper);

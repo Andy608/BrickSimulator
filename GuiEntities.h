@@ -6,7 +6,7 @@
 
 namespace Bountive
 {
-	class AssetManager;
+	class ResourceTracker;
 	class EntityRegistry;
 	class EntityGui;
 
@@ -15,7 +15,7 @@ namespace Bountive
 	public:
 		static EntityGui* mBountiveLogo;
 
-		static void initGuis(const AssetManager& ASSET_MANAGER, EntityRegistry& entityRegistry);
+		static void initGuis(const ResourceTracker& RESOURCE_TRACKER, EntityRegistry& entityRegistry);
 
 	private:
 		static void registerGuis(EntityRegistry& entityRegistry);

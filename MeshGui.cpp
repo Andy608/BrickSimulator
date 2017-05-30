@@ -1,18 +1,17 @@
-#include "AssetMeshGui.h"
+#include "MeshGui.h"
 #include "Logger.h"
 
 namespace Bountive
 {
-	Logger AssetMeshGui::logger = Logger("AssetMeshGui", Logger::Level::LEVEL_ALL);
-	const GLint AssetMeshGui::POSITION_ATTRIBS = 3;
-	const GLint AssetMeshGui::COLOR_ATTRIBS = 3;
-	const GLint AssetMeshGui::TEXTURE_COORD_ATTRIBS = 2;
+	Logger MeshGui::logger = Logger("MeshGui", Logger::Level::LEVEL_ALL);
+	const GLint MeshGui::POSITION_ATTRIBS = 3;
+	const GLint MeshGui::COLOR_ATTRIBS = 3;
+	const GLint MeshGui::TEXTURE_COORD_ATTRIBS = 2;
 
-	AssetMeshGui::AssetMeshGui() :
-		AssetMesh(L"mesh_gui"),
-		mIndices(std::vector<GLint>() = { 
-			0, 1, 3, 
-			1, 2, 3 
+	MeshGui::MeshGui(const std::string mRESOURCE_ID) :
+		ResourceMesh(mRESOURCE_ID),
+		mIndices(std::vector<GLint>() = {
+			0, 1, 3, 1, 2, 3
 		}),
 		mPositions(std::vector<GLfloat>() = { 
 			 0.5f,  0.5f, 0.0f, 
@@ -33,7 +32,6 @@ namespace Bountive
 			0.0f, 0.0f,
 			0.0f, 1.0f
 		})
-
 	{
 		logger.log(Logger::Level::LEVEL_DEBUG, "Creating AssetMeshGui...");
 
@@ -45,23 +43,8 @@ namespace Bountive
 	}
 
 
-	AssetMeshGui::~AssetMeshGui()
+	MeshGui::~MeshGui()
 	{
 		logger.log(Logger::Level::LEVEL_DEBUG, "Deleting AssetMeshGui...");
-		unload();
-	}
-
-
-	GLboolean AssetMeshGui::load()
-	{
-		logger.log(Logger::Level::LEVEL_DEBUG, L"Successfully loaded AssetMeshGui: " + mASSET_ID);
-		mIsLoaded = GL_TRUE;
-		return mIsLoaded;
-	}
-
-
-	void AssetMeshGui::unload()
-	{
-
 	}
 }

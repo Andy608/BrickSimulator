@@ -1,13 +1,13 @@
 #include "Renderer.h"
-#include "AssetManager.h"
+#include "ResourceTracker.h"
 #include "Logger.h"
 
 namespace Bountive
 {
 	Logger Renderer::logger = Logger("Renderer", Logger::Level::LEVEL_ALL);
 
-	Renderer::Renderer(const AssetManager& ASSET_MANAGER, const SceneManager& SCENE_MANAGER) :
-		mASSET_MANAGER(ASSET_MANAGER),
+	Renderer::Renderer(const ResourceTracker& RESOURCE_TRACKER, const SceneManager& SCENE_MANAGER) :
+		mRESOURCE_TRACKER(RESOURCE_TRACKER),
 		mSCENE_MANAGER(SCENE_MANAGER),
 		mEntitiesList(new std::vector<Entity*>())
 	{

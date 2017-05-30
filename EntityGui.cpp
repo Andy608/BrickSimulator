@@ -1,14 +1,13 @@
 #include "BrickSimulator.h"
 #include "EntityGui.h"
-#include "AssetMeshGui.h"
 #include "Logger.h"
 
 namespace Bountive
 {
 	Logger EntityGui::logger = Logger("EntityGui", Logger::Level::LEVEL_ALL);
 
-	EntityGui::EntityGui(const std::wstring ASSET_ID, AssetMeshGui& assetMesh, TextureWrapper* guiTextureWrapper) :
-		Entity(ASSET_ID, assetMesh),
+	EntityGui::EntityGui(const std::string ENTITY_ID, MeshGui& resourceMesh, TextureWrapper* guiTextureWrapper) :
+		Entity(ENTITY_ID, resourceMesh),
 		mGuiTextureWrapper(guiTextureWrapper)
 	{
 		logger.log(Logger::Level::LEVEL_DEBUG, "Creating EntityGui...");

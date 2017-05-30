@@ -7,12 +7,12 @@ namespace Bountive
 {
 	Logger GuiRenderer::logger = Logger("GuiRenderer", Logger::Level::LEVEL_ALL);
 
-	GuiRenderer::GuiRenderer(const AssetManager& ASSET_MANAGER, const SceneManager& SCENE_MANAGER) :
-		Renderer(ASSET_MANAGER, SCENE_MANAGER),
+	GuiRenderer::GuiRenderer(const ResourceTracker& RESOURCE_TRACKER, const SceneManager& SCENE_MANAGER) :
+		Renderer(RESOURCE_TRACKER, SCENE_MANAGER),
 		mEntityRegistry(new EntityRegistry())
 	{
 		logger.log(Logger::Level::LEVEL_DEBUG, "Creating GuiRenderer...");
-		GuiEntities::initGuis(mASSET_MANAGER, *mEntityRegistry);
+		GuiEntities::initGuis(mRESOURCE_TRACKER, *mEntityRegistry);
 	}
 
 

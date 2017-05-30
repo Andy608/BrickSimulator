@@ -1,50 +1,50 @@
-#include "AssetShader.h"
+#include "ResourceShader.h"
 #include "FileReader.h"
 #include "StringUtil.h"
 #include "Logger.h"
 
 namespace Bountive
 {
-	const GLint AssetShader::SIZE = 1;
-	const GLint AssetShader::ERROR_LOG_SIZE = 512;
-	Logger AssetShader::logger = Logger("AssetShader", Logger::Level::LEVEL_ALL);
+	const GLint ResourceShader::SIZE = 1;
+	const GLint ResourceShader::ERROR_LOG_SIZE = 512;
+	Logger ResourceShader::logger = Logger("ResourceShader", Logger::Level::LEVEL_ALL);
 
-	AssetShader::AssetShader(const std::wstring ASSET_ID, const ShaderType& SHADER_TYPE, FileLocation* shaderPath) :
-		Asset(ASSET_ID),
+	ResourceShader::ResourceShader(const std::string RESOURCE_ID, const ShaderType& SHADER_TYPE, FileLocation* shaderPath) :
+		Resource(RESOURCE_ID),
 		mSHADER_TYPE(SHADER_TYPE),
 		mShaderPath(shaderPath),
 		mFileReader(new FileReader())
 	{
-		logger.log(Logger::Level::LEVEL_DEBUG, "Creating AssetShader...");
+		logger.log(Logger::Level::LEVEL_DEBUG, "Creating ResourceShader...");
 		extractFromFile();
 		compile();
 		mIsLoaded = GL_TRUE;
 	}
 
 
-	AssetShader::~AssetShader()
+	ResourceShader::~ResourceShader()
 	{
-		logger.log(Logger::Level::LEVEL_DEBUG, "Deleting AssetShader...");
+		logger.log(Logger::Level::LEVEL_DEBUG, "Deleting ResourceShader...");
 		glDeleteShader(mShaderId);
 		delete mShaderPath;
 		delete mFileReader;
 	}
 
 
-	GLboolean AssetShader::load()
+	GLboolean ResourceShader::load()
 	{
-		logger.log(Logger::Level::LEVEL_DEBUG, L"Successfully loaded AssetShader: " + mASSET_ID);
+		logger.log(Logger::Level::LEVEL_DEBUG, "Successfully loaded AssetShader: " + mRESOURCE_ID);
 		return mIsLoaded;
 	}
 
 
-	void AssetShader::unload()
+	void ResourceShader::unload()
 	{
 
 	}
 
 
-	void AssetShader::compile()
+	void ResourceShader::compile()
 	{
 		switch (mSHADER_TYPE)
 		{
@@ -76,25 +76,25 @@ namespace Bountive
 	}
 
 
-	const AssetShader::ShaderType& AssetShader::getShaderType() const
+	const ResourceShader::ShaderType& ResourceShader::getShaderType() const
 	{
 		return mSHADER_TYPE;
 	}
 
 
-	const FileLocation& AssetShader::getShaderPath() const
+	const FileLocation& ResourceShader::getShaderPath() const
 	{
 		return *mShaderPath;
 	}
 
 
-	const GLint& AssetShader::getGLShaderId() const
+	const GLint& ResourceShader::getGLShaderId() const
 	{
 		return mShaderId;
 	}
 
 
-	void AssetShader::extractFromFile()
+	void ResourceShader::extractFromFile()
 	{
 		mFileReader->getFileContents(*mShaderPath, mShaderCode);
 	}

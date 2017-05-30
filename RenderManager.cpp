@@ -6,23 +6,24 @@ namespace Bountive
 {
 	RenderManager::RenderManager(const SceneManager& SCENE_MANAGER) :
 		mSCENE_MANAGER(SCENE_MANAGER),
-		mAssetManager(new AssetManager()),
-		mGuiRenderer(new GuiRenderer(*mAssetManager, mSCENE_MANAGER))
+		mResourceTracker(new ResourceTracker()),
+		mGuiRenderer(new GuiRenderer(*mResourceTracker, mSCENE_MANAGER))
 	{
-
+		mResourceTracker->initResourcePackage(ResourceLoader::ResourcePackageId::START_UP);
+		mResourceTracker->loadResourcePackage(ResourceLoader::ResourcePackageId::START_UP);
 	}
 
 
 	RenderManager::~RenderManager()
 	{
 		delete mGuiRenderer;
-		delete mAssetManager;
+		delete mResourceTracker;
 	}
 
 
-	AssetManager* RenderManager::getAssetManager() const
+	ResourceTracker* RenderManager::getResourceTracker() const
 	{
-		return mAssetManager;
+		return mResourceTracker;
 	}
 
 

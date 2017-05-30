@@ -2,7 +2,7 @@
 
 namespace Bountive
 {
-	Entity::Entity(std::wstring entityId, const AssetMesh& MODEL) :
+	Entity::Entity(std::string entityId, const ResourceMesh& MODEL) :
 		mEntityId(entityId), 
 		mMODEL(MODEL),
 		mPosition(glm::vec3()),
@@ -19,7 +19,7 @@ namespace Bountive
 	}
 
 
-	const std::wstring& Entity::getEntityId() const
+	const std::string& Entity::getEntityId() const
 	{
 		return mEntityId;
 	}

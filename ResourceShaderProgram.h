@@ -1,27 +1,27 @@
 #pragma once
-#ifndef BOUNTIVE_ASSETSHADERPROGRAM_H_
-#define BOUNTIVE_ASSETSHADERPROGRAM_H_
+#ifndef BOUNTIVE_RESOURCESHADERPROGRAM_H_
+#define BOUNTIVE_RESOURCESHADERPROGRAM_H_
 
 #include <vector>
-#include "AssetShader.h"
+#include "ResourceShader.h"
 
 namespace Bountive
 {
 	class FileLocation;
 	class Logger;
 
-	class AssetShaderProgram : public Asset
+	class ResourceShaderProgram : public Resource
 	{
 	public:
-		AssetShaderProgram(const std::wstring ASSET_ID);
-		~AssetShaderProgram();
+		ResourceShaderProgram(const std::string RESOURCE_ID);
+		~ResourceShaderProgram();
 
 		virtual GLboolean load();
 		virtual void unload();
 
 		void use() const;
 
-		void attachShader(AssetShader* shader);
+		void attachShader(ResourceShader* shader);
 		void compileProgram();
 
 		const GLint& getProgramId() const;
@@ -31,7 +31,7 @@ namespace Bountive
 		static Logger logger;
 
 		GLint mProgramId;
-		std::vector<AssetShader*> mActiveShaders;
+		std::vector<ResourceShader*> mActiveShaders;
 	};
 }
 

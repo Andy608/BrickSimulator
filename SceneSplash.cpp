@@ -27,8 +27,8 @@ namespace Bountive
 	void SplashScene::showScene()
 	{
 		//add gui adds an entity (with position/rot/scale)
-		mRenderManager.getAssetManager()->getPregameAssetLoader()->mGuiShaderProgram->use();
-		mRenderManager.getGuiRenderer()->addGui(GuiEntities::mBountiveLogo);
+		//mRenderManager.getAssetManager()->getPregameAssetLoader()->mGuiShaderProgram->use();
+		//mRenderManager.getGuiRenderer()->addGui(GuiEntities::mBountiveLogo);
 	}
 
 
@@ -50,11 +50,11 @@ namespace Bountive
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		mRenderManager.getAssetManager()->getPregameAssetLoader()->mGuiShaderProgram->use();
+		//mRenderManager.getResourceTracker()->getStartupResourceLoader()->mGuiShaderProgram->use();
 
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, GuiEntities::mBountiveLogo->getTextureWrapper().getId());
-		glUniform1i(glGetUniformLocation(mRenderManager.getAssetManager()->getPregameAssetLoader()->mGuiShaderProgram->getProgramId(), "bountiveLogo"), 0);
+		//glBindTexture(GL_TEXTURE_2D, GuiEntities::mBountiveLogo->getTextureWrapper().getId());
+		//glUniform1i(glGetUniformLocation(mRenderManager.getResourceTracker()->getStartupResourceLoader()->mGuiShaderProgram->getProgramId(), "bountiveLogo"), 0);
 
 		mRenderManager.getGuiRenderer()->render(DELTA_TIME);
 	}

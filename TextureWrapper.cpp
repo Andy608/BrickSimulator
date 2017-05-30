@@ -2,12 +2,12 @@
 
 namespace Bountive
 {
-	TextureWrapper::TextureWrapper(AssetImage* image) :
+	TextureWrapper::TextureWrapper(ResourceImage* image) :
 		mImage(image),
 		mWrapStyleS(WrapStyle::REPEAT),
 		mWrapStyleT(WrapStyle::REPEAT),
-		mMinifyFilter(),
-		mMaxifyFilter()
+		mMinifyFilter(MinFilter::NEAREST_MIPMAP_NEAREST),
+		mMaxifyFilter(MaxFilter::NEAREST)
 	{
 		createId();
 	}
@@ -31,7 +31,7 @@ namespace Bountive
 	}
 
 
-	void TextureWrapper::setImage(AssetImage* image)
+	void TextureWrapper::setImage(ResourceImage* image)
 	{
 		mImage = image;
 	}
@@ -70,14 +70,14 @@ namespace Bountive
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, static_cast<GLint>(mMinifyFilter));
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, static_cast<GLint>(mMaxifyFilter));
 
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, mImage->getWidth(), mImage->getHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, mImage->getGLImage());
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, mImage->getWidth(), mImage->getHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, mImage->getGLImageId());
 		
 		glGenerateMipmap(GL_TEXTURE_2D);
 		unbind();
 	}
 
 
-	AssetImage* TextureWrapper::getImage() const
+	ResourceImage* TextureWrapper::getImage() const
 	{
 		return mImage;
 	}

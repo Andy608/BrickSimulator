@@ -13,7 +13,7 @@ namespace Bountive
 	class GuiRenderer : public Renderer
 	{
 	public:
-		GuiRenderer(const AssetManager& ASSET_MANAGER, const SceneManager& SCENE_MANAGER);
+		GuiRenderer(const ResourceTracker& RESOURCE_TRACKER, const SceneManager& SCENE_MANAGER);
 		~GuiRenderer();
 
 		virtual void update(const GLdouble& DELTA_TIME);

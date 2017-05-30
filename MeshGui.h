@@ -1,21 +1,18 @@
 #pragma once
-#ifndef BOUNTIVE_ASSETMESHGUI_H_
-#define BOUNTIVE_ASSETMESHGUI_H_
+#ifndef BOUNTIVE_MESHGUI_H_
+#define BOUNTIVE_MESHGUI_H_
 
-#include "AssetMesh.h"
+#include "ResourceMesh.h"
 
 namespace Bountive
 {
 	class Logger;
 
-	class AssetMeshGui : public AssetMesh
+	class MeshGui : public ResourceMesh
 	{
 	public:
-		AssetMeshGui();
-		~AssetMeshGui();
-
-		virtual GLboolean load();
-		virtual void unload();
+		MeshGui(const std::string mRESOURCE_ID);
+		~MeshGui();
 
 	private:
 		static Logger logger;

@@ -2,7 +2,7 @@
 #ifndef BOUNTIVE_RENDERMANAGER_H_
 #define BOUNTIVE_RENDERMANAGER_H_
 
-#include "AssetManager.h"
+#include "ResourceTracker.h"
 #include "GuiRenderer.h"
 
 namespace Bountive
@@ -15,12 +15,12 @@ namespace Bountive
 		RenderManager(const SceneManager& SCENE_MANAGER);
 		~RenderManager();
 
-		AssetManager* getAssetManager() const;
+		ResourceTracker* getResourceTracker() const;
 		GuiRenderer* getGuiRenderer() const;
 
 	private:
 		const SceneManager& mSCENE_MANAGER;
-		AssetManager* mAssetManager;
+		ResourceTracker* mResourceTracker;
 		GuiRenderer* mGuiRenderer;
 	};
 }

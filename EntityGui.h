@@ -3,7 +3,7 @@
 #define BOUNTIVE_ENTITYGUI_H_
 
 #include "Entity.h"
-#include "AssetMesh.h"
+#include "MeshGui.h"
 #include "TextureWrapper.h"
 
 namespace Bountive
@@ -14,7 +14,7 @@ namespace Bountive
 	class EntityGui : public Entity
 	{
 	public:
-		EntityGui(const std::wstring ASSET_ID, AssetMeshGui& assetMesh, TextureWrapper* guiTextureWrapper);
+		EntityGui(const std::string ENTITY_ID, MeshGui& resourceMesh, TextureWrapper* guiTextureWrapper);
 		~EntityGui();
 
 		virtual void update(const GLdouble& DELTA_TIME);

@@ -26,7 +26,7 @@ namespace Bountive
 		{
 			if (mEntityList->at(i)->getEntityId().compare(entity->getEntityId()) == 0)
 			{
-				std::wstring entityRegistryError = L"Cannot register entity with id: " + entity->getEntityId() + L". Entity with id is already in use.";
+				std::string entityRegistryError = "Cannot register entity with id: " + entity->getEntityId() + ". Entity with id is already in use.";
 				logger.log(Logger::Level::LEVEL_WARN, entityRegistryError);
 				throw(entityRegistryError);
 			}
@@ -35,7 +35,7 @@ namespace Bountive
 	}
 
 
-	Entity* EntityRegistry::getEntityFromRegistry(std::wstring entityId)
+	Entity* EntityRegistry::getEntityFromRegistry(std::string entityId)
 	{
 		for (GLuint i = 0; i < mEntityList->size(); ++i)
 		{
@@ -45,7 +45,7 @@ namespace Bountive
 			}
 		}
 
-		logger.log(Logger::Level::LEVEL_WARN, L"Could not find entity with id: " + entityId + L" in the registry list.");
+		logger.log(Logger::Level::LEVEL_WARN, "Could not find entity with id: " + entityId + " in the registry list.");
 		return nullptr;
 	}
 

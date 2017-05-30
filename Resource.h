@@ -1,26 +1,26 @@
 #pragma once
-#ifndef BOUNTIVE_ASSET_H_
-#define BOUNTIVE_ASSET_H_
+#ifndef BOUNTIVE_RESOURCE_H_
+#define BOUNTIVE_RESOURCE_H_
 
 #include <string>
 #include <glew.h>
 
 namespace Bountive
 {
-	class Asset
+	class Resource
 	{
 	public:
-		Asset(const std::wstring FILE_NAME);
-		virtual ~Asset();
+		Resource(const std::string RESOURCE_ID);
+		virtual ~Resource();
 
 		virtual GLboolean load() = 0;
 		virtual void unload() = 0;
 		
-		const std::wstring getAssetId() const;
+		const std::string getResourceId() const;
 		const GLboolean& isLoaded() const;
 
 	protected:
-		const std::wstring mASSET_ID;
+		const std::string mRESOURCE_ID;
 		GLboolean mIsLoaded;
 	};
 }

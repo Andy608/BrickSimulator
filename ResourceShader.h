@@ -1,8 +1,8 @@
 #pragma once
-#ifndef BOUNTIVE_ASSETSHADER_H_
-#define BOUNTIVE_ASSETSHADER_H_
+#ifndef BOUNTIVE_RESOURCESHADER_H_
+#define BOUNTIVE_RESOURCESHADER_H_
 
-#include "Asset.h"
+#include "Resource.h"
 #include "FileLocation.h"
 
 namespace Bountive
@@ -10,7 +10,7 @@ namespace Bountive
 	class FileReader;
 	class Logger;
 
-	class AssetShader : public Asset
+	class ResourceShader : public Resource
 	{
 	public:
 		enum class ShaderType : GLint
@@ -19,8 +19,8 @@ namespace Bountive
 			FRAGMENT
 		};
 
-		AssetShader(const std::wstring ASSET_ID, const ShaderType& SHADER_TYPE, FileLocation* shaderPath);
-		~AssetShader();
+		ResourceShader(const std::string RESOURCE_ID, const ShaderType& SHADER_TYPE, FileLocation* shaderPath);
+		~ResourceShader();
 
 		GLboolean load();
 		void unload();

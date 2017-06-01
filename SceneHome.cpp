@@ -9,8 +9,8 @@ namespace Bountive
 	Logger HomeScene::logger = Logger("HomeScene", Logger::Level::LEVEL_ALL);
 	const std::string HomeScene::NAME = "home_scene";
 
-	HomeScene::HomeScene(GLint id) :
-		Scene(id, NAME),
+	HomeScene::HomeScene(GLint id, RenderManager& renderManager) :
+		Scene(id, NAME, renderManager),
 		mInputHandler(new HomeSceneInput())
 	{
 		logger.log(Logger::Level::LEVEL_DEBUG, "Creating HomeScene...");
@@ -26,12 +26,12 @@ namespace Bountive
 
 	void HomeScene::showScene()
 	{
-
+		logger.log(Logger::Level::LEVEL_DEBUG, "SHOWING HOME SCENE... " + std::to_string(mGuiList->size()));
 	}
 
 	void HomeScene::hideScene()
 	{
-		mRenderManager.getGuiRenderer()->clearEntities();
+		logger.log(Logger::Level::LEVEL_DEBUG, "HIDING HOME SCENE... " + std::to_string(mGuiList->size()));
 	}
 
 
@@ -43,7 +43,11 @@ namespace Bountive
 
 	void HomeScene::render(const GLdouble& DELTA_TIME)
 	{
+		logger.log(Logger::Level::LEVEL_TRACE, "HOME");
+
 		glClearColor(0.8f, 0.8f, 0.8f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		Scene::render(DELTA_TIME);
 	}
 }

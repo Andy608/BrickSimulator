@@ -22,11 +22,9 @@ namespace Bountive
 	}
 
 
-	GLboolean ResourceMesh::load()
+	void ResourceMesh::load()
 	{
 		//load information from file
-		mIsLoaded = GL_TRUE;
-		return mIsLoaded;
 	}
 
 

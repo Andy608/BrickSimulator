@@ -2,12 +2,10 @@
 
 namespace Bountive
 {
-	Entity::Entity(std::string entityId, const ResourceMesh& MODEL) :
-		mEntityId(entityId), 
+	Entity::Entity(std::string ENTITY_ID, const ResourceMesh& MODEL) :
+		mENTITY_ID(ENTITY_ID),
 		mMODEL(MODEL),
-		mPosition(glm::vec3()),
-		mRotation(glm::vec3()),
-		mScale(glm::vec3())
+		mTransform(new Transform())
 	{
 
 	}
@@ -15,12 +13,25 @@ namespace Bountive
 
 	Entity::~Entity()
 	{
-		
+		delete mTransform;
 	}
 
 
-	const std::string& Entity::getEntityId() const
+	Transform* Entity::getTransform() const
 	{
-		return mEntityId;
+		return mTransform;
+	}
+
+
+	GLboolean Entity::operator==(const Entity& comparison) const
+	{
+		if (mENTITY_ID == comparison.mENTITY_ID)
+		{
+			return GL_TRUE;
+		}
+		else
+		{
+			return GL_FALSE;
+		}
 	}
 }

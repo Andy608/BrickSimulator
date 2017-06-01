@@ -9,24 +9,17 @@
 
 namespace Bountive
 {
-	class ResourceTracker;
-	class SceneManager;
+	class RenderManager;
 	class Logger;
 
-	class Renderer : public IUpdatable, public IRenderable
+	class Renderer
 	{
 	public:
-		Renderer(const ResourceTracker& ASSET_MANAGER, const SceneManager& SCENE_MANAGER);
+		Renderer(RenderManager& renderManager);
 		virtual ~Renderer();
 
-		void clearEntities();
-
 	protected:
-		std::vector<Entity*>* mEntitiesList;
-
-	protected:
-		const ResourceTracker& mRESOURCE_TRACKER;
-		const SceneManager& mSCENE_MANAGER;
+		RenderManager& mRenderManager;
 
 	private:
 		static Logger logger;

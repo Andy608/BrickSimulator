@@ -4,15 +4,17 @@
 
 #include <vector>
 #include "Scene.h"
+#include "ResourceBundleTracker.h"
 
 namespace Bountive
 {
+	class RenderManager;
 	class Logger;
 
 	class SceneManager
 	{
 	public:
-		SceneManager();
+		SceneManager(ResourceBundleTracker& resourceBundleTracker, RenderManager& renderManager);
 		~SceneManager();
 
 		void update(const GLdouble& DELTA_TIME);
@@ -26,6 +28,9 @@ namespace Bountive
 	private:
 		static Logger logger;
 		static GLint sceneIdCounter;
+
+		ResourceBundleTracker& mResourceBundleTracker;
+		RenderManager& mRenderManager;
 
 		std::vector<Scene*>* mSceneList;
 		Scene* mActiveScene;

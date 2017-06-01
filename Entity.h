@@ -3,8 +3,7 @@
 #define BOUNTIVE_ENTITY_H_
 
 #include <string>
-#include <glew.h>
-#include <glm\vec3.hpp>
+#include "Transform.h"
 #include "IUpdatable.h"
 #include "IRenderable.h"
 #include "ResourceMesh.h"
@@ -14,17 +13,17 @@ namespace Bountive
 	class Entity : public IUpdatable, public IRenderable
 	{
 	public:
-		Entity(std::string entityId, const ResourceMesh& MODEL);
+		Entity(std::string ENTITY_ID, const ResourceMesh& MODEL);
 		virtual ~Entity();
 
-		const std::string& getEntityId() const;
+		Transform* getTransform() const;
+
+		GLboolean operator==(const Entity& comparison) const;
 
 	protected:
-		std::string mEntityId;
+		const std::string mENTITY_ID;
 		const ResourceMesh& mMODEL;
-		glm::vec3 mPosition;
-		glm::vec3 mRotation;
-		glm::vec3 mScale;
+		Transform* mTransform;
 	};
 }
 

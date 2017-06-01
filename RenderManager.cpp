@@ -1,34 +1,58 @@
 #include "RenderManager.h"
-#include "Window.h"
-#include "SceneHome.h"
+#include "ShaderList.h"
+#include "ResourceShaderProgram.h"
+#include "Logger.h"
 
 namespace Bountive
 {
-	RenderManager::RenderManager(const SceneManager& SCENE_MANAGER) :
-		mSCENE_MANAGER(SCENE_MANAGER),
-		mResourceTracker(new ResourceTracker()),
-		mGuiRenderer(new GuiRenderer(*mResourceTracker, mSCENE_MANAGER))
+	Logger RenderManager::logger = Logger("RenderManager", Logger::Level::LEVEL_ALL);
+
+	RenderManager::RenderManager() :
+		mGuiRenderer(new GuiRenderer(*this))
 	{
-		mResourceTracker->initResourcePackage(ResourceLoader::ResourcePackageId::START_UP);
-		mResourceTracker->loadResourcePackage(ResourceLoader::ResourcePackageId::START_UP);
+		logger.log(Logger::Level::LEVEL_INFO, "Creating RenderManager...");
 	}
 
 
 	RenderManager::~RenderManager()
 	{
+		logger.log(Logger::Level::LEVEL_INFO, "Deleting RenderManager...");
 		delete mGuiRenderer;
-		delete mResourceTracker;
 	}
 
 
-	ResourceTracker* RenderManager::getResourceTracker() const
+	void RenderManager::setShader(ResourceShaderProgram* shader)
 	{
-		return mResourceTracker;
+		mActiveShaderProgram = shader;
 	}
 
 
-	GuiRenderer* RenderManager::getGuiRenderer() const
+	GLuint RenderManager::getUniformID(std::string uniformName) const
 	{
-		return mGuiRenderer;
+		return glGetUniformLocation(mActiveShaderProgram->getProgramID(), uniformName.c_str());
+	}
+
+
+	void RenderManager::loadInt1(std::string uniformName, GLint integer) const
+	{
+		glUniform1i(getUniformID(uniformName), integer);
+	}
+
+
+	void RenderManager::loadMat4(std::string uniformName, GLboolean transpose, const GLfloat* matrixPtr) const
+	{
+		glUniformMatrix4fv(getUniformID(uniformName), 1, transpose ? GL_TRUE : GL_FALSE, matrixPtr);
+	}
+
+
+	const ResourceShaderProgram& RenderManager::getActiveShader() const
+	{
+		return *mActiveShaderProgram;
+	}
+
+
+	GuiRenderer& RenderManager::getGuiRenderer() const
+	{
+		return *mGuiRenderer;
 	}
 }

@@ -3,8 +3,7 @@
 namespace Bountive
 {
 	Resource::Resource(const std::string RESOURCE_ID) :
-		mRESOURCE_ID(RESOURCE_ID),
-		mIsLoaded(GL_FALSE)
+		mRESOURCE_ID(RESOURCE_ID)
 	{
 
 	}

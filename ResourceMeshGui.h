@@ -1,6 +1,6 @@
 #pragma once
-#ifndef BOUNTIVE_MESHGUI_H_
-#define BOUNTIVE_MESHGUI_H_
+#ifndef BOUNTIVE_RESOURCEMESHGUI_H_
+#define BOUNTIVE_RESOURCEMESHGUI_H_
 
 #include "ResourceMesh.h"
 
@@ -8,11 +8,11 @@ namespace Bountive
 {
 	class Logger;
 
-	class MeshGui : public ResourceMesh
+	class ResourceMeshGui : public ResourceMesh
 	{
 	public:
-		MeshGui(const std::string mRESOURCE_ID);
-		~MeshGui();
+		ResourceMeshGui(const std::string mRESOURCE_ID);
+		~ResourceMeshGui();
 
 	private:
 		static Logger logger;

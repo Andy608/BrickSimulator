@@ -1,54 +1,49 @@
 #include "GuiRenderer.h"
-#include "GuiEntities.h"
-#include "EntityRegistry.h"
+#include "RenderManager.h"
+#include "ResourceShaderProgram.h"
+#include "MeshList.h"
 #include "Logger.h"
 
 namespace Bountive
 {
 	Logger GuiRenderer::logger = Logger("GuiRenderer", Logger::Level::LEVEL_ALL);
 
-	GuiRenderer::GuiRenderer(const ResourceTracker& RESOURCE_TRACKER, const SceneManager& SCENE_MANAGER) :
-		Renderer(RESOURCE_TRACKER, SCENE_MANAGER),
-		mEntityRegistry(new EntityRegistry())
+	GuiRenderer::GuiRenderer(RenderManager& renderManager) :
+		Renderer(renderManager)
 	{
 		logger.log(Logger::Level::LEVEL_DEBUG, "Creating GuiRenderer...");
-		GuiEntities::initGuis(mRESOURCE_TRACKER, *mEntityRegistry);
 	}
 
 
 	GuiRenderer::~GuiRenderer()
 	{
 		logger.log(Logger::Level::LEVEL_DEBUG, "Deleting GuiRenderer...");
-		delete mEntityRegistry;
 	}
 
 
-	void GuiRenderer::update(const GLdouble& DELTA_TIME)
+	void GuiRenderer::render(const GLdouble& DELTA_TIME, const std::vector<EntityGui*>& GUI_LIST, const ResourceShaderProgram& activeShaderProgram)
 	{
-		for (GLuint i = 0; i < mEntitiesList->size(); ++i)
+		ResourceMesh* guiModel = *MeshList::mGuiMesh;
+
+		activeShaderProgram.use();
+		guiModel->getVertexArray()->bind();
+
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glDisable(GL_DEPTH_TEST);
+
+		for (GLuint i = 0; i < GUI_LIST.size(); ++i)
 		{
-			mEntitiesList->at(i)->update(DELTA_TIME);
+			glActiveTexture(GL_TEXTURE0);
+			GUI_LIST.at(i)->getTextureWrapper().bind();
+			mRenderManager.loadInt1("texture0", 0);
+			mRenderManager.loadMat4("transformUniform", GL_FALSE, GUI_LIST.at(i)->getTransform()->getTransformationMatrixPtr());
+			glDrawElements(GL_TRIANGLES, guiModel->getElementBufferData()->getIndiceCount(), GL_UNSIGNED_INT, 0);
+			//GUI_LIST.at(i)->getTextureWrapper().unbind();
 		}
-	}
 
-
-	void GuiRenderer::render(const GLdouble& DELTA_TIME)
-	{
-		for (GLuint i = 0; i < mEntitiesList->size(); ++i)
-		{
-			mEntitiesList->at(i)->render(DELTA_TIME);
-		}
-	}
-
-
-	void GuiRenderer::addGui(EntityGui* entity)
-	{
-		mEntitiesList->push_back(entity);
-	}
-
-
-	void GuiRenderer::removeGui(std::wstring entityId)
-	{
-
+		glEnable(GL_DEPTH_TEST);
+		glDisable(GL_BLEND);
+		(*MeshList::mGuiMesh)->getVertexArray()->unbind();
 	}
 }

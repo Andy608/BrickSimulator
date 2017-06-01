@@ -16,31 +16,38 @@ namespace Bountive
 		mFileReader(new FileReader())
 	{
 		logger.log(Logger::Level::LEVEL_DEBUG, "Creating ResourceShader...");
-		extractFromFile();
-		compile();
-		mIsLoaded = GL_TRUE;
+		mIsLoaded = GL_FALSE;
 	}
 
 
 	ResourceShader::~ResourceShader()
 	{
 		logger.log(Logger::Level::LEVEL_DEBUG, "Deleting ResourceShader...");
-		glDeleteShader(mShaderId);
-		delete mShaderPath;
-		delete mFileReader;
+		
+		if (mIsLoaded)
+		{
+			unload();
+		}
 	}
 
 
-	GLboolean ResourceShader::load()
+	void ResourceShader::load()
 	{
+		extractFromFile();
+		compile();
 		logger.log(Logger::Level::LEVEL_DEBUG, "Successfully loaded AssetShader: " + mRESOURCE_ID);
-		return mIsLoaded;
+		mIsLoaded = GL_TRUE;
 	}
 
 
 	void ResourceShader::unload()
 	{
+		glDeleteShader(mShaderId);
+		delete mShaderPath;
+		delete mFileReader;
 
+		logger.log(Logger::Level::LEVEL_DEBUG, "Successfully unloaded AssetShader: " + mRESOURCE_ID);
+		mIsLoaded = GL_FALSE;
 	}
 
 
@@ -49,9 +56,9 @@ namespace Bountive
 		switch (mSHADER_TYPE)
 		{
 		case ShaderType::VERTEX:	mShaderId = glCreateShader(GL_VERTEX_SHADER);
-									break;
+			break;
 		default:					mShaderId = glCreateShader(GL_FRAGMENT_SHADER);
-									break;
+			break;
 		}
 
 		const GLchar* shaderCode = mShaderCode.c_str();

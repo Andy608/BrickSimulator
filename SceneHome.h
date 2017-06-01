@@ -14,7 +14,7 @@ namespace Bountive
 	public:
 		static const std::string NAME;
 
-		HomeScene(GLint id);
+		HomeScene(GLint id, RenderManager& renderManager);
 		~HomeScene();
 
 		virtual void showScene();

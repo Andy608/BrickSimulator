@@ -19,7 +19,7 @@ namespace Bountive
 		ResourceMesh(const std::string RESOURCE_ID);
 		virtual ~ResourceMesh();
 
-		virtual GLboolean load();
+		virtual void load();
 		virtual void unload();
 
 		void addVertexBuffer(VertexBufferWrapper* wrapper);

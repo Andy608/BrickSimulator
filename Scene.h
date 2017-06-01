@@ -4,29 +4,39 @@
 
 #include <glew.h>
 #include <string>
+#include "EntityGui.h"
 #include "IUpdatable.h"
 #include "IRenderable.h"
-#include "RenderManager.h"
 
 namespace Bountive
 {
+	class RenderManager;
+	class Logger;
+
 	class Scene : public IUpdatable, public IRenderable
 	{
 	public:
 		const GLint mID;
 
-		Scene(GLint id, std::string name);
+		Scene(GLint id, std::string name, RenderManager& renderManager);
 		virtual ~Scene();
 
 		virtual void showScene() = 0;
 		virtual void hideScene() = 0;
 
-		const std::string& getName() const;
-		
-	protected:
-		const std::string mNAME;
+		virtual void render(const GLdouble& DELTA_TIME);
 
+		const std::string& getName() const;
+
+	protected:
+		static Logger logger;
+
+		const std::string mNAME;
 		RenderManager& mRenderManager;
+
+		std::vector<EntityGui*>* mGuiList;
+
+		void clearGuiList();
 	};
 }
 

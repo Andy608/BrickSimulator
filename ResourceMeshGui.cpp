@@ -1,23 +1,23 @@
-#include "MeshGui.h"
+#include "ResourceMeshGui.h"
 #include "Logger.h"
 
 namespace Bountive
 {
-	Logger MeshGui::logger = Logger("MeshGui", Logger::Level::LEVEL_ALL);
-	const GLint MeshGui::POSITION_ATTRIBS = 3;
-	const GLint MeshGui::COLOR_ATTRIBS = 3;
-	const GLint MeshGui::TEXTURE_COORD_ATTRIBS = 2;
+	Logger ResourceMeshGui::logger = Logger("ResourceMeshGui", Logger::Level::LEVEL_ALL);
+	const GLint ResourceMeshGui::POSITION_ATTRIBS = 3;
+	const GLint ResourceMeshGui::COLOR_ATTRIBS = 3;
+	const GLint ResourceMeshGui::TEXTURE_COORD_ATTRIBS = 2;
 
-	MeshGui::MeshGui(const std::string mRESOURCE_ID) :
+	ResourceMeshGui::ResourceMeshGui(const std::string mRESOURCE_ID) :
 		ResourceMesh(mRESOURCE_ID),
 		mIndices(std::vector<GLint>() = {
 			0, 1, 3, 1, 2, 3
 		}),
 		mPositions(std::vector<GLfloat>() = { 
-			 0.5f,  0.5f, 0.0f, 
-			 0.5f, -0.5f, 0.0f,
-			-0.5f, -0.5f, 0.0f,
-			-0.5f,  0.5f, 0.0f
+			 1.0f,  1.0f, 0.0f,
+			 1.0f, -1.0f, 0.0f,
+			-1.0f, -1.0f, 0.0f,
+			-1.0f,  1.0f, 0.0f
 		}),
 		mColors(std::vector<GLfloat>() = { 
 			1.0, 1.0, 1.0, 
@@ -33,7 +33,7 @@ namespace Bountive
 			0.0f, 1.0f
 		})
 	{
-		logger.log(Logger::Level::LEVEL_DEBUG, "Creating AssetMeshGui...");
+		logger.log(Logger::Level::LEVEL_DEBUG, "Creating ResourceMeshGui...");
 
 		addVertexBuffer(new VertexBufferWrapper(mPositions, POSITION_ATTRIBS));
 		addVertexBuffer(new VertexBufferWrapper(mColors, COLOR_ATTRIBS));
@@ -43,8 +43,8 @@ namespace Bountive
 	}
 
 
-	MeshGui::~MeshGui()
+	ResourceMeshGui::~ResourceMeshGui()
 	{
-		logger.log(Logger::Level::LEVEL_DEBUG, "Deleting AssetMeshGui...");
+		logger.log(Logger::Level::LEVEL_DEBUG, "Deleting ResourceMeshGui...");
 	}
 }

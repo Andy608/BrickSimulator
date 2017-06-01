@@ -1,13 +1,14 @@
 #include "BrickSimulator.h"
 #include "EntityGui.h"
+#include "MeshList.h"
 #include "Logger.h"
 
 namespace Bountive
 {
 	Logger EntityGui::logger = Logger("EntityGui", Logger::Level::LEVEL_ALL);
 
-	EntityGui::EntityGui(const std::string ENTITY_ID, MeshGui& resourceMesh, TextureWrapper* guiTextureWrapper) :
-		Entity(ENTITY_ID, resourceMesh),
+	EntityGui::EntityGui(const std::string ENTITY_ID, TextureWrapper* guiTextureWrapper) :
+		Entity(ENTITY_ID, **MeshList::mGuiMesh),
 		mGuiTextureWrapper(guiTextureWrapper)
 	{
 		logger.log(Logger::Level::LEVEL_DEBUG, "Creating EntityGui...");
@@ -31,10 +32,7 @@ namespace Bountive
 
 	void EntityGui::render(const GLdouble& DELTA_TIME)
 	{
-		logger.log(Logger::Level::LEVEL_DEBUG, std::to_string(mMODEL.getElementBufferData()->getIndiceCount()));
-		mMODEL.getVertexArray()->bind();
-		glDrawElements(GL_TRIANGLES, mMODEL.getElementBufferData()->getIndiceCount(), GL_UNSIGNED_INT, 0);
-		mMODEL.getVertexArray()->unbind();
+
 	}
 
 

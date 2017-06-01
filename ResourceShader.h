@@ -7,6 +7,7 @@
 
 namespace Bountive
 {
+	class FileLocation;
 	class FileReader;
 	class Logger;
 
@@ -22,8 +23,8 @@ namespace Bountive
 		ResourceShader(const std::string RESOURCE_ID, const ShaderType& SHADER_TYPE, FileLocation* shaderPath);
 		~ResourceShader();
 
-		GLboolean load();
-		void unload();
+		virtual void load();
+		virtual void unload();
 
 		void compile();
 
@@ -35,7 +36,7 @@ namespace Bountive
 		static const GLint SIZE;
 		static const GLint ERROR_LOG_SIZE;
 		static Logger logger;
-		
+
 		const ShaderType& mSHADER_TYPE;
 		FileLocation* mShaderPath;
 		FileReader* mFileReader;

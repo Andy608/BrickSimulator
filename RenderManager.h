@@ -2,25 +2,39 @@
 #ifndef BOUNTIVE_RENDERMANAGER_H_
 #define BOUNTIVE_RENDERMANAGER_H_
 
-#include "ResourceTracker.h"
+#include <glew.h>
+#include "ResourceBundleTracker.h"
 #include "GuiRenderer.h"
 
 namespace Bountive
 {
-	class SceneManager;
+	class Logger;
 
 	class RenderManager
 	{
 	public:
-		RenderManager(const SceneManager& SCENE_MANAGER);
+		enum class ShaderProgramType
+		{
+			GUI_SHADER
+		};
+
+		RenderManager();
 		~RenderManager();
 
-		ResourceTracker* getResourceTracker() const;
-		GuiRenderer* getGuiRenderer() const;
+		void setShader(ResourceShaderProgram* shader);
+
+		GLuint getUniformID(std::string uniformName) const;
+
+		void loadInt1(std::string uniformName, GLint integer) const;
+		void loadMat4(std::string uniformName, GLboolean transpose, const GLfloat* matrixPtr) const;
+
+		const ResourceShaderProgram& getActiveShader() const;
+		GuiRenderer& getGuiRenderer() const;
 
 	private:
-		const SceneManager& mSCENE_MANAGER;
-		ResourceTracker* mResourceTracker;
+		static Logger logger;
+
+		ResourceShaderProgram* mActiveShaderProgram;
 		GuiRenderer* mGuiRenderer;
 	};
 }

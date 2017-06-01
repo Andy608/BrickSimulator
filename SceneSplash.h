@@ -14,7 +14,7 @@ namespace Bountive
 	public:
 		static const std::string NAME;
 
-		SplashScene(GLint id);
+		SplashScene(GLint id, RenderManager& renderManager);
 		~SplashScene();
 
 		virtual void showScene();
@@ -26,6 +26,8 @@ namespace Bountive
 	private:
 		static Logger logger;
 		SplashSceneInput* mInputHandler;
+
+		EntityGui* bountiveLogo;
 	};
 }
 

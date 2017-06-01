@@ -1,7 +1,9 @@
 #include "SceneSplash.h"
 #include "SplashSceneInput.h"
 #include "KeyboardCallback.h"
-#include "GuiEntities.h"
+#include "MeshList.h"
+#include "GuiResourceBundle.h"
+#include <glm\glm.hpp>
 #include "Logger.h"
 
 namespace Bountive
@@ -9,8 +11,8 @@ namespace Bountive
 	Logger SplashScene::logger = Logger("SplashScene", Logger::Level::LEVEL_ALL);
 	const std::string SplashScene::NAME = "splash_scene";
 
-	SplashScene::SplashScene(GLint id) :
-		Scene(id, NAME),
+	SplashScene::SplashScene(GLint id, RenderManager& renderManager) :
+		Scene(id, NAME, renderManager),
 		mInputHandler(new SplashSceneInput())
 	{
 		logger.log(Logger::Level::LEVEL_DEBUG, "Creating SplashScene...");
@@ -26,36 +28,43 @@ namespace Bountive
 
 	void SplashScene::showScene()
 	{
-		//add gui adds an entity (with position/rot/scale)
-		//mRenderManager.getAssetManager()->getPregameAssetLoader()->mGuiShaderProgram->use();
-		//mRenderManager.getGuiRenderer()->addGui(GuiEntities::mBountiveLogo);
+		TextureWrapper* bountiveTexture = new TextureWrapper(GuiResourceBundle::mBountiveLogoTexture);
+		bountiveTexture->setMinifyFilter(TextureWrapper::MinFilter::LINEAR_MIPMAP_LINEAR);
+		bountiveTexture->setMaxifyFilter(TextureWrapper::MaxFilter::LINEAR);
+
+		bountiveLogo = new EntityGui("gui_bountive_logo", bountiveTexture);
+		bountiveLogo->getTransform()->setScale(0.5f, 0.5f, 1.0f);
+
+		logger.log(Logger::Level::LEVEL_DEBUG, "SHOWING SPLASH SCENE... " + std::to_string(mGuiList->size()));
+
+		mGuiList->push_back(bountiveLogo);
 	}
 
 
 	void SplashScene::hideScene()
 	{
-		mRenderManager.getGuiRenderer()->clearEntities();
+		logger.log(Logger::Level::LEVEL_DEBUG, "HIDING SPLASH SCENE... " + std::to_string(mGuiList->size()));
+		clearGuiList();
 	}
 
 
 	void SplashScene::update(const GLdouble& DELTA_TIME)
 	{
+		static GLfloat t = 0;
+		t += DELTA_TIME;
+		bountiveLogo->getTransform()->setPosition(0.5f * std::sin(glm::radians(50 * t)), 0, 0);
+
 		mInputHandler->update(DELTA_TIME);
-		mRenderManager.getGuiRenderer()->update(DELTA_TIME);
 	}
 
 
 	void SplashScene::render(const GLdouble& DELTA_TIME)
 	{
-		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+		logger.log(Logger::Level::LEVEL_TRACE, "SPLASH");
+
+		glClearColor(1.0f, 208.0f / 255.0f, 82.0f / 255.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		//mRenderManager.getResourceTracker()->getStartupResourceLoader()->mGuiShaderProgram->use();
-
-		glActiveTexture(GL_TEXTURE0);
-		//glBindTexture(GL_TEXTURE_2D, GuiEntities::mBountiveLogo->getTextureWrapper().getId());
-		//glUniform1i(glGetUniformLocation(mRenderManager.getResourceTracker()->getStartupResourceLoader()->mGuiShaderProgram->getProgramId(), "bountiveLogo"), 0);
-
-		mRenderManager.getGuiRenderer()->render(DELTA_TIME);
+		Scene::render(DELTA_TIME);
 	}
 }

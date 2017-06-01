@@ -3,9 +3,11 @@
 #define BOUNTIVE_BRICKSIMULATOR_H_
 
 #include "DirectoryUtil.h"
-#include "RenderManager.h"
 #include "Window.h"
 #include "GameSettingsHandler.h"
+#include "ResourceBundleTracker.h"
+#include "EntityTracker.h"
+#include "TextureList.h"
 
 namespace Bountive
 {
@@ -26,7 +28,6 @@ namespace Bountive
 
 		Window* getWindow() const;
 		SceneManager* getSceneManager() const;
-		RenderManager* getRenderManager() const;
 		InputTracker* getInputTracker() const;
 
 	private:
@@ -44,8 +45,12 @@ namespace Bountive
 		Window* const mWindow;
 		GameSettingsHandler* const mGameSettingsHandler;
 
-		RenderManager* mRenderManager;
+		ResourceBundleTracker* mResourceBundleTracker;
+		TextureList* mTextureList;
+
+		EntityTracker* mEntityTracker;
 		SceneManager* mSceneManager;
+		RenderManager* mRenderManager;
 		InputTracker* mInputTracker;
 
 		BrickSimulator();

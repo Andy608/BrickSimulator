@@ -9,6 +9,8 @@
 #include "Logger.h"
 #include "LoggerUtil.h"
 #include "SceneManager.h"
+#include "RenderManager.h"
+#include "ShaderList.h"
 
 namespace Bountive
 {
@@ -29,8 +31,7 @@ namespace Bountive
 			logger.log(Logger::Level::LEVEL_INFO, "Initializing BrickSimulator by Andy608...");
 			instance = new BrickSimulator();
 			instance->mWindow->buildWindow(*instance->mGameSettingsHandler);
-			instance->mRenderManager = new RenderManager(*instance->mSceneManager);
-			instance->mSceneManager = new SceneManager();
+			instance->mSceneManager = new SceneManager(*instance->mResourceBundleTracker, *instance->mRenderManager);
 		}
 
 		return instance;
@@ -42,6 +43,9 @@ namespace Bountive
 		mDIRECTORY_UTIL(DirectoryUtil::instance),
 		mLOGGER_UTIL(LoggerUtil::instance),
 		mWindow(new Window()),
+		mResourceBundleTracker(new ResourceBundleTracker()),
+		mRenderManager(new RenderManager()),
+		mEntityTracker(new EntityTracker()),
 		mGameSettingsHandler(new GameSettingsHandler(*mWindow)),
 		mInputTracker(InputTracker::init(*mGameSettingsHandler))
 	{
@@ -62,11 +66,13 @@ namespace Bountive
 		logger.log(Logger::Level::LEVEL_DEBUG, "Deleting BrickSimulator...");
 		delete mDIRECTORY_UTIL;
 		delete mLOGGER_UTIL;
-		delete mRenderManager;
 		delete mWindow;
 		delete mSceneManager;
 		delete mInputTracker;
 		delete mGameSettingsHandler;
+		delete mResourceBundleTracker;
+		delete mEntityTracker;
+		delete mRenderManager;
 	}
 
 
@@ -155,12 +161,6 @@ namespace Bountive
 	SceneManager* BrickSimulator::getSceneManager() const
 	{
 		return mSceneManager;
-	}
-
-	
-	RenderManager* BrickSimulator::getRenderManager() const
-	{
-		return mRenderManager;
 	}
 
 

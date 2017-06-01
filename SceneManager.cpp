@@ -8,11 +8,15 @@ namespace Bountive
 	Logger SceneManager::logger = Logger("SceneManager", Logger::Level::LEVEL_ALL);
 	GLint SceneManager::sceneIdCounter = -1;
 
-	SceneManager::SceneManager() :
+	SceneManager::SceneManager(ResourceBundleTracker& resourceBundleTracker, RenderManager& renderManager) :
+		mResourceBundleTracker(resourceBundleTracker),
+		mRenderManager(renderManager),
 		mSceneList(createScenes()),
-		mLastScene(findSceneByName(HomeScene::NAME)),
-		mActiveScene(findSceneByName(HomeScene::NAME))
+		mLastScene(nullptr),
+		mActiveScene(nullptr)
 	{
+		mResourceBundleTracker.loadBundle(ResourceBundle::BundleID::GUI);
+
 		setActiveScene(SplashScene::NAME);
 		logger.log(Logger::Level::LEVEL_DEBUG, "Creating SceneManager...");
 	}
@@ -21,6 +25,8 @@ namespace Bountive
 	SceneManager::~SceneManager()
 	{
 		logger.log(Logger::Level::LEVEL_DEBUG, "Deleting SceneManager...");
+		mResourceBundleTracker.unloadBundle(ResourceBundle::BundleID::GUI);
+
 		clearScenesList();
 		delete mSceneList;
 	}
@@ -82,10 +88,18 @@ namespace Bountive
 
 	void SceneManager::setActiveScene(const std::string& NEXT_SCENE_NAME)
 	{
-		mLastScene = mActiveScene;
+		if (mActiveScene != nullptr)
+		{
+			mLastScene = mActiveScene;
+		}
+
 		mActiveScene = findSceneByName(NEXT_SCENE_NAME);
 
-		mLastScene->hideScene();
+		if (mLastScene != nullptr)
+		{
+			mLastScene->hideScene();
+		}
+
 		mActiveScene->showScene();
 
 		logger.log(Logger::Level::LEVEL_DEBUG, "Switching Scene!");
@@ -96,8 +110,8 @@ namespace Bountive
 	{
 		std::vector<Scene*>* gameScenes = new std::vector<Scene*>();
 
-		gameScenes->push_back(new HomeScene(++sceneIdCounter));
-		gameScenes->push_back(new SplashScene(++sceneIdCounter));
+		gameScenes->push_back(new HomeScene(++sceneIdCounter, mRenderManager));
+		gameScenes->push_back(new SplashScene(++sceneIdCounter, mRenderManager));
 
 		return gameScenes;
 	}

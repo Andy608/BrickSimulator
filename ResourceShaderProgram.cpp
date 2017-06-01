@@ -6,39 +6,51 @@ namespace Bountive
 	const GLint ResourceShaderProgram::ERROR_LOG_SIZE = 512;
 	Logger ResourceShaderProgram::logger = Logger("ResourceShaderProgram", Logger::Level::LEVEL_ALL);
 
-
 	ResourceShaderProgram::ResourceShaderProgram(const std::string RESOURCE_ID) :
 		Resource(RESOURCE_ID),
 		mActiveShaders(std::vector<ResourceShader*>())
 	{
 		logger.log(Logger::Level::LEVEL_DEBUG, "Creating ResourceShaderProgram...");
-		mIsLoaded = GL_TRUE;
+		mIsLoaded = GL_FALSE;
 	}
 
 
 	ResourceShaderProgram::~ResourceShaderProgram()
 	{
 		logger.log(Logger::Level::LEVEL_DEBUG, "Deleting ResourceShaderProgram...");
-		glDeleteProgram(mProgramId);
-		mActiveShaders.clear();
+
+		if (mIsLoaded)
+		{
+			unload();
+		}
 	}
 
 
-	GLboolean ResourceShaderProgram::load()
+	void ResourceShaderProgram::load()
 	{
-		return mIsLoaded;
+		compileProgram();
 	}
 
 
 	void ResourceShaderProgram::unload()
 	{
-
+		glDeleteProgram(mProgramID);
+		mActiveShaders.clear();
 	}
 
 
 	void ResourceShaderProgram::use() const
 	{
-		glUseProgram(mProgramId);
+		for (GLuint i = 0; i < mActiveShaders.size(); ++i)
+		{
+			if (!mActiveShaders.at(i)->isLoaded())
+			{
+				logger.log(Logger::Level::LEVEL_DEBUG, "Error when trying to use shader program. Shader: " + mActiveShaders.at(i)->getResourceId() + " is not loaded.");
+				return;
+			}
+		}
+
+		glUseProgram(mProgramID);
 	}
 
 
@@ -48,32 +60,32 @@ namespace Bountive
 	}
 
 
-	const GLint& ResourceShaderProgram::getProgramId() const
+	const GLint& ResourceShaderProgram::getProgramID() const
 	{
-		return mProgramId;
+		return mProgramID;
 	}
 
 
 	void ResourceShaderProgram::compileProgram()
 	{
-		mProgramId = glCreateProgram();
+		mProgramID = glCreateProgram();
 
 		for (GLuint i = 0; i < mActiveShaders.size(); ++i)
 		{
 			logger.log(Logger::Level::LEVEL_DEBUG, "Attaching shader: " + mActiveShaders.at(i)->getResourceId());
-			glAttachShader(mProgramId, mActiveShaders.at(i)->getGLShaderId());
+			glAttachShader(mProgramID, mActiveShaders.at(i)->getGLShaderId());
 		}
 
-		glLinkProgram(mProgramId);
+		glLinkProgram(mProgramID);
 
 		GLint compiled;
 		GLchar errorLog[ERROR_LOG_SIZE];
 
-		glGetProgramiv(mProgramId, GL_LINK_STATUS, &compiled);
-		
+		glGetProgramiv(mProgramID, GL_LINK_STATUS, &compiled);
+
 		if (!compiled)
 		{
-			glGetProgramInfoLog(mProgramId, ERROR_LOG_SIZE, NULL, errorLog);
+			glGetProgramInfoLog(mProgramID, ERROR_LOG_SIZE, NULL, errorLog);
 		}
 		else
 		{

@@ -3,7 +3,7 @@
 #define BOUNTIVE_TEXTUREWRAPPER_H_
 
 #include "GLWrapper.h"
-#include "ResourceImage.h"
+#include "ResourceTexture.h"
 
 namespace Bountive
 {
@@ -33,13 +33,13 @@ namespace Bountive
 			LINEAR = GL_LINEAR
 		};
 
-		TextureWrapper(ResourceImage* image);
+		TextureWrapper(ResourceTexture* image);
 		virtual ~TextureWrapper();
 
 		virtual void bind() const;
 		virtual void unbind() const;
 
-		void setImage(ResourceImage* image);
+		void setTexture(ResourceTexture* image);
 
 		void setWrapStyleS(const WrapStyle& wrapStyleS);
 		void setWrapStyleT(const WrapStyle& wrapStyleT);
@@ -49,7 +49,7 @@ namespace Bountive
 
 		void generateGLtexture();
 
-		ResourceImage* getImage() const;
+		ResourceTexture* getResourceTexture() const;
 
 		const WrapStyle& getWrapStyleS() const;
 		const WrapStyle& getWrapStyleT() const;
@@ -58,7 +58,7 @@ namespace Bountive
 		const MaxFilter& getMaxifyFilter() const;
 
 	private:
-		ResourceImage* mImage;
+		ResourceTexture* mTexture;
 
 		WrapStyle mWrapStyleS;
 		WrapStyle mWrapStyleT;

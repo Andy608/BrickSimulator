@@ -7,25 +7,20 @@
 
 namespace Bountive
 {
+	class ResourceShaderProgram;
+	class RenderManager;
 	class Logger;
-	class EntityRegistry;
 
 	class GuiRenderer : public Renderer
 	{
 	public:
-		GuiRenderer(const ResourceTracker& RESOURCE_TRACKER, const SceneManager& SCENE_MANAGER);
+		GuiRenderer(RenderManager& renderManager);
 		~GuiRenderer();
 
-		virtual void update(const GLdouble& DELTA_TIME);
-		virtual void render(const GLdouble& DELTA_TIME);
-
-		void addGui(EntityGui* entity);
-		void removeGui(std::wstring entityId);
+		void render(const GLdouble& DELTA_TIME, const std::vector<EntityGui*>& GUI_LIST, const ResourceShaderProgram& activeShaderProgram);
 
 	private:
 		static Logger logger;
-
-		EntityRegistry* mEntityRegistry;
 	};
 }
 

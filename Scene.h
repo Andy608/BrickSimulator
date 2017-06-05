@@ -5,6 +5,7 @@
 #include <glew.h>
 #include <string>
 #include "EntityGui.h"
+#include "ResourceModel.h"
 #include "IUpdatable.h"
 #include "IRenderable.h"
 
@@ -35,6 +36,7 @@ namespace Bountive
 		RenderManager& mRenderManager;
 
 		std::vector<EntityGui*>* mGuiList;
+		std::vector<ResourceModel*>* mModelList;
 
 		void clearGuiList();
 	};

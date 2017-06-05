@@ -5,9 +5,11 @@
 #include <glew.h>
 #include "ResourceBundleTracker.h"
 #include "GuiRenderer.h"
+#include "ModelRenderer.h"
 
 namespace Bountive
 {
+	class Camera;
 	class Logger;
 
 	class RenderManager
@@ -18,24 +20,28 @@ namespace Bountive
 			GUI_SHADER
 		};
 
+		static void updateRenderScreenSize(GLint width, GLint height);
+
 		RenderManager();
 		~RenderManager();
 
 		void setShader(ResourceShaderProgram* shader);
 
-		GLuint getUniformID(std::string uniformName) const;
-
-		void loadInt1(std::string uniformName, GLint integer) const;
-		void loadMat4(std::string uniformName, GLboolean transpose, const GLfloat* matrixPtr) const;
-
 		const ResourceShaderProgram& getActiveShader() const;
 		GuiRenderer& getGuiRenderer() const;
+		ModelRenderer& getModelRenderer() const;
+		Camera& getCamera() const;
 
 	private:
 		static Logger logger;
+		static GLint renderScreenWidth;
+		static GLint renderScreenHeight;
+
+		Camera* mCamera;
 
 		ResourceShaderProgram* mActiveShaderProgram;
 		GuiRenderer* mGuiRenderer;
+		ModelRenderer* mModelRenderer;
 	};
 }
 

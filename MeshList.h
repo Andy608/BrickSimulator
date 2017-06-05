@@ -2,7 +2,6 @@
 #ifndef BOUNTIVE_MESHLIST_H_
 #define BOUNTIVE_MESHLIST_H_
 
-
 namespace Bountive
 {
 	class ResourceMeshGui;

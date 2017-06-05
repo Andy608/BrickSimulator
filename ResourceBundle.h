@@ -14,7 +14,8 @@ namespace Bountive
 	public:
 		enum class BundleID : const GLint
 		{
-			GUI = 0
+			GUI = 0,
+			MODEL = 1
 		};
 
 		const BundleID mPACKAGE_ID;

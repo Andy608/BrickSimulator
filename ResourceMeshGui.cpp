@@ -9,7 +9,7 @@ namespace Bountive
 	const GLint ResourceMeshGui::TEXTURE_COORD_ATTRIBS = 2;
 
 	ResourceMeshGui::ResourceMeshGui(const std::string mRESOURCE_ID) :
-		ResourceMesh(mRESOURCE_ID),
+		ResourceMeshOld(mRESOURCE_ID),
 		mIndices(std::vector<GLint>() = {
 			0, 1, 3, 1, 2, 3
 		}),

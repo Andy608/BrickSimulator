@@ -13,6 +13,7 @@ namespace Bountive
 	{
 	public:
 		SingleKeySetting(std::string settingName, const GLint DEFAULT_ASCII_VALUE);
+		SingleKeySetting(IntegerSetting keyCode);
 		~SingleKeySetting();
 
 		virtual const GLboolean& isPressed() const;

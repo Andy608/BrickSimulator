@@ -14,7 +14,7 @@ namespace Bountive
 	class Logger;
 	class LoggerUtil;
 
-	class BrickSimulator
+	class BrickSimulator : public IUpdatable, public IRenderable
 	{
 	public:
 		static BrickSimulator* instance;
@@ -29,6 +29,7 @@ namespace Bountive
 		Window* getWindow() const;
 		SceneManager* getSceneManager() const;
 		InputTracker* getInputTracker() const;
+		GameSettingsHandler* getGameSettings() const;
 
 	private:
 		static Logger logger;

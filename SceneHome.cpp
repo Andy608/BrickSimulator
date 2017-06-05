@@ -26,12 +26,12 @@ namespace Bountive
 
 	void HomeScene::showScene()
 	{
-		logger.log(Logger::Level::LEVEL_DEBUG, "SHOWING HOME SCENE... " + std::to_string(mGuiList->size()));
+		logger.log(Logger::Level::LEVEL_DEBUG, "SHOWING HOME SCENE... "/* + std::to_string(mGuiList->size())*/);
 	}
 
 	void HomeScene::hideScene()
 	{
-		logger.log(Logger::Level::LEVEL_DEBUG, "HIDING HOME SCENE... " + std::to_string(mGuiList->size()));
+		logger.log(Logger::Level::LEVEL_DEBUG, "HIDING HOME SCENE... "/* + std::to_string(mGuiList->size())*/);
 	}
 
 
@@ -45,7 +45,7 @@ namespace Bountive
 	{
 		logger.log(Logger::Level::LEVEL_TRACE, "HOME");
 
-		glClearColor(0.8f, 0.8f, 0.8f, 1.0f);
+		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		Scene::render(DELTA_TIME);

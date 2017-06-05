@@ -16,6 +16,7 @@ namespace Bountive
 	public:
 		static std::wstring TXT_EXTENSION;
 		static std::wstring PNG_EXTENSION;
+		static std::wstring OBJ_EXTENSION;
 		static std::wstring VS_SHADER_EXTENSION;
 		static std::wstring FS_SHADER_EXTENSION;
 

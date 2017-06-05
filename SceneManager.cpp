@@ -1,6 +1,8 @@
 #include "SceneManager.h"
 #include "SceneHome.h"
 #include "SceneSplash.h"
+#include "RenderManager.h"
+#include "Camera.h"
 #include "Logger.h"
 
 namespace Bountive
@@ -16,6 +18,7 @@ namespace Bountive
 		mActiveScene(nullptr)
 	{
 		mResourceBundleTracker.loadBundle(ResourceBundle::BundleID::GUI);
+		mResourceBundleTracker.loadBundle(ResourceBundle::BundleID::MODEL);
 
 		setActiveScene(SplashScene::NAME);
 		logger.log(Logger::Level::LEVEL_DEBUG, "Creating SceneManager...");
@@ -26,6 +29,7 @@ namespace Bountive
 	{
 		logger.log(Logger::Level::LEVEL_DEBUG, "Deleting SceneManager...");
 		mResourceBundleTracker.unloadBundle(ResourceBundle::BundleID::GUI);
+		mResourceBundleTracker.unloadBundle(ResourceBundle::BundleID::MODEL);
 
 		clearScenesList();
 		delete mSceneList;
@@ -34,6 +38,7 @@ namespace Bountive
 
 	void SceneManager::update(const GLdouble& DELTA_TIME)
 	{
+		mRenderManager.getCamera().update(DELTA_TIME);
 		mActiveScene->update(DELTA_TIME);
 	}
 

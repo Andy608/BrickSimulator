@@ -3,5 +3,5 @@
 
 namespace Bountive
 {
-	//ResourceTexture** TextureList::mBountiveLogoTexture = &GuiResourceBundle::mBountiveLogoTexture;
+	ResourceTexture** TextureList::mBountiveLogoTexture = &GuiResourceBundle::mBountiveLogoTexture;
 }

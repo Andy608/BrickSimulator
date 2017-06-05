@@ -3,9 +3,9 @@
 
 namespace Bountive
 {
-	Logger ResourceMesh::logger = Logger("ResourceMesh", Logger::Level::LEVEL_ALL);
+	Logger ResourceMeshOld::logger = Logger("ResourceMesh", Logger::Level::LEVEL_ALL);
 
-	ResourceMesh::ResourceMesh(const std::string RESOURCE_ID) :
+	ResourceMeshOld::ResourceMeshOld(const std::string RESOURCE_ID) :
 		Resource(RESOURCE_ID),
 		mVertexArray(new VertexArrayWrapper()),
 		mVertexBufferList(new std::vector<VertexBufferWrapper*>()),
@@ -15,20 +15,20 @@ namespace Bountive
 	}
 
 
-	ResourceMesh::~ResourceMesh()
+	ResourceMeshOld::~ResourceMeshOld()
 	{
 		logger.log(Logger::Level::LEVEL_DEBUG, "Deleting AssetMesh: \'" + mRESOURCE_ID + "\'");
 		unload();
 	}
 
 
-	void ResourceMesh::load()
+	void ResourceMeshOld::load()
 	{
 		//load information from file
 	}
 
 
-	void ResourceMesh::unload()
+	void ResourceMeshOld::unload()
 	{
 		clearBufferData();
 
@@ -49,43 +49,43 @@ namespace Bountive
 	}
 
 
-	void ResourceMesh::addVertexBuffer(VertexBufferWrapper* wrapper)
+	void ResourceMeshOld::addVertexBuffer(VertexBufferWrapper* wrapper)
 	{
 		mVertexBufferList->push_back(wrapper);
 	}
 
 
-	void ResourceMesh::setElementBuffer(ElementBufferWrapper* wrapper)
+	void ResourceMeshOld::setElementBuffer(ElementBufferWrapper* wrapper)
 	{
 		mElementBufferData = wrapper;
 	}
 
 
-	VertexArrayWrapper* const ResourceMesh::getVertexArray() const
+	VertexArrayWrapper* const ResourceMeshOld::getVertexArray() const
 	{
 		return mVertexArray;
 	}
 
 
-	VertexBufferWrapper* const  ResourceMesh::getVertexBufferList(GLint bufferIndex) const
+	VertexBufferWrapper* const ResourceMeshOld::getVertexBufferList(GLint bufferIndex) const
 	{
 		return mVertexBufferList->at(bufferIndex);
 	}
 
 
-	ElementBufferWrapper* const  ResourceMesh::getElementBufferData() const
+	ElementBufferWrapper* const  ResourceMeshOld::getElementBufferData() const
 	{
 		return mElementBufferData;
 	}
 
 
-	void ResourceMesh::addBufferData(VertexBufferWrapper* bufferData)
+	void ResourceMeshOld::addBufferData(VertexBufferWrapper* bufferData)
 	{
 		mVertexBufferList->push_back(bufferData);
 	}
 
 
-	void ResourceMesh::prepareMesh()
+	void ResourceMeshOld::prepareMesh()
 	{
 		logger.log(Logger::Level::LEVEL_DEBUG, "Binding VAO: " + std::to_string(mVertexArray->getId()));
 		mVertexArray->bind();
@@ -107,7 +107,7 @@ namespace Bountive
 	}
 
 
-	void ResourceMesh::clearBufferData()
+	void ResourceMeshOld::clearBufferData()
 	{
 		logger.log(Logger::Level::LEVEL_DEBUG, "Clearing bufferdata! Buffers in list: " + std::to_string(mVertexBufferList->size()));
 

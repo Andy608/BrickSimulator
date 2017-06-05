@@ -22,7 +22,7 @@ namespace Bountive
 
 	void HomeSceneInput::update(const GLdouble& DELTA_TIME)
 	{
-		if (BrickSimulator::instance->getInputTracker()->getEscapeKey().isPressed() && BrickSimulator::instance->getInputTracker()->getEscapeKey().isNewPress())
+		if (BrickSimulator::instance->getInputTracker()->getPauseKey().isPressed() && BrickSimulator::instance->getInputTracker()->getPauseKey().isNewPress())
 		{
 			glfwSetWindowShouldClose(BrickSimulator::instance->getWindow()->getWindowHandle(), GL_TRUE);
 		}

@@ -79,7 +79,8 @@ namespace Bountive
 		mEXE_ASSETS(new FileDirectory(mEXE_ROOT->getDirectory(), L"assets", GL_TRUE)),
 		mEXE_RESOURCES(new FileDirectory(mEXE_ROOT->getDirectory(), L"resources", GL_TRUE)),
 		mEXE_IMAGES(new FileDirectory(mEXE_ASSETS->getDirectory(), L"images", GL_TRUE)),
-		mEXE_SHADERS(new FileDirectory(mEXE_ASSETS->getDirectory(), L"shaders", GL_TRUE))
+		mEXE_SHADERS(new FileDirectory(mEXE_ASSETS->getDirectory(), L"shaders", GL_TRUE)),
+		mEXE_MODELS(new FileDirectory(mEXE_ASSETS->getDirectory(), L"models", GL_TRUE))
 	{
 		logger.log(Logger::Level::LEVEL_INFO, "Creating DirectoryUtil...");
 	}
@@ -103,5 +104,6 @@ namespace Bountive
 		delete mEXE_ROOT;
 		delete mEXE_IMAGES;
 		delete mEXE_SHADERS;
+		delete mEXE_MODELS;
 	}
 }

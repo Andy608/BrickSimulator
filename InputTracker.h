@@ -24,7 +24,14 @@ namespace Bountive
 
 		void update(const GLdouble& DELTA_TIME);
 
-		const SingleKeySetting& getEscapeKey() const;
+		const SingleKeySetting& getPauseKey() const;
+
+		const SingleKeySetting& getCameraForwardKey() const;
+		const SingleKeySetting& getCameraBackwardKey() const;
+		const SingleKeySetting& getCameraLeftKey() const;
+		const SingleKeySetting& getCameraRightKey() const;
+		const SingleKeySetting& getCameraUpKey() const;
+		const SingleKeySetting& getCameraDownKey() const;
 
 	private:
 		static Logger logger;
@@ -33,7 +40,14 @@ namespace Bountive
 		GLint* mPressedKeys;
 		const GameSettingsHandler& mGAME_SETTINGS_HANDLER;
 
-		SingleKeySetting mKeyEscape;
+		SingleKeySetting mPause;
+
+		SingleKeySetting mCameraForward;
+		SingleKeySetting mCameraBackward;
+		SingleKeySetting mCameraLeft;
+		SingleKeySetting mCameraRight;
+		SingleKeySetting mCameraUp;
+		SingleKeySetting mCameraDown;
 
 		InputTracker(const GameSettingsHandler& GAME_SETTINGS_HANDLER);
 

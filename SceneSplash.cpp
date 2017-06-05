@@ -2,6 +2,7 @@
 #include "SplashSceneInput.h"
 #include "KeyboardCallback.h"
 #include "MeshList.h"
+#include "ModelResourceBundle.h"
 #include "GuiResourceBundle.h"
 #include <glm\glm.hpp>
 #include "Logger.h"
@@ -33,11 +34,15 @@ namespace Bountive
 		bountiveTexture->setMaxifyFilter(TextureWrapper::MaxFilter::LINEAR);
 
 		bountiveLogo = new EntityGui("gui_bountive_logo", bountiveTexture);
-		bountiveLogo->getTransform()->setScale(0.5f, 0.5f, 1.0f);
+		bountiveLogo->getTransform()->setPosition(0.0f, 0.0f, 0.0f);
+		//bountiveLogo->getTransform()->setScale(1.0f);
 
 		logger.log(Logger::Level::LEVEL_DEBUG, "SHOWING SPLASH SCENE... " + std::to_string(mGuiList->size()));
 
 		mGuiList->push_back(bountiveLogo);
+
+		ResourceModel* cube = ModelResourceBundle::mCubeModel;
+		mModelList->push_back(cube);
 	}
 
 
@@ -45,14 +50,15 @@ namespace Bountive
 	{
 		logger.log(Logger::Level::LEVEL_DEBUG, "HIDING SPLASH SCENE... " + std::to_string(mGuiList->size()));
 		clearGuiList();
+		mModelList->clear();
 	}
 
 
 	void SplashScene::update(const GLdouble& DELTA_TIME)
 	{
-		static GLfloat t = 0;
+		static GLdouble t = 0;
 		t += DELTA_TIME;
-		bountiveLogo->getTransform()->setPosition(0.5f * std::sin(glm::radians(50 * t)), 0, 0);
+		bountiveLogo->getTransform()->setPosition(0.5f * static_cast<GLfloat>(std::sin(glm::radians(50.0f * t))), 0, 0);
 
 		mInputHandler->update(DELTA_TIME);
 	}

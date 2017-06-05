@@ -31,7 +31,9 @@ namespace Bountive
 			logger.log(Logger::Level::LEVEL_INFO, "Initializing BrickSimulator by Andy608...");
 			instance = new BrickSimulator();
 			instance->mWindow->buildWindow(*instance->mGameSettingsHandler);
+			instance->mRenderManager = new RenderManager();
 			instance->mSceneManager = new SceneManager(*instance->mResourceBundleTracker, *instance->mRenderManager);
+			RenderManager::updateRenderScreenSize(instance->mGameSettingsHandler->getWindowWidth().getCustomInteger(), instance->mGameSettingsHandler->getWindowHeight().getCustomInteger());
 		}
 
 		return instance;
@@ -43,10 +45,9 @@ namespace Bountive
 		mDIRECTORY_UTIL(DirectoryUtil::instance),
 		mLOGGER_UTIL(LoggerUtil::instance),
 		mWindow(new Window()),
-		mResourceBundleTracker(new ResourceBundleTracker()),
-		mRenderManager(new RenderManager()),
-		mEntityTracker(new EntityTracker()),
 		mGameSettingsHandler(new GameSettingsHandler(*mWindow)),
+		mResourceBundleTracker(new ResourceBundleTracker()),
+		mEntityTracker(new EntityTracker()),
 		mInputTracker(InputTracker::init(*mGameSettingsHandler))
 	{
 		mGameSettingsHandler->updateSettings();
@@ -169,4 +170,9 @@ namespace Bountive
 		return mInputTracker;
 	}
 
+
+	GameSettingsHandler* BrickSimulator::getGameSettings() const
+	{
+		return mGameSettingsHandler;
+	}
 }

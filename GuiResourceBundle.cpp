@@ -43,7 +43,7 @@ namespace Bountive
 
 		mGuiMesh = new ResourceMeshGui("mesh_gui");
 
-		mBountiveLogoTexture = new ResourceTexture("texture_bountive_logo", *DirectoryUtil::instance->mEXE_IMAGES, L"bountive_logo");
+		mBountiveLogoTexture = new ResourceTexture("texture_bountive_logo", *DirectoryUtil::instance->mEXE_IMAGES, L"bountive_logo", ResourceTexture::MaterialType::DIFFUSE);
 
 		mGuiVertexShader = new ResourceShader("shader_vertex_gui", ResourceShader::ShaderType::VERTEX, 
 			new FileLocation(DirectoryUtil::instance->mEXE_SHADERS, L"gui_vertex_shader", FileLocation::VS_SHADER_EXTENSION));

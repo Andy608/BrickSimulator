@@ -10,7 +10,7 @@ namespace Bountive
 	class TextureList
 	{
 	public:
-		//static ResourceTexture** mBountiveLogoTexture;
+		static ResourceTexture** mBountiveLogoTexture;
 
 	private:
 		TextureList();

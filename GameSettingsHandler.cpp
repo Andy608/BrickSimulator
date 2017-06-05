@@ -4,6 +4,7 @@
 #include "FileWriter.h"
 #include "FileReader.h"
 #include "Window.h"
+#include "RenderManager.h"
 #include "Logger.h"
 
 namespace Bountive
@@ -41,8 +42,15 @@ namespace Bountive
 
 		mVsyncEnabled(BooleanSetting("vsync", GL_TRUE)),
 		mFullscreenEnabled(BooleanSetting("fullscreen", GL_FALSE)),
+		mPerspectiveProjectionEnabled(BooleanSetting("perspective_projection", GL_TRUE)),
 		mFieldOfView(ClampedIntegerSetting("fov", 67, 30, 120)),
-		mKeyEscape(SingleKeySetting("key_escape", GLFW_KEY_ESCAPE))
+		mPauseKeyCode(IntegerSetting("key_pause", GLFW_KEY_ESCAPE)),
+		mCameraForwardKeyCode(IntegerSetting("camera_forward", GLFW_KEY_W)),
+		mCameraBackwardKeyCode(IntegerSetting("camera_backward", GLFW_KEY_S)),
+		mCameraLeftKeyCode(IntegerSetting("camera_left", GLFW_KEY_A)),
+		mCameraRightKeyCode(IntegerSetting("camera_right", GLFW_KEY_D)),
+		mCameraUpKeyCode(IntegerSetting("camera_up", GLFW_KEY_SPACE)),
+		mCameraDownKeyCode(IntegerSetting("camera_down", GLFW_KEY_RIGHT_SHIFT))
 	{
 		logger.log(Logger::Level::LEVEL_DEBUG, "Creating GameSettingsHandler...");
 		mSettingsFile->createFile(mFileWriter->getWriteStream());
@@ -136,13 +144,41 @@ namespace Bountive
 					{
 						mVsyncEnabled.setCustomBoolean(settingVar);
 					}
+					else if (settingName.compare(mPerspectiveProjectionEnabled.getSettingName()) == 0)
+					{
+						mPerspectiveProjectionEnabled.setCustomBoolean(settingVar);
+					}
 					else if (settingName.compare(mFieldOfView.getSettingName()) == 0)
 					{
 						mFieldOfView.IntegerSetting::setCustomInteger(settingVar);
 					}
-					else if (settingName.compare(mKeyEscape.getSettingName()) == 0)
+					else if (settingName.compare(mPauseKeyCode.getSettingName()) == 0)
 					{
-						mKeyEscape.setCustomInteger(settingVar);
+						mPauseKeyCode.setCustomInteger(settingVar);
+					}
+					else if (settingName.compare(mCameraForwardKeyCode.getSettingName()) == 0)
+					{
+						mCameraForwardKeyCode.setCustomInteger(settingVar);
+					}
+					else if (settingName.compare(mCameraBackwardKeyCode.getSettingName()) == 0)
+					{
+						mCameraBackwardKeyCode.setCustomInteger(settingVar);
+					}
+					else if (settingName.compare(mCameraLeftKeyCode.getSettingName()) == 0)
+					{
+						mCameraLeftKeyCode.setCustomInteger(settingVar);
+					}
+					else if (settingName.compare(mCameraRightKeyCode.getSettingName()) == 0)
+					{
+						mCameraRightKeyCode.setCustomInteger(settingVar);
+					}
+					else if (settingName.compare(mCameraUpKeyCode.getSettingName()) == 0)
+					{
+						mCameraUpKeyCode.setCustomInteger(settingVar);
+					}
+					else if (settingName.compare(mCameraDownKeyCode.getSettingName()) == 0)
+					{
+						mCameraDownKeyCode.setCustomInteger(settingVar);
 					}
 					else
 					{
@@ -173,9 +209,18 @@ namespace Bountive
 
 		settingsFile.push_back(mFullscreenEnabled.toFileString());
 		settingsFile.push_back(mVsyncEnabled.toFileString());
+		settingsFile.push_back(mPerspectiveProjectionEnabled.toFileString());
 		
 		settingsFile.push_back(mFieldOfView.toFileString());
-		settingsFile.push_back(mKeyEscape.toFileString());
+
+		settingsFile.push_back(InputTracker::instance->getPauseKey().toFileString());
+
+		settingsFile.push_back(InputTracker::instance->getCameraForwardKey().toFileString());
+		settingsFile.push_back(InputTracker::instance->getCameraBackwardKey().toFileString());
+		settingsFile.push_back(InputTracker::instance->getCameraLeftKey().toFileString());
+		settingsFile.push_back(InputTracker::instance->getCameraRightKey().toFileString());
+		settingsFile.push_back(InputTracker::instance->getCameraUpKey().toFileString());
+		settingsFile.push_back(InputTracker::instance->getCameraDownKey().toFileString());
 
 		mFileWriter->writeLinesInFile(*mSettingsFile, settingsFile);
 	}
@@ -189,10 +234,18 @@ namespace Bountive
 
 		mFullscreenEnabled.resetCustomValue();
 		mVsyncEnabled.resetCustomValue();
+		mPerspectiveProjectionEnabled.resetCustomValue();
 
 		mFieldOfView.resetCustomValue();
 
-		mKeyEscape.resetCustomValue();
+		mPauseKeyCode.resetCustomValue();
+
+		mCameraForwardKeyCode.resetCustomValue();
+		mCameraBackwardKeyCode.resetCustomValue();
+		mCameraLeftKeyCode.resetCustomValue();
+		mCameraRightKeyCode.resetCustomValue();
+		mCameraUpKeyCode.resetCustomValue();
+		mCameraDownKeyCode.resetCustomValue();
 	}
 
 
@@ -287,15 +340,57 @@ namespace Bountive
 	}
 
 
+	const BooleanSetting& GameSettingsHandler::isPerspectiveProjection() const
+	{
+		return mPerspectiveProjectionEnabled;
+	}
+
+
 	const ClampedIntegerSetting& GameSettingsHandler::getFieldOfView() const
 	{
 		return mFieldOfView;
 	}
 
 
-	const SingleKeySetting& GameSettingsHandler::getKeyEscape() const
+	const IntegerSetting& GameSettingsHandler::getPauseKeyCode() const
 	{
-		return mKeyEscape;
+		return mPauseKeyCode;
+	}
+
+
+	const IntegerSetting& GameSettingsHandler::getCameraForwardKeyCode() const
+	{
+		return mCameraForwardKeyCode;
+	}
+
+
+	const IntegerSetting& GameSettingsHandler::getCameraBackwardKeyCode() const
+	{
+		return mCameraBackwardKeyCode;
+	}
+
+
+	const IntegerSetting& GameSettingsHandler::getCameraLeftKeyCode() const
+	{
+		return mCameraLeftKeyCode;
+	}
+
+
+	const IntegerSetting& GameSettingsHandler::getCameraRightKeyCode() const
+	{
+		return mCameraRightKeyCode;
+	}
+
+
+	const IntegerSetting& GameSettingsHandler::getCameraUpKeyCode() const
+	{
+		return mCameraUpKeyCode;
+	}
+
+
+	const IntegerSetting& GameSettingsHandler::getCameraDownKeyCode() const
+	{
+		return mCameraDownKeyCode;
 	}
 
 
@@ -344,6 +439,12 @@ namespace Bountive
 	void GameSettingsHandler::setFullscreenEnabled(GLboolean fullscreenEnabled)
 	{
 		mFullscreenEnabled.setCustomBoolean(fullscreenEnabled);
+	}
+
+
+	void GameSettingsHandler::setPerspectiveProjectionEnabled(GLboolean perspectiveProjectionEnabled)
+	{
+		mPerspectiveProjectionEnabled.setCustomBoolean(perspectiveProjectionEnabled);
 	}
 
 

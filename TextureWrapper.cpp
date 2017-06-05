@@ -70,7 +70,7 @@ namespace Bountive
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, static_cast<GLint>(mMinifyFilter));
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, static_cast<GLint>(mMaxifyFilter));
 
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, mTexture->getWidth(), mTexture->getHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, mTexture->getGLTextureID());
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, mTexture->getWidth(), mTexture->getHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, mTexture->getSOILTextureID());
 		
 		glGenerateMipmap(GL_TEXTURE_2D);
 		unbind();

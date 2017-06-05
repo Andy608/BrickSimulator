@@ -6,35 +6,15 @@
 namespace Bountive
 {
 	Logger Transform::logger = Logger("Transform", Logger::Level::LEVEL_ALL);
+	glm::vec3 Transform::WORLD_UP = glm::vec3(0, 1, 0);
+	glm::vec3 Transform::WORLD_RIGHT = glm::vec3(1, 0, 0);
+	glm::vec3 Transform::WORLD_FORWARD = glm::vec3(0, 0, 1);
 
-	glm::vec3 Transform::UP_VEC = glm::vec3(0, 1, 0);
-	glm::vec3 Transform::RIGHT_VEC = glm::vec3(1, 0, 0);
-	glm::vec3 Transform::FORWARD_VEC = glm::vec3(0, 0, 1);
-
-	Transform::Transform() :
-		Transform(glm::vec3())
-	{
-
-	}
-
-	Transform::Transform(glm::vec3 position) :
-		Transform(position, glm::vec3())
-	{
-
-	}
-
-
-	Transform::Transform(glm::vec3 position, glm::vec3 rotation) :
-		Transform(position, rotation, glm::vec3(1, 1, 1))
-	{
-
-	}
-	
-	
-	Transform::Transform(glm::vec3 position, glm::vec3 rotation, glm::vec3 scale) :
+	Transform::Transform(glm::vec3 position, glm::vec3 rotation, GLfloat scale) :
 		mPosition(position),
 		mRotation(rotation),
-		mScale(scale)
+		mScale(scale),
+		mDimensions(glm::vec3(1, 1, 1))
 	{
 
 	}
@@ -74,15 +54,27 @@ namespace Bountive
 	}
 
 
-	void Transform::setScale(GLfloat xScale, GLfloat yScale, GLfloat zScale)
+	void Transform::setDimensions(GLfloat xDimension, GLfloat yDimension, GLfloat zDimension)
 	{
-		mScale.x = xScale;
-		mScale.y = yScale;
-		mScale.z = zScale;
+		mDimensions.x = xDimension;
+		mDimensions.y = yDimension;
+		mDimensions.z = zDimension;
 	}
 
 
-	const glm::vec3& Transform::getScale() const
+	const glm::vec3& Transform::getDimensions() const
+	{
+		return mDimensions;
+	}
+
+
+	void Transform::setScale(GLfloat scale)
+	{
+		mScale = scale;
+	}
+
+
+	const GLfloat& Transform::getScale() const
 	{
 		return mScale;
 	}
@@ -94,11 +86,11 @@ namespace Bountive
 
 		mTransformation = glm::translate(mTransformation, mPosition);
 
-		mTransformation = glm::rotate(mTransformation, glm::radians(mRotation.x), RIGHT_VEC);
-		mTransformation = glm::rotate(mTransformation, glm::radians(mRotation.y), UP_VEC);
-		mTransformation = glm::rotate(mTransformation, glm::radians(mRotation.z), FORWARD_VEC);
+		mTransformation = glm::rotate(mTransformation, glm::radians(mRotation.x), WORLD_RIGHT);
+		mTransformation = glm::rotate(mTransformation, glm::radians(mRotation.y), WORLD_UP);
+		mTransformation = glm::rotate(mTransformation, glm::radians(mRotation.z), WORLD_FORWARD);
 
-		mTransformation = glm::scale(mTransformation, mScale);
+		mTransformation = glm::scale(mTransformation, mDimensions * mScale);
 
 		return mTransformation;
 	}

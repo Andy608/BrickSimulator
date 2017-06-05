@@ -9,17 +9,19 @@ namespace Bountive
 	Logger Scene::logger = Logger("Scene", Logger::Level::LEVEL_ALL);
 
 	Scene::Scene(GLint id, std::string name, RenderManager& renderManager) :
-		mID(id), 
+		mID(id),
 		mNAME(name),
 		mRenderManager(renderManager),
+		mModelList(new std::vector<ResourceModel*>()),
 		mGuiList(new std::vector<EntityGui*>())
 	{
 
 	}
 
-
 	Scene::~Scene()
 	{
+		mModelList->clear();
+		delete mModelList;
 		mGuiList->clear();
 		delete mGuiList;
 	}
@@ -29,6 +31,8 @@ namespace Bountive
 	{
 		mRenderManager.setShader(*ShaderList::mGuiShaderProgram);
 		mRenderManager.getGuiRenderer().render(DELTA_TIME, *mGuiList, mRenderManager.getActiveShader());
+		mRenderManager.setShader(*ShaderList::mModelShaderProgram);
+		mRenderManager.getModelRenderer().render(DELTA_TIME, *mModelList, mRenderManager.getActiveShader());
 	}
 
 
@@ -42,7 +46,7 @@ namespace Bountive
 	{
 		for (GLuint i = 0; i < mGuiList->size(); ++i)
 		{
-			logger.log(Logger::Level::LEVEL_DEBUG, "CLEARING ENTITY LIST");
+			logger.log(Logger::Level::LEVEL_DEBUG, "CLEARING GUI ENTITY LIST");
 			if (mGuiList->at(i) != nullptr)
 			{
 				delete mGuiList->at(i);

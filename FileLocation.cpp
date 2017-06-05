@@ -6,6 +6,7 @@ namespace Bountive
 	Logger FileLocation::logger = Logger("FileLocation", Logger::Level::LEVEL_ALL);
 	std::wstring FileLocation::TXT_EXTENSION = L".txt";
 	std::wstring FileLocation::PNG_EXTENSION = L".png";
+	std::wstring FileLocation::OBJ_EXTENSION = L".obj";
 	std::wstring FileLocation::VS_SHADER_EXTENSION = L".vs";
 	std::wstring FileLocation::FS_SHADER_EXTENSION = L".fs";
 

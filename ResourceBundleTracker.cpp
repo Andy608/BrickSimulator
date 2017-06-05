@@ -1,5 +1,6 @@
 #include "ResourceBundleTracker.h"
 #include "GuiResourceBundle.h"
+#include "ModelResourceBundle.h"
 #include "ResourceBundle.h"
 #include "Logger.h"
 
@@ -13,6 +14,7 @@ namespace Bountive
 		logger.log(Logger::Level::LEVEL_DEBUG, "Creating ResourceBundleTracker...");
 
 		mBundleList->push_back(new GuiResourceBundle());
+		mBundleList->push_back(new ModelResourceBundle());
 	}
 
 
@@ -37,9 +39,9 @@ namespace Bountive
 		
 		for (GLuint i = 0; i < mBundleList->size(); ++i)
 		{
-			logger.log(Logger::Level::LEVEL_DEBUG, "Bundle ID: " + std::to_string(static_cast<GLint>(mBundleList->at(i)->mPACKAGE_ID)));
 			if (mBundleList->at(i)->mPACKAGE_ID == PACKAGE_ID)
 			{
+				logger.log(Logger::Level::LEVEL_DEBUG, "Bundle ID: " + std::to_string(static_cast<GLint>(mBundleList->at(i)->mPACKAGE_ID)));
 				mBundleList->at(i)->loadResourceBundle();
 				return;
 			}

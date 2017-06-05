@@ -14,15 +14,11 @@ namespace Bountive
 	{
 	public:
 		//right handed system
-		static glm::vec3 UP_VEC;
-		static glm::vec3 RIGHT_VEC;
-		static glm::vec3 FORWARD_VEC;
+		static glm::vec3 WORLD_UP;
+		static glm::vec3 WORLD_RIGHT;
+		static glm::vec3 WORLD_FORWARD;
 
-		Transform();
-		Transform(glm::vec3 position);
-		Transform(glm::vec3 position, glm::vec3 rotation);
-		Transform(glm::vec3 position, glm::vec3 rotation, glm::vec3 scale);
-
+		Transform(glm::vec3 position = glm::vec3(), glm::vec3 rotation = glm::vec3(), GLfloat scale = 1.0f);
 		~Transform();
 
 		void setPosition(GLfloat xPosition, GLfloat yPosition, GLfloat zPosition);
@@ -31,8 +27,11 @@ namespace Bountive
 		void setRotation(GLfloat xRotation, GLfloat yRotation, GLfloat zRotation);
 		const glm::vec3& getRotation() const;
 
-		void setScale(GLfloat xScale, GLfloat yScale, GLfloat zScale);
-		const glm::vec3& getScale() const;
+		void setDimensions(GLfloat xDimension, GLfloat yDimension, GLfloat zDimension);
+		const glm::vec3& getDimensions() const;
+
+		void setScale(GLfloat scale);
+		const GLfloat& getScale() const;
 
 		const glm::mat4& getTransformationMatrix();
 		const GLfloat* getTransformationMatrixPtr();
@@ -43,7 +42,9 @@ namespace Bountive
 		glm::mat4 mTransformation;
 		glm::vec3 mPosition;
 		glm::vec3 mRotation;
-		glm::vec3 mScale;
+		glm::vec3 mDimensions;
+
+		GLfloat mScale;
 	};
 }
 

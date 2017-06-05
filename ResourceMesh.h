@@ -1,6 +1,6 @@
 #pragma once
-#ifndef BOUNTIVE_RESOURCEMESH_H_
-#define BOUNTIVE_RESOURCEMESH_H_
+#ifndef BOUNTIVE_RESOURCEMESH2_H_
+#define BOUNTIVE_RESOURCEMESH2_H_
 
 #include <glew.h>
 #include <vector>
@@ -13,11 +13,11 @@ namespace Bountive
 {
 	class Logger;
 
-	class ResourceMesh : public Resource
+	class ResourceMeshOld : public Resource
 	{
 	public:
-		ResourceMesh(const std::string RESOURCE_ID);
-		virtual ~ResourceMesh();
+		ResourceMeshOld(const std::string RESOURCE_ID);
+		virtual ~ResourceMeshOld();
 
 		virtual void load();
 		virtual void unload();

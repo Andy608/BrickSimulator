@@ -30,6 +30,7 @@ namespace Bountive
 		const FileDirectory* const mEXE_ASSETS;		//Top level assets
 		const FileDirectory* const mEXE_IMAGES;		
 		const FileDirectory* const mEXE_SHADERS;
+		const FileDirectory* const mEXE_MODELS;
 
 		virtual ~DirectoryUtil();
 

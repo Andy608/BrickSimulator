@@ -8,7 +8,7 @@ namespace Bountive
 {
 	class Logger;
 
-	class ResourceMeshGui : public ResourceMesh
+	class ResourceMeshGui : public ResourceMeshOld
 	{
 	public:
 		ResourceMeshGui(const std::string mRESOURCE_ID);

@@ -92,4 +92,28 @@ namespace Bountive
 			logger.log(Logger::Level::LEVEL_DEBUG, "Successfully compiled shader program.");
 		}
 	}
+
+
+	GLuint ResourceShaderProgram::getUniformID(std::string uniformName) const
+	{
+		return glGetUniformLocation(mProgramID, uniformName.c_str());
+	}
+
+
+	void ResourceShaderProgram::loadInt1(std::string uniformName, GLint integer) const
+	{
+		glUniform1i(getUniformID(uniformName), integer);
+	}
+
+
+	void ResourceShaderProgram::loadFloat1(std::string uniformName, GLfloat floatingPoint) const
+	{
+		glUniform1f(getUniformID(uniformName), floatingPoint);
+	}
+
+
+	void ResourceShaderProgram::loadMat4(std::string uniformName, GLboolean transpose, const GLfloat* matrixPtr) const
+	{
+		glUniformMatrix4fv(getUniformID(uniformName), 1, transpose ? GL_TRUE : GL_FALSE, matrixPtr);
+	}
 }

@@ -38,10 +38,8 @@ namespace Bountive
 
 		const BooleanSetting& isVsyncEnabled() const;
 		const BooleanSetting& isFullscreenEnabled() const;
+		const BooleanSetting& isPerspectiveProjection() const;
 		const ClampedIntegerSetting& getFieldOfView() const;
-
-		const SingleKeySetting& getKeyEscape() const;
-
 
 		void setSaveWindowState(GLboolean saveWindowState);
 		void setWindowMaximized(GLboolean windowMaximized);
@@ -52,7 +50,18 @@ namespace Bountive
 
 		void setVsyncEnabled(GLboolean vsyncEnabled);
 		void setFullscreenEnabled(GLboolean fullscreenEnabled);
+		void setPerspectiveProjectionEnabled(GLboolean perspectiveProjectionEnabled);
 		void setFieldOfView(GLint fieldOfView);
+
+
+		const IntegerSetting& getPauseKeyCode() const;
+
+		const IntegerSetting& getCameraForwardKeyCode() const;
+		const IntegerSetting& getCameraBackwardKeyCode() const;
+		const IntegerSetting& getCameraLeftKeyCode() const;
+		const IntegerSetting& getCameraRightKeyCode() const;
+		const IntegerSetting& getCameraUpKeyCode() const;
+		const IntegerSetting& getCameraDownKeyCode() const;
 
 	private:
 		static Logger logger;
@@ -79,10 +88,19 @@ namespace Bountive
 
 		BooleanSetting mVsyncEnabled;
 		BooleanSetting mFullscreenEnabled;
+		BooleanSetting mPerspectiveProjectionEnabled;
 
 		ClampedIntegerSetting mFieldOfView;
 
-		SingleKeySetting mKeyEscape;
+
+		IntegerSetting mPauseKeyCode;
+
+		IntegerSetting mCameraForwardKeyCode;
+		IntegerSetting mCameraBackwardKeyCode;
+		IntegerSetting mCameraLeftKeyCode;
+		IntegerSetting mCameraRightKeyCode;
+		IntegerSetting mCameraUpKeyCode;
+		IntegerSetting mCameraDownKeyCode;
 
 		void setWindowInBounds();
 		void checkToResetInvalidWindow();

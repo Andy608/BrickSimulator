@@ -12,6 +12,7 @@ namespace Bountive
 	{
 	public:
 		static ResourceShaderProgram** mGuiShaderProgram;
+		static ResourceShaderProgram** mModelShaderProgram;
 
 	private:
 		ShaderList();

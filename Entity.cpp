@@ -2,12 +2,12 @@
 
 namespace Bountive
 {
-	Entity::Entity(std::string ENTITY_ID, const ResourceMesh& MODEL) :
+	Entity::Entity(std::string ENTITY_ID, const ResourceMeshOld& MODEL) :
 		mENTITY_ID(ENTITY_ID),
 		mMODEL(MODEL),
 		mTransform(new Transform())
 	{
-
+		
 	}
 
 

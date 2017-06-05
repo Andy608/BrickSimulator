@@ -45,17 +45,17 @@ namespace Bountive
 	{
 		if (customInteger > mMAX_INTEGER)
 		{
-			customInteger = mMAX_INTEGER;
 			logger.log(Logger::Level::LEVEL_WARN, "Custom integer value: " + 
 				std::to_string(customInteger) + " cannot be greater than max integer value: " +
 				std::to_string(mMAX_INTEGER) + ". Setting to max value.");
+			customInteger = mMAX_INTEGER;
 		}
 		else if (customInteger < mMIN_INTEGER)
 		{
-			customInteger = mMIN_INTEGER;
 			logger.log(Logger::Level::LEVEL_WARN, "Custom integer value: " +
 				std::to_string(customInteger) + " cannot be less than min integer value: " +
 				std::to_string(mMIN_INTEGER) + ". Setting to min value.");
+			customInteger = mMIN_INTEGER;
 		}
 
 		return customInteger;

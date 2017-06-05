@@ -14,6 +14,7 @@ namespace Bountive
 		logger.log(Logger::Level::LEVEL_DEBUG, "Creating EntityGui...");
 
 		mGuiTextureWrapper->generateGLtexture();
+		mTransform->setDimensions(mGuiTextureWrapper->getResourceTexture()->getAspectRatio(), 1.0f, 1.0f);
 	}
 
 

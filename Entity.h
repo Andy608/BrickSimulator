@@ -13,7 +13,7 @@ namespace Bountive
 	class Entity : public IUpdatable, public IRenderable
 	{
 	public:
-		Entity(std::string ENTITY_ID, const ResourceMesh& MODEL);
+		Entity(std::string ENTITY_ID, const ResourceMeshOld& MODEL);
 		virtual ~Entity();
 
 		Transform* getTransform() const;
@@ -22,7 +22,7 @@ namespace Bountive
 
 	protected:
 		const std::string mENTITY_ID;
-		const ResourceMesh& mMODEL;
+		const ResourceMeshOld& mMODEL;
 		Transform* mTransform;
 	};
 }

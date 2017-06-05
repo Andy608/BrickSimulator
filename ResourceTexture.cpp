@@ -8,9 +8,10 @@ namespace Bountive
 {
 	Logger ResourceTexture::logger = Logger("ResourceTexture", Logger::Level::LEVEL_ALL);
 
-	ResourceTexture::ResourceTexture(const std::string RESOURCE_ID, const FileDirectory& DIRECTORY, const std::wstring FILE_NAME) :
+	ResourceTexture::ResourceTexture(const std::string RESOURCE_ID, const FileDirectory& DIRECTORY, const std::wstring FILE_NAME, const MaterialType& MATERIAL) :
 		Resource(RESOURCE_ID),
-		mFILE_LOCATION(FileLocation(&DIRECTORY, FILE_NAME, FileLocation::PNG_EXTENSION))
+		mFILE_LOCATION(FileLocation(&DIRECTORY, FILE_NAME, FileLocation::PNG_EXTENSION)),
+		mMaterial(MATERIAL)
 	{
 		logger.log(Logger::Level::LEVEL_DEBUG, L"Creating ResourceTexture: " + mFILE_LOCATION.getFileName());
 	}
@@ -63,8 +64,20 @@ namespace Bountive
 	}
 
 
-	GLubyte* ResourceTexture::getGLTextureID() const
+	GLfloat ResourceTexture::getAspectRatio() const
+	{
+		return static_cast<GLfloat>(mWidth) / static_cast<GLfloat>(mHeight);
+	}
+
+
+	GLubyte* ResourceTexture::getSOILTextureID() const
 	{
 		return mTextureID;
+	}
+
+
+	const ResourceTexture::MaterialType& ResourceTexture::getMaterial() const
+	{
+		return mMaterial;
 	}
 }

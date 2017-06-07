@@ -19,11 +19,11 @@ namespace Bountive
 	}
 
 
-	void FileReader::getFileContents(FileLocation& file, std::string& fileContents)
+	void FileReader::getFileContents(const FileLocation& FILE, std::string& fileContents)
 	{
 		try
 		{
-			mReadStream->open(file.getFullPath(), std::ifstream::in);
+			mReadStream->open(FILE.getFullPath(), std::ifstream::in);
 
 			if (mReadStream->is_open())
 			{
@@ -35,7 +35,7 @@ namespace Bountive
 			}
 			else
 			{
-				throw std::wstring(L"Unable to read file: " + file.getFullPath());
+				throw std::wstring(L"Unable to read file: " + FILE.getFullPath());
 			}
 		}
 		catch (std::wstring e)
@@ -47,12 +47,12 @@ namespace Bountive
 	}
 
 
-	std::vector<std::string> FileReader::getLinesInFile(const FileLocation& file)
+	std::vector<std::string> FileReader::getLinesInFile(const FileLocation& FILE)
 	{
 		std::vector<std::string> lines = std::vector<std::string>();
 		std::string line;
 
-		mReadStream->open(file.getFullPath(), std::wifstream::in);
+		mReadStream->open(FILE.getFullPath(), std::wifstream::in);
 
 		if (mReadStream->is_open())
 		{
@@ -68,5 +68,11 @@ namespace Bountive
 
 		mReadStream->close();
 		return lines;
+	}
+
+
+	std::ifstream* FileReader::getReadStream() const
+	{
+		return mReadStream;
 	}
 }

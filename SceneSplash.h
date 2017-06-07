@@ -3,6 +3,7 @@
 #define BOUNTIVE_SCENESPLASH_H_
 
 #include "Scene.h"
+#include "EntityBarrel.h"
 
 namespace Bountive
 {
@@ -27,7 +28,8 @@ namespace Bountive
 		static Logger logger;
 		SplashSceneInput* mInputHandler;
 
-		EntityGui* bountiveLogo;
+		//EntityGui* bountiveLogo;
+		EntityBarrel* mBarrel;
 	};
 }
 

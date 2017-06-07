@@ -3,8 +3,9 @@
 
 namespace Bountive
 {
-	VertexBufferWrapper::VertexBufferWrapper(std::vector<GLfloat> buffer, GLint elementsPerVertex) :
+	VertexBufferWrapper::VertexBufferWrapper(const BufferType& BUFFER_TYPE, std::vector<GLfloat> buffer, GLint elementsPerVertex) :
 		GLWrapper(),
+		mBUFFER_TYPE(BUFFER_TYPE),
 		mBufferData(buffer),
 		mElementsPerVertex(elementsPerVertex),
 		mVertexCount(mBufferData.size() / mElementsPerVertex)

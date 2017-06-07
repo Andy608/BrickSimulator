@@ -16,8 +16,10 @@ namespace Bountive
 		FileReader();
 		~FileReader();
 
-		void getFileContents(FileLocation& file, std::string& fileContents);
-		std::vector<std::string> getLinesInFile(const FileLocation& file);
+		void getFileContents(const FileLocation& FILE, std::string& fileContents);
+		std::vector<std::string> getLinesInFile(const FileLocation& FILE);
+
+		std::ifstream* getReadStream() const;
 
 	private:
 		static Logger logger;

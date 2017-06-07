@@ -23,21 +23,23 @@ namespace Bountive
 	}
 
 
-	void ModelRenderer::render(const GLdouble& DELTA_TIME, const std::vector<ResourceModel*>& MODEL_LIST, const ResourceShaderProgram& activeShaderProgram)
+	void ModelRenderer::render(const GLdouble& DELTA_TIME, const std::vector<Entity*>& MODEL_LIST, const ResourceShaderProgram& activeShaderProgram)
 	{
 		glEnable(GL_DEPTH_TEST);
+		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 		activeShaderProgram.use();
 
 		activeShaderProgram.loadMat4("viewMatrixUniform", GL_FALSE, mRenderManager.getCamera().getViewMatrixPtr());
 		activeShaderProgram.loadMat4("projectionMatrixUniform", GL_FALSE, mRenderManager.getCamera().getPerspectiveMatrixPtr());
-		activeShaderProgram.loadMat4("transformUniform", GL_FALSE, glm::value_ptr(glm::mat4x4()));
 
 		for (GLuint i = 0; i < MODEL_LIST.size(); ++i)
 		{
-			MODEL_LIST.at(i)->render(DELTA_TIME, activeShaderProgram);
+			activeShaderProgram.loadMat4("transformUniform", GL_FALSE, MODEL_LIST.at(i)->getTransform()->getTransformationMatrixPtr());
+			MODEL_LIST.at(i)->getModel()->render(DELTA_TIME);
 		}
 
+		//glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		glDisable(GL_DEPTH_TEST);
 	}
 

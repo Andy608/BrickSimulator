@@ -4,7 +4,7 @@
 
 namespace Bountive
 {
-	ResourceModel* ModelResourceBundle::mCubeModel = nullptr;
+	ModelBarrel* ModelResourceBundle::mModelBarrel = nullptr;
 	ResourceShader* ModelResourceBundle::mModelVertexShader = nullptr;
 	ResourceShader* ModelResourceBundle::mModelFragmentShader = nullptr;
 	ResourceShaderProgram* ModelResourceBundle::mModelShaderProgram = nullptr;
@@ -39,8 +39,8 @@ namespace Bountive
 
 		logger.log(Logger::Level::LEVEL_DEBUG, "Loading ModelResourceBundle...");
 
-		mCubeModel = new ResourceModel("model_test_cube", *DirectoryUtil::instance->mEXE_MODELS, L"cube");
-	
+		mModelBarrel = new ModelBarrel();
+
 		mModelVertexShader = new ResourceShader("shader_vertex_model", ResourceShader::ShaderType::VERTEX,
 			new FileLocation(DirectoryUtil::instance->mEXE_SHADERS, L"model_vertex_shader", FileLocation::VS_SHADER_EXTENSION));
 
@@ -51,7 +51,7 @@ namespace Bountive
 		mModelShaderProgram->attachShader(mModelVertexShader);
 		mModelShaderProgram->attachShader(mModelFragmentShader);
 
-		mResourceList->push_back(mCubeModel);
+		mResourceList->push_back(mModelBarrel);
 		mResourceList->push_back(mModelVertexShader);
 		mResourceList->push_back(mModelFragmentShader);
 		mResourceList->push_back(mModelShaderProgram);

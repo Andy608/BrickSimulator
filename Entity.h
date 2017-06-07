@@ -6,23 +6,24 @@
 #include "Transform.h"
 #include "IUpdatable.h"
 #include "IRenderable.h"
-#include "ResourceMesh.h"
+#include "ResourceModel.h"
 
 namespace Bountive
 {
-	class Entity : public IUpdatable, public IRenderable
+	class Entity
 	{
 	public:
-		Entity(std::string ENTITY_ID, const ResourceMeshOld& MODEL);
+		Entity(std::string ENTITY_ID, ResourceModel& model);
 		virtual ~Entity();
 
 		Transform* getTransform() const;
+		ResourceModel* getModel() const;
 
 		GLboolean operator==(const Entity& comparison) const;
-
+		
 	protected:
 		const std::string mENTITY_ID;
-		const ResourceMeshOld& mMODEL;
+		ResourceModel* mModel;
 		Transform* mTransform;
 	};
 }

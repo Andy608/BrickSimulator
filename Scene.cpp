@@ -12,27 +12,27 @@ namespace Bountive
 		mID(id),
 		mNAME(name),
 		mRenderManager(renderManager),
-		mModelList(new std::vector<ResourceModel*>()),
-		mGuiList(new std::vector<EntityGui*>())
+		mEntityList(new std::vector<Entity*>())
+		//mGuiList(new std::vector<EntityGui*>())
 	{
 
 	}
 
 	Scene::~Scene()
 	{
-		mModelList->clear();
-		delete mModelList;
-		mGuiList->clear();
-		delete mGuiList;
+		clearEntityList();
+		delete mEntityList;
+		//mGuiList->clear();
+		//delete mGuiList;
 	}
 
 
 	void Scene::render(const GLdouble& DELTA_TIME)
 	{
-		mRenderManager.setShader(*ShaderList::mGuiShaderProgram);
-		mRenderManager.getGuiRenderer().render(DELTA_TIME, *mGuiList, mRenderManager.getActiveShader());
+		//mRenderManager.setShader(*ShaderList::mGuiShaderProgram);
+		//mRenderManager.getGuiRenderer().render(DELTA_TIME, *mGuiList, mRenderManager.getActiveShader());
 		mRenderManager.setShader(*ShaderList::mModelShaderProgram);
-		mRenderManager.getModelRenderer().render(DELTA_TIME, *mModelList, mRenderManager.getActiveShader());
+		mRenderManager.getModelRenderer().render(DELTA_TIME, *mEntityList, mRenderManager.getActiveShader());
 	}
 
 
@@ -44,7 +44,7 @@ namespace Bountive
 
 	void Scene::clearGuiList()
 	{
-		for (GLuint i = 0; i < mGuiList->size(); ++i)
+		/*for (GLuint i = 0; i < mGuiList->size(); ++i)
 		{
 			logger.log(Logger::Level::LEVEL_DEBUG, "CLEARING GUI ENTITY LIST");
 			if (mGuiList->at(i) != nullptr)
@@ -53,6 +53,21 @@ namespace Bountive
 			}
 		}
 
-		mGuiList->clear();
+		mGuiList->clear();*/
+	}
+
+
+	void Scene::clearEntityList()
+	{
+		for (GLuint i = 0; i < mEntityList->size(); ++i)
+		{
+			logger.log(Logger::Level::LEVEL_DEBUG, "CLEARING ENTITY LIST");
+			if (mEntityList->at(i) != nullptr)
+			{
+				delete mEntityList->at(i);
+			}
+		}
+
+		mEntityList->clear();
 	}
 }

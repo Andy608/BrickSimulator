@@ -9,7 +9,16 @@ namespace Bountive
 	class VertexBufferWrapper : public GLWrapper
 	{
 	public:
-		VertexBufferWrapper(std::vector<GLfloat> buffer, GLint elementsPerVertex);
+		enum class BufferType : const GLuint
+		{
+			POSITIONS,
+			TEXTURE_COORDS,
+			NORMALS
+		};
+
+		const BufferType mBUFFER_TYPE;
+
+		VertexBufferWrapper(const BufferType& BUFFER_TYPE, std::vector<GLfloat> buffer, GLint elementsPerVertex);
 		~VertexBufferWrapper();
 
 		virtual void bind() const;

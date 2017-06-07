@@ -21,8 +21,8 @@ namespace Bountive
 
 
 	RenderManager::RenderManager() :
-		mCamera(new Camera(glm::vec3(0, 0, 1), glm::vec3(0, 0, 0))),
-		mGuiRenderer(new GuiRenderer(*this)),
+		mCamera(new Camera(glm::vec3(0, 1.0f, 4.0f), glm::vec3(0, 0.5f, 0))),
+		//mGuiRenderer(new GuiRenderer(*this)),
 		mModelRenderer(new ModelRenderer(*this))
 	{
 		logger.log(Logger::Level::LEVEL_INFO, "Creating RenderManager...");
@@ -33,7 +33,7 @@ namespace Bountive
 	{
 		logger.log(Logger::Level::LEVEL_INFO, "Deleting RenderManager...");
 		delete mCamera;
-		delete mGuiRenderer;
+		//delete mGuiRenderer;
 		delete mModelRenderer;
 	}
 
@@ -50,10 +50,10 @@ namespace Bountive
 	}
 
 
-	GuiRenderer& RenderManager::getGuiRenderer() const
+	/*GuiRenderer& RenderManager::getGuiRenderer() const
 	{
 		return *mGuiRenderer;
-	}
+	}*/
 
 
 	ModelRenderer& RenderManager::getModelRenderer() const

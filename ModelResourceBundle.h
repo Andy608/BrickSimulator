@@ -3,9 +3,9 @@
 #define BOUNTIVE_MODELRESOURCEBUNDLE_H_
 
 #include "ResourceBundle.h"
-#include "ResourceModel.h"
 #include "ResourceShader.h"
 #include "ResourceShaderProgram.h"
+#include "ModelBarrel.h"
 
 namespace Bountive
 {
@@ -14,7 +14,7 @@ namespace Bountive
 	class ModelResourceBundle : public ResourceBundle
 	{
 	public:
-		static ResourceModel* mCubeModel;
+		static ModelBarrel* mModelBarrel;
 
 		static ResourceShader* mModelVertexShader;
 		static ResourceShader* mModelFragmentShader;

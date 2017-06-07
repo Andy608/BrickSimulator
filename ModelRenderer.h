@@ -3,7 +3,7 @@
 #define BOUNTIVE_MODELRENDERER_H_
 
 #include "Renderer.h"
-#include "ResourceModel.h"
+#include "Entity.h"
 
 namespace Bountive
 {
@@ -17,7 +17,7 @@ namespace Bountive
 		ModelRenderer(RenderManager& renderManager);
 		~ModelRenderer();
 
-		void render(const GLdouble& DELTA_TIME, const std::vector<ResourceModel*>& MODEL_LIST, const ResourceShaderProgram& activeShaderProgram);
+		void render(const GLdouble& DELTA_TIME, const std::vector<Entity*>& MODEL_LIST, const ResourceShaderProgram& activeShaderProgram);
 
 	private:
 		static Logger logger;

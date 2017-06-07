@@ -4,7 +4,7 @@
 
 #include <glew.h>
 #include "ResourceBundleTracker.h"
-#include "GuiRenderer.h"
+//#include "GuiRenderer.h"
 #include "ModelRenderer.h"
 
 namespace Bountive
@@ -28,7 +28,7 @@ namespace Bountive
 		void setShader(ResourceShaderProgram* shader);
 
 		const ResourceShaderProgram& getActiveShader() const;
-		GuiRenderer& getGuiRenderer() const;
+		//GuiRenderer& getGuiRenderer() const;
 		ModelRenderer& getModelRenderer() const;
 		Camera& getCamera() const;
 
@@ -40,7 +40,7 @@ namespace Bountive
 		Camera* mCamera;
 
 		ResourceShaderProgram* mActiveShaderProgram;
-		GuiRenderer* mGuiRenderer;
+		//GuiRenderer* mGuiRenderer;
 		ModelRenderer* mModelRenderer;
 	};
 }

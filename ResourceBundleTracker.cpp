@@ -1,5 +1,5 @@
 #include "ResourceBundleTracker.h"
-#include "GuiResourceBundle.h"
+//#include "GuiResourceBundle.h"
 #include "ModelResourceBundle.h"
 #include "ResourceBundle.h"
 #include "Logger.h"
@@ -13,7 +13,7 @@ namespace Bountive
 	{
 		logger.log(Logger::Level::LEVEL_DEBUG, "Creating ResourceBundleTracker...");
 
-		mBundleList->push_back(new GuiResourceBundle());
+		//mBundleList->push_back(new GuiResourceBundle());
 		mBundleList->push_back(new ModelResourceBundle());
 	}
 

@@ -7,6 +7,6 @@
 
 namespace Bountive
 {
-	ResourceShaderProgram** ShaderList::mGuiShaderProgram = &GuiResourceBundle::mGuiShaderProgram;
+	//ResourceShaderProgram** ShaderList::mGuiShaderProgram = &GuiResourceBundle::mGuiShaderProgram;
 	ResourceShaderProgram** ShaderList::mModelShaderProgram = &ModelResourceBundle::mModelShaderProgram;
 }

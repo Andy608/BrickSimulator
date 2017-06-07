@@ -3,5 +3,5 @@
 
 namespace Bountive
 {
-	ResourceMeshGui** MeshList::mGuiMesh = &GuiResourceBundle::mGuiMesh;
+	//ResourceMeshGui** MeshList::mGuiMesh = &GuiResourceBundle::mGuiMesh;
 }

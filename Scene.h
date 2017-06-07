@@ -4,8 +4,8 @@
 
 #include <glew.h>
 #include <string>
-#include "EntityGui.h"
-#include "ResourceModel.h"
+//#include "EntityGui.h"
+#include "Entity.h"
 #include "IUpdatable.h"
 #include "IRenderable.h"
 
@@ -35,10 +35,11 @@ namespace Bountive
 		const std::string mNAME;
 		RenderManager& mRenderManager;
 
-		std::vector<EntityGui*>* mGuiList;
-		std::vector<ResourceModel*>* mModelList;
+		//std::vector<EntityGui*>* mGuiList;
+		std::vector<Entity*>* mEntityList;
 
 		void clearGuiList();
+		void clearEntityList();
 	};
 }
 

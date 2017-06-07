@@ -29,28 +29,26 @@ namespace Bountive
 
 	void SplashScene::showScene()
 	{
-		TextureWrapper* bountiveTexture = new TextureWrapper(GuiResourceBundle::mBountiveLogoTexture);
-		bountiveTexture->setMinifyFilter(TextureWrapper::MinFilter::LINEAR_MIPMAP_LINEAR);
-		bountiveTexture->setMaxifyFilter(TextureWrapper::MaxFilter::LINEAR);
+		//TextureWrapper* bountiveTexture = new TextureWrapper(GuiResourceBundle::mBountiveLogoTexture);
+		//bountiveTexture->setMinifyFilter(TextureWrapper::MinFilter::LINEAR_MIPMAP_LINEAR);
+		//bountiveTexture->setMaxifyFilter(TextureWrapper::MaxFilter::LINEAR);
 
-		bountiveLogo = new EntityGui("gui_bountive_logo", bountiveTexture);
-		bountiveLogo->getTransform()->setPosition(0.0f, 0.0f, 0.0f);
-		//bountiveLogo->getTransform()->setScale(1.0f);
+		//bountiveLogo = new EntityGui("gui_bountive_logo", bountiveTexture);
+		//bountiveLogo->getTransform()->setPosition(0.0f, 0.0f, 0.0f);
 
-		logger.log(Logger::Level::LEVEL_DEBUG, "SHOWING SPLASH SCENE... " + std::to_string(mGuiList->size()));
+		//logger.log(Logger::Level::LEVEL_DEBUG, "SHOWING SPLASH SCENE... " + std::to_string(mGuiList->size()));
 
-		mGuiList->push_back(bountiveLogo);
+		//mGuiList->push_back(bountiveLogo);
 
-		ResourceModel* cube = ModelResourceBundle::mCubeModel;
-		mModelList->push_back(cube);
+		mBarrel = new EntityBarrel();
+		mEntityList->push_back(mBarrel);
 	}
 
 
 	void SplashScene::hideScene()
 	{
-		logger.log(Logger::Level::LEVEL_DEBUG, "HIDING SPLASH SCENE... " + std::to_string(mGuiList->size()));
-		clearGuiList();
-		mModelList->clear();
+		//logger.log(Logger::Level::LEVEL_DEBUG, "HIDING SPLASH SCENE... " + std::to_string(mGuiList->size()));
+		clearEntityList();
 	}
 
 
@@ -58,7 +56,7 @@ namespace Bountive
 	{
 		static GLdouble t = 0;
 		t += DELTA_TIME;
-		bountiveLogo->getTransform()->setPosition(0.5f * static_cast<GLfloat>(std::sin(glm::radians(50.0f * t))), 0, 0);
+		mBarrel->getTransform()->setPosition(0.5f * static_cast<GLfloat>(std::sin(glm::radians(50.0f * t))),0, 0);
 
 		mInputHandler->update(DELTA_TIME);
 	}
@@ -68,7 +66,8 @@ namespace Bountive
 	{
 		logger.log(Logger::Level::LEVEL_TRACE, "SPLASH");
 
-		glClearColor(1.0f, 208.0f / 255.0f, 82.0f / 255.0f, 1.0f);
+		//glClearColor(1.0f, 208.0f / 255.0f, 82.0f / 255.0f, 1.0f);
+		glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		Scene::render(DELTA_TIME);

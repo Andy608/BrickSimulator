@@ -12,16 +12,7 @@ namespace Bountive
 	class ResourceTexture : public Resource
 	{
 	public:
-		static const std::string DIFFUSE;
-		static const std::string SPECULAR;
-
-		enum class MaterialType : GLuint
-		{
-			DIFFUSE,
-			SPECULAR
-		};
-
-		ResourceTexture(const std::string RESOURCE_ID, const FileDirectory& DIRECTORY, const std::wstring FILE_NAME, const MaterialType& MATERIAL);
+		ResourceTexture(const std::string RESOURCE_ID, const FileDirectory& DIRECTORY, const std::wstring FILE_NAME);
 		virtual ~ResourceTexture();
 
 		virtual void load();
@@ -34,8 +25,6 @@ namespace Bountive
 
 		GLubyte* getSOILTextureID() const;
 
-		const MaterialType& getMaterial() const;
-
 	private:
 		static Logger logger;
 
@@ -44,7 +33,6 @@ namespace Bountive
 		GLint mHeight;
 		GLint mColorChannels;
 		GLubyte* mTextureID;
-		MaterialType mMaterial;
 	};
 }
 

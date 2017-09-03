@@ -10,7 +10,8 @@ namespace Bountive
 	Logger SceneManager::logger = Logger("SceneManager", Logger::Level::LEVEL_ALL);
 	GLint SceneManager::sceneIdCounter = -1;
 
-	SceneManager::SceneManager(ResourceBundleTracker& resourceBundleTracker, RenderManager& renderManager) :
+	SceneManager::SceneManager(Window& window, ResourceBundleTracker& resourceBundleTracker, RenderManager& renderManager) :
+		mWindow(window),
 		mResourceBundleTracker(resourceBundleTracker),
 		mRenderManager(renderManager),
 		mSceneList(createScenes()),
@@ -38,8 +39,8 @@ namespace Bountive
 
 	void SceneManager::update(const GLdouble& DELTA_TIME)
 	{
-		mRenderManager.getCamera().update(DELTA_TIME);
 		mActiveScene->update(DELTA_TIME);
+		mRenderManager.getCamera().update(DELTA_TIME);
 	}
 
 
@@ -115,8 +116,8 @@ namespace Bountive
 	{
 		std::vector<Scene*>* gameScenes = new std::vector<Scene*>();
 
-		gameScenes->push_back(new HomeScene(++sceneIdCounter, mRenderManager));
-		gameScenes->push_back(new SplashScene(++sceneIdCounter, mRenderManager));
+		gameScenes->push_back(new HomeScene(++sceneIdCounter, mWindow, mRenderManager));
+		gameScenes->push_back(new SplashScene(++sceneIdCounter, mWindow, mRenderManager));
 
 		return gameScenes;
 	}

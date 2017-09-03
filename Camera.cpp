@@ -1,10 +1,12 @@
 #include <glm\glm.hpp>
 #include <glm\gtc\matrix_transform.hpp>
 #include <glm\gtc\type_ptr.hpp>
+#include <glm\common.hpp>
 #include "Camera.h"
 #include "Transform.h"
 #include "InputTracker.h"
-#include "BrickSimulator.h"
+#include "GraphicsOptions.h"
+#include "Math3D.h"
 #include "Logger.h"
 
 namespace Bountive
@@ -20,6 +22,9 @@ namespace Bountive
 		mLookAtPosition(lookAtPosition)
 	{
 		logger.log(Logger::Level::LEVEL_DEBUG, "Creating Camera...");
+		
+		updateBasis();
+		updateViewMatrix();
 	}
 
 
@@ -32,52 +37,69 @@ namespace Bountive
 
 	void Camera::updateViewMatrix()
 	{
+		//logger.log(Logger::Level::LEVEL_DEBUG, std::to_string((mCameraForward).z));
 		mViewMatrix = glm::lookAt(mTransform->getPosition(), mLookAtPosition, mCameraUp);
 	}
 
 
 	void Camera::updateProjectionMatrix(GLint viewportWidth, GLint viewportHeight)
 	{
-		perspectiveMatrix = glm::mat4();
-
-		perspectiveMatrix = glm::perspective(
-			glm::radians(static_cast<GLfloat>(BrickSimulator::instance->getGameSettings()->getFieldOfView().getCustomInteger())),
-			static_cast<GLfloat>(viewportWidth) / static_cast<GLfloat>(viewportHeight),
-			NEAR_PLANE,
-			FAR_PLANE);
-
-		orthoMatrix = glm::ortho(
-			-static_cast<GLfloat>(viewportWidth) / 2,
-			static_cast<GLfloat>(viewportWidth) / 2,
-			-static_cast<GLfloat>(viewportHeight) / 2,
-			static_cast<GLfloat>(viewportHeight) / 2,
-			NEAR_PLANE, FAR_PLANE);
+		if (GraphicsOptions::instance->getProjectionType() == EnumProjection::PERSPECTIVE)
+		{
+			perspectiveMatrix = glm::perspective(
+				glm::radians(static_cast<GLfloat>(GraphicsOptions::instance->getFieldOfView().getCustomInteger())),
+				static_cast<GLfloat>(viewportWidth) / static_cast<GLfloat>(viewportHeight),
+				NEAR_PLANE,
+				FAR_PLANE);
+		}
+		else
+		{
+			orthoMatrix = glm::ortho(
+				-static_cast<GLfloat>(viewportWidth) / 2.0f,
+				static_cast<GLfloat>(viewportWidth) / 2.0f,
+				-static_cast<GLfloat>(viewportHeight) / 2.0f,
+				static_cast<GLfloat>(viewportHeight) / 2.0f,
+				NEAR_PLANE, FAR_PLANE);
+		}
 	}
 
 
 	void Camera::update(const GLdouble& DELTA_TIME)
 	{
-		mCameraForward = glm::normalize(mTransform->getPosition() - mLookAtPosition);
-		mCameraRight = glm::normalize(glm::cross(mCameraForward, Transform::WORLD_UP));
-		mCameraUp = glm::cross(mCameraRight, mCameraForward);
-
-		if (InputTracker::instance->getCameraForwardKey().isPressed())
+		/*if (InputTracker::instance->getCameraForwardKey().isPressed())
 		{
-			logger.log(Logger::Level::LEVEL_DEBUG, std::to_string(mTransform->getPosition().x) + ", " + 
-				std::to_string(mTransform->getPosition().y) + ", " + 
+			logger.log(Logger::Level::LEVEL_DEBUG, std::to_string(mTransform->getPosition().x) + ", " +
+				std::to_string(mTransform->getPosition().y) + ", " +
 				std::to_string(mTransform->getPosition().z));
+
 			mTransform->setPosition(mTransform->getPosition().x, mTransform->getPosition().y, mTransform->getPosition().z - 1);
 		}
-		
+
 		if (InputTracker::instance->getCameraBackwardKey().isPressed())
 		{
 			logger.log(Logger::Level::LEVEL_DEBUG, std::to_string(mTransform->getPosition().x) + ", " +
 				std::to_string(mTransform->getPosition().y) + ", " +
 				std::to_string(mTransform->getPosition().z));
-			mTransform->setPosition(mTransform->getPosition().x, mTransform->getPosition().y, mTransform->getPosition().z + 1);
-		}
 
+			mTransform->setPosition(mTransform->getPosition().x, mTransform->getPosition().y, mTransform->getPosition().z + 1);
+		}*/
+
+		updateBasis();
 		updateViewMatrix();
+	}
+
+
+	void Camera::render(const GLdouble& ALPHA_TIME)
+	{
+		
+	}
+
+
+	void Camera::updateBasis()
+	{
+		mCameraForward = glm::normalize(mTransform->getPosition() - mLookAtPosition);
+		mCameraRight = glm::normalize(glm::cross(mCameraForward, Transform::WORLD_UP));
+		mCameraUp = glm::cross(mCameraRight, mCameraForward);
 	}
 
 
@@ -99,26 +121,28 @@ namespace Bountive
 	}
 
 
-	glm::mat4 Camera::getPerspectiveMatrix()
+	glm::mat4 Camera::getProjectionMatrix()
 	{
-		return perspectiveMatrix;
+		if (GraphicsOptions::instance->getProjectionType() == EnumProjection::PERSPECTIVE)
+		{
+			return perspectiveMatrix;
+		}
+		else
+		{
+			return orthoMatrix;
+		}
 	}
 
 
-	const GLfloat* Camera::getPerspectiveMatrixPtr()
+	const GLfloat* Camera::getProjectionMatrixPtr()
 	{
-		return glm::value_ptr(perspectiveMatrix);
-	}
-
-
-	glm::mat4 Camera::getOrthoMatrix()
-	{
-		return orthoMatrix;
-	}
-
-
-	const GLfloat* Camera::getOrthoMatrixPtr()
-	{
-		return glm::value_ptr(orthoMatrix);
+		if (GraphicsOptions::instance->getProjectionType() == EnumProjection::PERSPECTIVE)
+		{
+			return glm::value_ptr(perspectiveMatrix);
+		}
+		else
+		{
+			return glm::value_ptr(orthoMatrix);
+		}
 	}
 }

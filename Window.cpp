@@ -2,7 +2,9 @@
 #include <string>
 #include "BrickSimulator.h"
 #include "CallbackManager.h"
-#include "GameSettingsHandler.h"
+#include "FileSettingsHandler.h"
+#include "WindowSizeCallback.h"
+#include "GraphicsOptions.h"
 #include "InputTracker.h"
 #include "Logger.h"
 
@@ -44,7 +46,7 @@ namespace Bountive
 	}
 
 
-	void Window::buildWindow(GameSettingsHandler& gameSettingsHandler)
+	void Window::buildWindow(FileSettingsHandler& fileSettingsHandler)
 	{
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -52,16 +54,16 @@ namespace Bountive
 		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 		glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
 
-		if (gameSettingsHandler.isWindowMaximized().getCustomBoolean())
+		if (fileSettingsHandler.isWindowMaximized().getCustomBoolean())
 		{
 			glfwWindowHint(GLFW_MAXIMIZED, GL_TRUE);
 		}
 
-		mWindowHandle = glfwCreateWindow(gameSettingsHandler.getWindowWidth().getCustomInteger(), gameSettingsHandler.getWindowHeight().getCustomInteger(), "Brick Simulator 2017", nullptr, nullptr);
+		mWindowHandle = glfwCreateWindow(fileSettingsHandler.getWindowWidth().getCustomInteger(), fileSettingsHandler.getWindowHeight().getCustomInteger(), "Brick Simulator 2017", nullptr, nullptr);
 
-		if (!gameSettingsHandler.isWindowMaximized().getCustomBoolean())
+		if (!fileSettingsHandler.isWindowMaximized().getCustomBoolean())
 		{
-			glfwSetWindowPos(mWindowHandle, gameSettingsHandler.getWindowPositionX().getCustomInteger(), gameSettingsHandler.getWindowPositionY().getCustomInteger());
+			glfwSetWindowPos(mWindowHandle, fileSettingsHandler.getWindowPositionX().getCustomInteger(), fileSettingsHandler.getWindowPositionY().getCustomInteger());
 		}
 
 		glfwSetWindowSizeLimits(mWindowHandle, mMINIMUM_SIZE_X, mMINIMUM_SIZE_Y, mMAXIMUM_SIZE_X, mMAXIMUM_SIZE_Y);
@@ -89,10 +91,10 @@ namespace Bountive
 
 			GLint windowWidth, windowHeight;
 			glfwGetFramebufferSize(mWindowHandle, &windowWidth, &windowHeight);
-			glfwSwapInterval(gameSettingsHandler.isVsyncEnabled().getCustomBoolean());
+			glfwSwapInterval(GraphicsOptions::instance->isVsyncEnabled().getCustomBoolean());
 			glViewport(0, 0, windowWidth, windowHeight);
 
-			mCallbackManager = new CallbackManager(gameSettingsHandler);
+			mCallbackManager = new CallbackManager(fileSettingsHandler);
 
 			glfwShowWindow(mWindowHandle);
 		}
@@ -101,7 +103,7 @@ namespace Bountive
 
 	void Window::update(const GLdouble& DELTA_TIME)
 	{
-
+		
 	}
 
 

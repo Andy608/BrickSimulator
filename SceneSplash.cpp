@@ -4,6 +4,7 @@
 #include "MeshList.h"
 #include "ModelResourceBundle.h"
 #include "GuiResourceBundle.h"
+#include "WindowSizeCallback.h"
 #include <glm\glm.hpp>
 #include "Logger.h"
 
@@ -12,9 +13,10 @@ namespace Bountive
 	Logger SplashScene::logger = Logger("SplashScene", Logger::Level::LEVEL_ALL);
 	const std::string SplashScene::NAME = "splash_scene";
 
-	SplashScene::SplashScene(GLint id, RenderManager& renderManager) :
-		Scene(id, NAME, renderManager),
-		mInputHandler(new SplashSceneInput())
+	SplashScene::SplashScene(GLint id, Window& window, RenderManager& renderManager) :
+		Scene(id, NAME, window, renderManager),
+		mInputHandler(new SplashSceneInput()),
+		mCamera(new FreeRoamCamera(glm::vec3(0, 0, 0), 1.0f))
 	{
 		logger.log(Logger::Level::LEVEL_DEBUG, "Creating SplashScene...");
 	}
@@ -24,11 +26,13 @@ namespace Bountive
 	{
 		logger.log(Logger::Level::LEVEL_DEBUG, "Deleting SplashScene...");
 		delete mInputHandler;
+		delete mCamera;
 	}
 
 
 	void SplashScene::showScene()
 	{
+		glfwSetInputMode(mWindow.getWindowHandle(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 		//TextureWrapper* bountiveTexture = new TextureWrapper(GuiResourceBundle::mBountiveLogoTexture);
 		//bountiveTexture->setMinifyFilter(TextureWrapper::MinFilter::LINEAR_MIPMAP_LINEAR);
 		//bountiveTexture->setMaxifyFilter(TextureWrapper::MaxFilter::LINEAR);
@@ -39,6 +43,8 @@ namespace Bountive
 		//logger.log(Logger::Level::LEVEL_DEBUG, "SHOWING SPLASH SCENE... " + std::to_string(mGuiList->size()));
 
 		//mGuiList->push_back(bountiveLogo);
+		//InputTracker::instance->setCursorPosition(mWindow, WindowSizeCallback::instance->getWindowCenter());
+		mRenderManager.setCamera(mCamera);
 
 		mBarrel = new EntityBarrel();
 		mEntityList->push_back(mBarrel);
@@ -47,6 +53,7 @@ namespace Bountive
 
 	void SplashScene::hideScene()
 	{
+		glfwSetInputMode(mWindow.getWindowHandle(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 		//logger.log(Logger::Level::LEVEL_DEBUG, "HIDING SPLASH SCENE... " + std::to_string(mGuiList->size()));
 		clearEntityList();
 	}
@@ -54,10 +61,11 @@ namespace Bountive
 
 	void SplashScene::update(const GLdouble& DELTA_TIME)
 	{
-		static GLdouble t = 0;
-		t += DELTA_TIME;
-		mBarrel->getTransform()->setPosition(0.5f * static_cast<GLfloat>(std::sin(glm::radians(50.0f * t))),0, 0);
+		//static GLdouble t = 0;
+		//t += DELTA_TIME;
+		//mBarrel->getTransform()->setPosition(0.5f * static_cast<GLfloat>(std::sin(glm::radians(50.0f * t))), 0, 0);
 
+		//InputTracker::instance->setCursorPosition(mWindow, WindowSizeCallback::instance->getWindowCenter());
 		mInputHandler->update(DELTA_TIME);
 	}
 
@@ -71,5 +79,6 @@ namespace Bountive
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		Scene::render(DELTA_TIME);
+		mCamera->render(DELTA_TIME);
 	}
 }

@@ -1,4 +1,5 @@
 #include "CursorPositionCallback.h"
+#include "InputTracker.h"
 #include "Logger.h"
 
 namespace Bountive
@@ -6,18 +7,19 @@ namespace Bountive
 	CursorPositionCallback* CursorPositionCallback::instance = nullptr;
 	Logger CursorPositionCallback::logger = Logger("CursorPositionCallback", Logger::Level::LEVEL_ALL);
 
-	CursorPositionCallback* CursorPositionCallback::init()
+	CursorPositionCallback* CursorPositionCallback::init(InputTracker& INPUT_TRACKER)
 	{
 		if (instance == nullptr)
 		{
-			instance = new CursorPositionCallback();
+			instance = new CursorPositionCallback(INPUT_TRACKER);
 		}
 
 		return instance;
 	}
 
 
-	CursorPositionCallback::CursorPositionCallback() 
+	CursorPositionCallback::CursorPositionCallback(InputTracker& INPUT_TRACKER) :
+		mInputTracker(INPUT_TRACKER)
 	{
 		logger.log(Logger::Level::LEVEL_DEBUG, "Creating CursorPositionCallback...");
 	}
@@ -31,6 +33,8 @@ namespace Bountive
 
 	void CursorPositionCallback::cursorPositionCallback(GLFWwindow* windowHandle, GLdouble xPosition, GLdouble yPosition)
 	{
-		logger.log(Logger::Level::LEVEL_TRACE, "Cursor Position: (" + std::to_string(xPosition) + ", " + std::to_string(yPosition) + ")");
+		instance->mInputTracker.updateCursorPosition(xPosition, yPosition);
+
+		//logger.log(Logger::Level::LEVEL_TRACE, "Cursor Position: (" + std::to_string(xPosition) + ", " + std::to_string(yPosition) + ")");
 	}
 }

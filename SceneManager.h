@@ -9,12 +9,13 @@
 namespace Bountive
 {
 	class RenderManager;
+	class Window;
 	class Logger;
 
 	class SceneManager
 	{
 	public:
-		SceneManager(ResourceBundleTracker& resourceBundleTracker, RenderManager& renderManager);
+		SceneManager(Window& window, ResourceBundleTracker& resourceBundleTracker, RenderManager& renderManager);
 		~SceneManager();
 
 		void update(const GLdouble& DELTA_TIME);
@@ -29,6 +30,7 @@ namespace Bountive
 		static Logger logger;
 		static GLint sceneIdCounter;
 
+		Window& mWindow;
 		ResourceBundleTracker& mResourceBundleTracker;
 		RenderManager& mRenderManager;
 

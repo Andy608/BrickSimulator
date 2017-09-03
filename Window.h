@@ -4,7 +4,6 @@
 
 #include <glew.h>
 #include <glfw\glfw3.h>
-#include <glm\vec2.hpp>
 #include "SceneManager.h"
 #include "InputTracker.h"
 
@@ -28,7 +27,7 @@ namespace Bountive
 		Window();
 		~Window();
 
-		void buildWindow(GameSettingsHandler& gameSettingsHandler);
+		void buildWindow(FileSettingsHandler& fileSettingsHandler);
 		void update(const GLdouble& DELTA_TIME);
 		void render(const GLdouble& DELTA_TIME);
 

@@ -32,6 +32,6 @@ namespace Bountive
 	void MouseScrollCallback::mouseScrollCallback(GLFWwindow* windowHandle, GLdouble xOffset, GLdouble yOffset)
 	{
 		//TODO: Save scroll in input handler
-		logger.log(Logger::Level::LEVEL_TRACE, "Mouse Scroll Offset: (" + std::to_string(xOffset) + ", " + std::to_string(yOffset) + ")");
+		//logger.log(Logger::Level::LEVEL_TRACE, "Mouse Scroll Offset: (" + std::to_string(xOffset) + ", " + std::to_string(yOffset) + ")");
 	}
 }

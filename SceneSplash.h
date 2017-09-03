@@ -4,6 +4,7 @@
 
 #include "Scene.h"
 #include "EntityBarrel.h"
+#include "FreeRoamCamera.h"
 
 namespace Bountive
 {
@@ -15,7 +16,7 @@ namespace Bountive
 	public:
 		static const std::string NAME;
 
-		SplashScene(GLint id, RenderManager& renderManager);
+		SplashScene(GLint id, Window& window, RenderManager& renderManager);
 		~SplashScene();
 
 		virtual void showScene();
@@ -28,6 +29,7 @@ namespace Bountive
 		static Logger logger;
 		SplashSceneInput* mInputHandler;
 
+		FreeRoamCamera* mCamera;
 		//EntityGui* bountiveLogo;
 		EntityBarrel* mBarrel;
 	};

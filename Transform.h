@@ -21,8 +21,12 @@ namespace Bountive
 		Transform(glm::vec3 position = glm::vec3(), glm::vec3 rotation = glm::vec3(), GLfloat scale = 1.0f);
 		~Transform();
 
+		void setRenderedPosition(glm::vec3 renderedPosition);
+		void setPosition(glm::vec3 newPosition);
 		void setPosition(GLfloat xPosition, GLfloat yPosition, GLfloat zPosition);
+		
 		const glm::vec3& getPosition() const;
+		const glm::vec3& getPrevPosition() const;
 
 		void setRotation(GLfloat xRotation, GLfloat yRotation, GLfloat zRotation);
 		const glm::vec3& getRotation() const;
@@ -39,11 +43,16 @@ namespace Bountive
 	private:
 		static Logger logger;
 
+		const GLfloat mDAMPING = 0.999f;
+
 		glm::mat4 mTransformation;
+
 		glm::vec3 mPosition;
+		glm::vec3 mPrevPosition;
+		glm::vec3 mRenderedPosition;
+		
 		glm::vec3 mRotation;
 		glm::vec3 mDimensions;
-
 		GLfloat mScale;
 	};
 }

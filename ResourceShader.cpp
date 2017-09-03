@@ -9,7 +9,7 @@ namespace Bountive
 	const GLint ResourceShader::ERROR_LOG_SIZE = 512;
 	Logger ResourceShader::logger = Logger("ResourceShader", Logger::Level::LEVEL_ALL);
 
-	ResourceShader::ResourceShader(const std::string RESOURCE_ID, const ShaderType& SHADER_TYPE, FileLocation* shaderPath) :
+	ResourceShader::ResourceShader(const std::string RESOURCE_ID, const EnumShaderType& SHADER_TYPE, FileLocation* shaderPath) :
 		Resource(RESOURCE_ID),
 		mSHADER_TYPE(SHADER_TYPE),
 		mShaderPath(shaderPath),
@@ -55,10 +55,9 @@ namespace Bountive
 	{
 		switch (mSHADER_TYPE)
 		{
-		case ShaderType::VERTEX:	mShaderId = glCreateShader(GL_VERTEX_SHADER);
+		case EnumShaderType::VERTEX:	mShaderId = glCreateShader(GL_VERTEX_SHADER);
 			break;
-		default:					mShaderId = glCreateShader(GL_FRAGMENT_SHADER);
-			break;
+		default:						mShaderId = glCreateShader(GL_FRAGMENT_SHADER);
 		}
 
 		const GLchar* shaderCode = mShaderCode.c_str();
@@ -83,7 +82,7 @@ namespace Bountive
 	}
 
 
-	const ResourceShader::ShaderType& ResourceShader::getShaderType() const
+	const ResourceShader::EnumShaderType& ResourceShader::getShaderType() const
 	{
 		return mSHADER_TYPE;
 	}

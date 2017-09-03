@@ -8,7 +8,7 @@
 #include "WindowPositionCallback.h"
 #include "CursorPositionCallback.h"
 #include "MouseScrollCallback.h"
-#include "GameSettingsHandler.h"
+#include "FileSettingsHandler.h"
 #include "Logger.h"
 #include "LoggerUtil.h"
 
@@ -16,14 +16,14 @@ namespace Bountive
 {
 	Logger CallbackManager::logger = Logger("CallbackManager", Logger::Level::LEVEL_ALL);
 
-	CallbackManager::CallbackManager(GameSettingsHandler& gameSettingsHandler) :
+	CallbackManager::CallbackManager(FileSettingsHandler& fileSettingsHandler) :
 		mWindowHandle(BrickSimulator::instance->getWindow()->getWindowHandle()),
-		mKeyboardCallback(KeyboardCallback::init(*BrickSimulator::instance->getInputTracker(), gameSettingsHandler)),
+		mKeyboardCallback(KeyboardCallback::init(*BrickSimulator::instance->getInputTracker(), fileSettingsHandler)),
 		mWindowFocusCallback(WindowFocusCallback::init()),
-		mWindowSizeCallback(WindowSizeCallback::init(*BrickSimulator::instance->getWindow(), gameSettingsHandler)),
+		mWindowSizeCallback(WindowSizeCallback::init(*BrickSimulator::instance->getWindow(), fileSettingsHandler)),
 		mFramebufferSizeCallback(FramebufferSizeCallback::init()),
-		mWindowPositionCallback(WindowPositionCallback::init(gameSettingsHandler)),
-		mCursorPositionCallback(CursorPositionCallback::init()),
+		mWindowPositionCallback(WindowPositionCallback::init(fileSettingsHandler)),
+		mCursorPositionCallback(CursorPositionCallback::init(*BrickSimulator::instance->getInputTracker())),
 		mMouseScrollCallback(MouseScrollCallback::init())
 	{
 		logger.log(Logger::Level::LEVEL_DEBUG, "Creating CallbackManager...");

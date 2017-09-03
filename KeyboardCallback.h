@@ -8,16 +8,16 @@
 
 namespace Bountive
 {
-	class Logger;
-	class GameSettingsHandler;
+	class FileSettingsHandler;
 	class InputTracker;
+	class Logger;
 
 	class KeyboardCallback
 	{
 	public:
 		static KeyboardCallback* instance;
 
-		static KeyboardCallback* init(InputTracker& INPUT_TRACKER, GameSettingsHandler& gameSettingsHandler);
+		static KeyboardCallback* init(InputTracker& INPUT_TRACKER, FileSettingsHandler& fileSettingsHandler);
 		static void keyCallback(GLFWwindow* windowHandle, GLint key, GLint scancode, GLint action, GLint mode);
 		
 		~KeyboardCallback();
@@ -25,10 +25,10 @@ namespace Bountive
 	private:
 		static Logger logger;
 
-		GameSettingsHandler& mGameSettingsHandler;
+		FileSettingsHandler& mFileSettingsHandler;
 		InputTracker& mInputTracker;
 
-		KeyboardCallback(InputTracker& INPUT_TRACKER, GameSettingsHandler& gameSettingsHandler);
+		KeyboardCallback(InputTracker& INPUT_TRACKER, FileSettingsHandler& fileSettingsHandler);
 	};
 }
 

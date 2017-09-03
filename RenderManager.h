@@ -26,6 +26,7 @@ namespace Bountive
 		~RenderManager();
 
 		void setShader(ResourceShaderProgram* shader);
+		void setCamera(Camera* camera);
 
 		const ResourceShaderProgram& getActiveShader() const;
 		//GuiRenderer& getGuiRenderer() const;

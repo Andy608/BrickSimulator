@@ -8,18 +8,19 @@
 #include "Entity.h"
 #include "IUpdatable.h"
 #include "IRenderable.h"
+#include "RenderManager.h"
 
 namespace Bountive
 {
-	class RenderManager;
 	class Logger;
+	class Window;
 
 	class Scene : public IUpdatable, public IRenderable
 	{
 	public:
 		const GLint mID;
 
-		Scene(GLint id, std::string name, RenderManager& renderManager);
+		Scene(GLint id, std::string name, Window& window, RenderManager& renderManager);
 		virtual ~Scene();
 
 		virtual void showScene() = 0;
@@ -33,6 +34,7 @@ namespace Bountive
 		static Logger logger;
 
 		const std::string mNAME;
+		Window& mWindow;
 		RenderManager& mRenderManager;
 
 		//std::vector<EntityGui*>* mGuiList;

@@ -12,6 +12,7 @@ namespace Bountive
 
 	Transform::Transform(glm::vec3 position, glm::vec3 rotation, GLfloat scale) :
 		mPosition(position),
+		mPrevPosition(position),
 		mRotation(rotation),
 		mScale(scale),
 		mDimensions(glm::vec3(1, 1, 1))
@@ -26,8 +27,22 @@ namespace Bountive
 	}
 
 
+	void Transform::setRenderedPosition(glm::vec3 renderedPosition)
+	{
+		mRenderedPosition = renderedPosition;
+	}
+
+
+	void Transform::setPosition(glm::vec3 newPosition)
+	{
+		mPrevPosition = mPosition;
+		mPosition = newPosition;
+	}
+
+
 	void Transform::setPosition(GLfloat xPosition, GLfloat yPosition, GLfloat zPosition)
 	{
+		mPrevPosition = mPosition;
 		mPosition.x = xPosition;
 		mPosition.y = yPosition;
 		mPosition.z = zPosition;
@@ -37,6 +52,12 @@ namespace Bountive
 	const glm::vec3& Transform::getPosition() const
 	{
 		return mPosition;
+	}
+
+
+	const glm::vec3& Transform::getPrevPosition() const
+	{
+		return mPrevPosition;
 	}
 
 

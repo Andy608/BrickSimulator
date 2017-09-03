@@ -3,7 +3,7 @@
 #include "DirectoryUtil.h"
 #include "BrickSimulator.h"
 #include "Window.h"
-#include "GameSettingsHandler.h"
+#include "FileSettingsHandler.h"
 #include "BrickSimulator.h"
 #include "FileLocation.h"
 #include "Logger.h"
@@ -11,6 +11,7 @@
 #include "SceneManager.h"
 #include "RenderManager.h"
 #include "ShaderList.h"
+#include "GraphicsOptions.h"
 
 namespace Bountive
 {
@@ -30,10 +31,10 @@ namespace Bountive
 			LoggerUtil::initFileAppender();
 			logger.log(Logger::Level::LEVEL_INFO, "Initializing BrickSimulator by Andy608...");
 			instance = new BrickSimulator();
-			instance->mWindow->buildWindow(*instance->mGameSettingsHandler);
+			instance->mWindow->buildWindow(*instance->mFileSettingsHandler);
 			instance->mRenderManager = new RenderManager();
-			instance->mSceneManager = new SceneManager(*instance->mResourceBundleTracker, *instance->mRenderManager);
-			RenderManager::updateRenderScreenSize(instance->mGameSettingsHandler->getWindowWidth().getCustomInteger(), instance->mGameSettingsHandler->getWindowHeight().getCustomInteger());
+			instance->mSceneManager = new SceneManager(*instance->mWindow, *instance->mResourceBundleTracker, *instance->mRenderManager);
+			RenderManager::updateRenderScreenSize(instance->mFileSettingsHandler->getWindowWidth().getCustomInteger(), instance->mFileSettingsHandler->getWindowHeight().getCustomInteger());
 		}
 
 		return instance;
@@ -45,12 +46,13 @@ namespace Bountive
 		mDIRECTORY_UTIL(DirectoryUtil::instance),
 		mLOGGER_UTIL(LoggerUtil::instance),
 		mWindow(new Window()),
-		mGameSettingsHandler(new GameSettingsHandler(*mWindow)),
+		mFileSettingsHandler(new FileSettingsHandler(*mWindow)),
+		mGraphicsOptions(GraphicsOptions::init(*mFileSettingsHandler)),
+		mInputTracker(InputTracker::init(*mFileSettingsHandler)),
 		mResourceBundleTracker(new ResourceBundleTracker()),
-		mEntityTracker(new EntityTracker()),
-		mInputTracker(InputTracker::init(*mGameSettingsHandler))
+		mEntityTracker(new EntityTracker())
 	{
-		mGameSettingsHandler->updateSettings();
+		mFileSettingsHandler->updateSettings();
 	}
 	catch (std::wstring e)
 	{
@@ -70,7 +72,7 @@ namespace Bountive
 		delete mWindow;
 		delete mSceneManager;
 		delete mInputTracker;
-		delete mGameSettingsHandler;
+		delete mFileSettingsHandler;
 		delete mResourceBundleTracker;
 		delete mEntityTracker;
 		delete mRenderManager;
@@ -87,31 +89,31 @@ namespace Bountive
 
 	void BrickSimulator::loop()
 	{
-		GLdouble mLastTime = glfwGetTime();
-		GLdouble mCurrentTime = 0.0f;
-		GLdouble mDeltaTime = 0.0f;
-		GLdouble mAccumulatedTime = 0.0f;
+		GLdouble lastTime = glfwGetTime();
+		GLdouble currentTime = 0.0f;
+		GLdouble deltaTime = 0.0f;
+		GLdouble accumulatedTime = 0.0f;
 
 		while (!glfwWindowShouldClose(mWindow->getWindowHandle()))
 		{
-			mCurrentTime = glfwGetTime();
-			mDeltaTime = mCurrentTime - mLastTime;
-			mLastTime = mCurrentTime;
-			mAccumulatedTime += mDeltaTime;
+			currentTime = glfwGetTime();
+			deltaTime = (currentTime - lastTime);
+			accumulatedTime += deltaTime;
+			lastTime = currentTime;
 
-			if (mAccumulatedTime >= LAG_CAP)
+			if (accumulatedTime >= LAG_CAP)
 			{
-				mAccumulatedTime = LAG_CAP;
+				accumulatedTime = LAG_CAP;
 			}
 
-			while (mAccumulatedTime > TIME_SLICE)
+			while (accumulatedTime > TIME_SLICE)
 			{
-				mAccumulatedTime -= TIME_SLICE;
+				accumulatedTime -= TIME_SLICE;
+				update(TIME_SLICE);
 				glfwPollEvents();
-				update(mDeltaTime);
 			}
 
-			render(mDeltaTime);
+			render(deltaTime);
 		}
 	}
 
@@ -122,7 +124,7 @@ namespace Bountive
 
 		if (mTickCount % TICKS_PER_SECOND == 0)
 		{
-			logger.log(Logger::Level::LEVEL_TRACE,
+			logger.log(Logger::Level::LEVEL_DEBUG,
 				"Ticks: " + std::to_string(mTickCount) + " | Frames: " + std::to_string(mFramesPerSecond));
 
 			mTickCount = 0;
@@ -139,9 +141,8 @@ namespace Bountive
 	{
 		++mFramesPerSecond;
 
-		mWindow->render(DELTA_TIME);
 		mSceneManager->render(DELTA_TIME);
-
+		mWindow->render(DELTA_TIME);
 		glfwSwapBuffers(mWindow->getWindowHandle());
 	}
 
@@ -149,7 +150,7 @@ namespace Bountive
 	void BrickSimulator::saveSettings() const
 	{
 		logger.log(Logger::Level::LEVEL_INFO, "Saving settings to file...");
-		mGameSettingsHandler->saveOptionsToFile();
+		mFileSettingsHandler->saveOptionsToFile();
 	}
 
 
@@ -168,11 +169,5 @@ namespace Bountive
 	InputTracker* BrickSimulator::getInputTracker() const
 	{
 		return mInputTracker;
-	}
-
-
-	GameSettingsHandler* BrickSimulator::getGameSettings() const
-	{
-		return mGameSettingsHandler;
 	}
 }

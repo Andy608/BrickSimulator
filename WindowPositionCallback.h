@@ -4,27 +4,27 @@
 
 #include <glew.h>
 #include <glfw\glfw3.h>
-#include "GameSettingsHandler.h"
+#include "FileSettingsHandler.h"
 
 namespace Bountive
 {
-	class GameSettingsHandler;
+	class FileSettingsHandler;
 
 	class WindowPositionCallback
 	{
 	public:
 		static WindowPositionCallback* instance;
 
-		static WindowPositionCallback* init(GameSettingsHandler& gameSettingsHandler);
+		static WindowPositionCallback* init(FileSettingsHandler& fileSettingsHandler);
 		static void windowPositionCallback(GLFWwindow* windowHandle, GLint xPosition, GLint yPosition);
 
 		~WindowPositionCallback();
 
 	private:
 		static Logger logger;
-		GameSettingsHandler& mGameSettingsHandler;
+		FileSettingsHandler& mFileSettingsHandler;
 
-		WindowPositionCallback(GameSettingsHandler& gameSettingsHandler);
+		WindowPositionCallback(FileSettingsHandler& fileSettingsHandler);
 	};
 }
 

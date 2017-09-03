@@ -1,5 +1,5 @@
 #include "KeyboardCallback.h"
-#include "GameSettingsHandler.h"
+#include "FileSettingsHandler.h"
 #include "Logger.h"
 
 namespace Bountive
@@ -7,19 +7,19 @@ namespace Bountive
 	KeyboardCallback* KeyboardCallback::instance = nullptr;
 	Logger KeyboardCallback::logger = Logger("KeyboardCallback", Logger::Level::LEVEL_ALL);
 
-	KeyboardCallback* KeyboardCallback::init(InputTracker& inputTracker, GameSettingsHandler& gameSettingsHandler)
+	KeyboardCallback* KeyboardCallback::init(InputTracker& inputTracker, FileSettingsHandler& fileSettingsHandler)
 	{
 		if (instance == nullptr)
 		{
-			instance = new KeyboardCallback(inputTracker, gameSettingsHandler);
+			instance = new KeyboardCallback(inputTracker, fileSettingsHandler);
 		}
 
 		return instance;
 	}
 
 
-	KeyboardCallback::KeyboardCallback(InputTracker& inputTracker, GameSettingsHandler& gameSettingsHandler) :
-		mGameSettingsHandler(gameSettingsHandler),
+	KeyboardCallback::KeyboardCallback(InputTracker& inputTracker, FileSettingsHandler& fileSettingsHandler) :
+		mFileSettingsHandler(fileSettingsHandler),
 		mInputTracker(inputTracker)
 	{
 		logger.log(Logger::Level::LEVEL_DEBUG, "Creating KeyboardCallback...");

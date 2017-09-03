@@ -2,6 +2,7 @@
 #include "SceneHome.h"
 #include "HomeSceneInput.h"
 #include "KeyboardCallback.h"
+#include "Camera.h"
 #include "Logger.h"
 
 namespace Bountive
@@ -9,9 +10,10 @@ namespace Bountive
 	Logger HomeScene::logger = Logger("HomeScene", Logger::Level::LEVEL_ALL);
 	const std::string HomeScene::NAME = "home_scene";
 
-	HomeScene::HomeScene(GLint id, RenderManager& renderManager) :
-		Scene(id, NAME, renderManager),
-		mInputHandler(new HomeSceneInput())
+	HomeScene::HomeScene(GLint id, Window& window, RenderManager& renderManager) :
+		Scene(id, NAME, window, renderManager),
+		mInputHandler(new HomeSceneInput()),
+		mCamera(new Camera(glm::vec3(), glm::vec3()))
 	{
 		logger.log(Logger::Level::LEVEL_DEBUG, "Creating HomeScene...");
 	}
@@ -27,6 +29,7 @@ namespace Bountive
 	void HomeScene::showScene()
 	{
 		logger.log(Logger::Level::LEVEL_DEBUG, "SHOWING HOME SCENE... "/* + std::to_string(mGuiList->size())*/);
+		mRenderManager.setCamera(mCamera);
 	}
 
 	void HomeScene::hideScene()
@@ -41,13 +44,14 @@ namespace Bountive
 	}
 
 
-	void HomeScene::render(const GLdouble& DELTA_TIME)
+	void HomeScene::render(const GLdouble& ALPHA_TIME)
 	{
 		logger.log(Logger::Level::LEVEL_TRACE, "HOME");
 
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		Scene::render(DELTA_TIME);
+		mCamera->render(ALPHA_TIME);
+		Scene::render(ALPHA_TIME);
 	}
 }

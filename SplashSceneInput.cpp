@@ -24,7 +24,7 @@ namespace Bountive
 
 	void SplashSceneInput::update(const GLdouble& DELTA_TIME)
 	{
-		if (BrickSimulator::instance->getInputTracker()->getPauseKey().isPressed() && BrickSimulator::instance->getInputTracker()->getPauseKey().isNewPress())
+		if (InputTracker::instance->getPauseKey().isPressed() && InputTracker::instance->getPauseKey().isNewPress())
 		{
 			BrickSimulator::instance->getSceneManager()->setActiveScene(HomeScene::NAME);
 		}

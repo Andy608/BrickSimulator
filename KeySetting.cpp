@@ -2,6 +2,12 @@
 
 namespace Bountive
 {
+	KeySetting::KeySetting() :
+		mPressed(GL_FALSE)
+	{
+
+	}
+
 	KeySetting::~KeySetting()
 	{
 

@@ -41,10 +41,10 @@ namespace Bountive
 
 		mModelBarrel = new ModelBarrel();
 
-		mModelVertexShader = new ResourceShader("shader_vertex_model", ResourceShader::ShaderType::VERTEX,
+		mModelVertexShader = new ResourceShader("shader_vertex_model", ResourceShader::EnumShaderType::VERTEX,
 			new FileLocation(DirectoryUtil::instance->mEXE_SHADERS, L"model_vertex_shader", FileLocation::VS_SHADER_EXTENSION));
 
-		mModelFragmentShader = new ResourceShader("shader_fragment_model", ResourceShader::ShaderType::FRAGMENT,
+		mModelFragmentShader = new ResourceShader("shader_fragment_model", ResourceShader::EnumShaderType::FRAGMENT,
 			new FileLocation(DirectoryUtil::instance->mEXE_SHADERS, L"model_fragment_shader", FileLocation::FS_SHADER_EXTENSION));
 
 		mModelShaderProgram = new ResourceShaderProgram("shader_program_model");

@@ -26,12 +26,12 @@ namespace Bountive
 	void ModelRenderer::render(const GLdouble& DELTA_TIME, const std::vector<Entity*>& MODEL_LIST, const ResourceShaderProgram& activeShaderProgram)
 	{
 		glEnable(GL_DEPTH_TEST);
-		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 		activeShaderProgram.use();
 
 		activeShaderProgram.loadMat4("viewMatrixUniform", GL_FALSE, mRenderManager.getCamera().getViewMatrixPtr());
-		activeShaderProgram.loadMat4("projectionMatrixUniform", GL_FALSE, mRenderManager.getCamera().getPerspectiveMatrixPtr());
+		activeShaderProgram.loadMat4("projectionMatrixUniform", GL_FALSE, mRenderManager.getCamera().getProjectionMatrixPtr());
 
 		for (GLuint i = 0; i < MODEL_LIST.size(); ++i)
 		{
@@ -39,7 +39,7 @@ namespace Bountive
 			MODEL_LIST.at(i)->getModel()->render(DELTA_TIME);
 		}
 
-		//glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		glDisable(GL_DEPTH_TEST);
 	}
 

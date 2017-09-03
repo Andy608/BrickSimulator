@@ -4,9 +4,11 @@
 
 #include <glew.h>
 #include <glfw\glfw3.h>
+#include <glm\vec2.hpp>
 
 namespace Bountive
 {
+	class InputTracker;
 	class Logger;
 
 	class CursorPositionCallback
@@ -14,14 +16,17 @@ namespace Bountive
 	public:
 		static CursorPositionCallback* instance;
 
-		static CursorPositionCallback* init();
+		static CursorPositionCallback* init(InputTracker& INPUT_TRACKER);
 		static void cursorPositionCallback(GLFWwindow* windowHandle, GLdouble xPosition, GLdouble yPosition);
 
 		~CursorPositionCallback();
 
 	private:
 		static Logger logger;
-		CursorPositionCallback();
+
+		InputTracker& mInputTracker;
+		
+		CursorPositionCallback(InputTracker& INPUT_TRACKER);
 	};
 }
 

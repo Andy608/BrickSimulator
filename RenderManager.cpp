@@ -1,7 +1,7 @@
 #include "RenderManager.h"
 #include "ShaderList.h"
 #include "ResourceShaderProgram.h"
-#include "GameSettingsHandler.h"
+#include "FileSettingsHandler.h"
 #include "Camera.h"
 #include "Logger.h"
 #include <assimp\Importer.hpp>
@@ -21,7 +21,6 @@ namespace Bountive
 
 
 	RenderManager::RenderManager() :
-		mCamera(new Camera(glm::vec3(0, 1.0f, 4.0f), glm::vec3(0, 0.5f, 0))),
 		//mGuiRenderer(new GuiRenderer(*this)),
 		mModelRenderer(new ModelRenderer(*this))
 	{
@@ -32,7 +31,7 @@ namespace Bountive
 	RenderManager::~RenderManager()
 	{
 		logger.log(Logger::Level::LEVEL_INFO, "Deleting RenderManager...");
-		delete mCamera;
+
 		//delete mGuiRenderer;
 		delete mModelRenderer;
 	}
@@ -59,6 +58,12 @@ namespace Bountive
 	ModelRenderer& RenderManager::getModelRenderer() const
 	{
 		return *mModelRenderer;
+	}
+
+
+	void RenderManager::setCamera(Camera* camera)
+	{
+		mCamera = camera;
 	}
 
 

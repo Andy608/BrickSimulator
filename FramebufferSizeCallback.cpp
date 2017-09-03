@@ -32,7 +32,7 @@ namespace Bountive
 
 	void FramebufferSizeCallback::framebufferSizeCallback(GLFWwindow* windowHandle, GLint windowWidth, GLint windowHeight)
 	{
-		logger.log(Logger::Level::LEVEL_TRACE, "Framebuffer Width: " + std::to_string(windowWidth)+ " | Framebuffer Height: " + std::to_string(windowHeight));
+		//logger.log(Logger::Level::LEVEL_TRACE, "Framebuffer Width: " + std::to_string(windowWidth)+ " | Framebuffer Height: " + std::to_string(windowHeight));
 		glViewport(0, 0, windowWidth, windowHeight);
 		RenderManager::updateRenderScreenSize(windowWidth, windowHeight);
 	}

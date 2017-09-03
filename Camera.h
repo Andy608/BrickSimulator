@@ -22,17 +22,26 @@ namespace Bountive
 		static void updateProjectionMatrix(GLint viewportWidth, GLint viewportHeight);
 
 		virtual void update(const GLdouble& DELTA_TIME);
+		virtual void render(const GLdouble& DELTA_TIME);
 
 		Transform* getTransform() const;
 
 		glm::mat4 getViewMatrix() const;
 		const GLfloat* getViewMatrixPtr() const;
 
-		static glm::mat4 getPerspectiveMatrix();
-		static const GLfloat* getPerspectiveMatrixPtr();
+		static glm::mat4 getProjectionMatrix();
+		static const GLfloat* getProjectionMatrixPtr();
 
-		static glm::mat4 getOrthoMatrix();
-		static const GLfloat* getOrthoMatrixPtr();
+	protected:
+		Transform* mTransform;
+
+		glm::vec3 mCameraForward;
+		glm::vec3 mCameraUp;
+		glm::vec3 mCameraRight;
+
+		glm::vec3 mLookAtPosition;
+		
+		void updateBasis();
 
 	private:
 		static Logger logger;
@@ -43,14 +52,6 @@ namespace Bountive
 		
 		glm::mat4 mViewMatrix;
 
-		glm::vec3 mCameraForward;
-		glm::vec3 mCameraUp;
-		glm::vec3 mCameraRight;
-
-
-		Transform* mTransform;
-
-		glm::vec3 mLookAtPosition;
 	};
 }
 

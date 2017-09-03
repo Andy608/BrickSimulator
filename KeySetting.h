@@ -9,6 +9,7 @@ namespace Bountive
 	class KeySetting
 	{
 	public:
+		KeySetting();
 		virtual ~KeySetting();
 
 		virtual const GLboolean& isPressed() const = 0;

@@ -1,18 +1,19 @@
-#include "GameSettingsHandler.h"
+#include "FileSettingsHandler.h"
 #include "DirectoryUtil.h"
 #include "FileLocation.h"
 #include "FileWriter.h"
 #include "FileReader.h"
 #include "Window.h"
 #include "RenderManager.h"
+#include "GraphicsOptions.h"
 #include "Logger.h"
 
 namespace Bountive
 {
-	Logger GameSettingsHandler::logger = Logger("GameSettingsHandler", Logger::Level::LEVEL_ALL);
-	const std::wstring GameSettingsHandler::SETTINGS_FILE_NAME = L"options";
+	Logger FileSettingsHandler::logger = Logger("FileSettingsHandler", Logger::Level::LEVEL_ALL);
+	const std::wstring FileSettingsHandler::SETTINGS_FILE_NAME = L"options";
 
-	GameSettingsHandler::GameSettingsHandler(const Window& window)
+	FileSettingsHandler::FileSettingsHandler(const Window& window)
 		try : 
 		mSETTINGS_DIRECTORY(DirectoryUtil::instance->mUSER_CONFIG),
 		mSettingsFile(new FileLocation(mSETTINGS_DIRECTORY, SETTINGS_FILE_NAME, FileLocation::TXT_EXTENSION)),
@@ -40,19 +41,22 @@ namespace Bountive
 		mWindowSizeY(ClampedIntegerSetting("window_size_y", static_cast<GLint>(mDEFAULT_WINDOW_SIZE.y), 
 			static_cast<GLint>(window.mMINIMUM_SIZE_Y), static_cast<GLint>(window.mMAXIMUM_SIZE_Y))),
 
-		mVsyncEnabled(BooleanSetting("vsync", GL_TRUE)),
-		mFullscreenEnabled(BooleanSetting("fullscreen", GL_FALSE)),
-		mPerspectiveProjectionEnabled(BooleanSetting("perspective_projection", GL_TRUE)),
-		mFieldOfView(ClampedIntegerSetting("fov", 67, 30, 120)),
-		mPauseKeyCode(IntegerSetting("key_pause", GLFW_KEY_ESCAPE)),
-		mCameraForwardKeyCode(IntegerSetting("camera_forward", GLFW_KEY_W)),
-		mCameraBackwardKeyCode(IntegerSetting("camera_backward", GLFW_KEY_S)),
-		mCameraLeftKeyCode(IntegerSetting("camera_left", GLFW_KEY_A)),
-		mCameraRightKeyCode(IntegerSetting("camera_right", GLFW_KEY_D)),
-		mCameraUpKeyCode(IntegerSetting("camera_up", GLFW_KEY_SPACE)),
-		mCameraDownKeyCode(IntegerSetting("camera_down", GLFW_KEY_RIGHT_SHIFT))
+		mVsyncEnabled(new BooleanSetting("vsync", GL_TRUE)),
+		mFullscreenEnabled(new BooleanSetting("fullscreen", GL_FALSE)),
+		mProjectionID(new ClampedIntegerSetting("projection_id",
+			static_cast<GLint>(EnumProjection::PERSPECTIVE), 
+			static_cast<GLint>(EnumProjection::PERSPECTIVE), 
+			static_cast<GLint>(EnumProjection::ORTHO))),
+		mFieldOfView(new ClampedIntegerSetting("fov", 67, 30, 120)),
+		mPauseKeyCode(new SingleKeySetting("key_pause", GLFW_KEY_ESCAPE)),
+		mCameraForwardKeyCode(new SingleKeySetting("camera_forward", GLFW_KEY_W)),
+		mCameraBackwardKeyCode(new SingleKeySetting("camera_backward", GLFW_KEY_S)),
+		mCameraLeftKeyCode(new SingleKeySetting("camera_left", GLFW_KEY_A)),
+		mCameraRightKeyCode(new SingleKeySetting("camera_right", GLFW_KEY_D)),
+		mCameraUpKeyCode(new SingleKeySetting("camera_up", GLFW_KEY_SPACE)),
+		mCameraDownKeyCode(new SingleKeySetting("camera_down", GLFW_KEY_LEFT_SHIFT))
 	{
-		logger.log(Logger::Level::LEVEL_DEBUG, "Creating GameSettingsHandler...");
+		logger.log(Logger::Level::LEVEL_DEBUG, "Creating FileSettingsHandler...");
 		mSettingsFile->createFile(mFileWriter->getWriteStream());
 
 		if (mSettingsFile->isCreated())
@@ -72,16 +76,28 @@ namespace Bountive
 	}
 
 
-	GameSettingsHandler::~GameSettingsHandler()
+	FileSettingsHandler::~FileSettingsHandler()
 	{
-		logger.log(Logger::Level::LEVEL_DEBUG, "Deleting SettingsHandler.");
+		logger.log(Logger::Level::LEVEL_DEBUG, "Deleting FileSettingsHandler.");
 		delete mSettingsFile;
 		delete mFileWriter;
 		delete mFileReader;
+
+		delete mVsyncEnabled;
+		delete mFullscreenEnabled;
+		delete mProjectionID;
+		delete mFieldOfView;
+		delete mPauseKeyCode;
+		delete mCameraForwardKeyCode;
+		delete mCameraBackwardKeyCode;
+		delete mCameraLeftKeyCode;
+		delete mCameraRightKeyCode;
+		delete mCameraUpKeyCode;
+		delete mCameraDownKeyCode;
 	}
 
 
-	void GameSettingsHandler::updateSettings()
+	void FileSettingsHandler::updateSettings()
 	{
 		logger.log(Logger::Level::LEVEL_DEBUG, "Loading game options from the settings file...");
 
@@ -97,7 +113,7 @@ namespace Bountive
 	}
 
 
-	void GameSettingsHandler::loadOptionsFromFile()
+	void FileSettingsHandler::loadOptionsFromFile()
 	{
 		std::vector<std::string> lines = mFileReader->getLinesInFile(*mSettingsFile);
 
@@ -136,49 +152,49 @@ namespace Bountive
 					{
 						mWindowSizeY.IntegerSetting::setCustomInteger(settingVar);
 					}
-					else if (settingName.compare(mFullscreenEnabled.getSettingName()) == 0)
+					else if (settingName.compare(mFullscreenEnabled->getSettingName()) == 0)
 					{
-						mFullscreenEnabled.setCustomBoolean(settingVar);
+						mFullscreenEnabled->setCustomBoolean(settingVar);
 					}
-					else if (settingName.compare(mVsyncEnabled.getSettingName()) == 0)
+					else if (settingName.compare(mVsyncEnabled->getSettingName()) == 0)
 					{
-						mVsyncEnabled.setCustomBoolean(settingVar);
+						mVsyncEnabled->setCustomBoolean(settingVar);
 					}
-					else if (settingName.compare(mPerspectiveProjectionEnabled.getSettingName()) == 0)
+					else if (settingName.compare(mProjectionID->getSettingName()) == 0)
 					{
-						mPerspectiveProjectionEnabled.setCustomBoolean(settingVar);
+						mProjectionID->IntegerSetting::setCustomInteger(settingVar);
 					}
-					else if (settingName.compare(mFieldOfView.getSettingName()) == 0)
+					else if (settingName.compare(mFieldOfView->getSettingName()) == 0)
 					{
-						mFieldOfView.IntegerSetting::setCustomInteger(settingVar);
+						mFieldOfView->IntegerSetting::setCustomInteger(settingVar);
 					}
-					else if (settingName.compare(mPauseKeyCode.getSettingName()) == 0)
+					else if (settingName.compare(mPauseKeyCode->getSettingName()) == 0)
 					{
-						mPauseKeyCode.setCustomInteger(settingVar);
+						mPauseKeyCode->setCustomInteger(settingVar);
 					}
-					else if (settingName.compare(mCameraForwardKeyCode.getSettingName()) == 0)
+					else if (settingName.compare(mCameraForwardKeyCode->getSettingName()) == 0)
 					{
-						mCameraForwardKeyCode.setCustomInteger(settingVar);
+						mCameraForwardKeyCode->setCustomInteger(settingVar);
 					}
-					else if (settingName.compare(mCameraBackwardKeyCode.getSettingName()) == 0)
+					else if (settingName.compare(mCameraBackwardKeyCode->getSettingName()) == 0)
 					{
-						mCameraBackwardKeyCode.setCustomInteger(settingVar);
+						mCameraBackwardKeyCode->setCustomInteger(settingVar);
 					}
-					else if (settingName.compare(mCameraLeftKeyCode.getSettingName()) == 0)
+					else if (settingName.compare(mCameraLeftKeyCode->getSettingName()) == 0)
 					{
-						mCameraLeftKeyCode.setCustomInteger(settingVar);
+						mCameraLeftKeyCode->setCustomInteger(settingVar);
 					}
-					else if (settingName.compare(mCameraRightKeyCode.getSettingName()) == 0)
+					else if (settingName.compare(mCameraRightKeyCode->getSettingName()) == 0)
 					{
-						mCameraRightKeyCode.setCustomInteger(settingVar);
+						mCameraRightKeyCode->setCustomInteger(settingVar);
 					}
-					else if (settingName.compare(mCameraUpKeyCode.getSettingName()) == 0)
+					else if (settingName.compare(mCameraUpKeyCode->getSettingName()) == 0)
 					{
-						mCameraUpKeyCode.setCustomInteger(settingVar);
+						mCameraUpKeyCode->setCustomInteger(settingVar);
 					}
-					else if (settingName.compare(mCameraDownKeyCode.getSettingName()) == 0)
+					else if (settingName.compare(mCameraDownKeyCode->getSettingName()) == 0)
 					{
-						mCameraDownKeyCode.setCustomInteger(settingVar);
+						mCameraDownKeyCode->setCustomInteger(settingVar);
 					}
 					else
 					{
@@ -190,7 +206,7 @@ namespace Bountive
 	}
 
 
-	void GameSettingsHandler::saveOptionsToFile()
+	void FileSettingsHandler::saveOptionsToFile()
 	{
 		std::vector<std::string> settingsFile;
 
@@ -207,49 +223,49 @@ namespace Bountive
 		settingsFile.push_back(mWindowSizeX.toFileString());
 		settingsFile.push_back(mWindowSizeY.toFileString());
 
-		settingsFile.push_back(mFullscreenEnabled.toFileString());
-		settingsFile.push_back(mVsyncEnabled.toFileString());
-		settingsFile.push_back(mPerspectiveProjectionEnabled.toFileString());
+		settingsFile.push_back(mFullscreenEnabled->toFileString());
+		settingsFile.push_back(mVsyncEnabled->toFileString());
+		settingsFile.push_back(mProjectionID->toFileString());
 		
-		settingsFile.push_back(mFieldOfView.toFileString());
+		settingsFile.push_back(mFieldOfView->toFileString());
 
-		settingsFile.push_back(InputTracker::instance->getPauseKey().toFileString());
+		settingsFile.push_back(mPauseKeyCode->toFileString());
 
-		settingsFile.push_back(InputTracker::instance->getCameraForwardKey().toFileString());
-		settingsFile.push_back(InputTracker::instance->getCameraBackwardKey().toFileString());
-		settingsFile.push_back(InputTracker::instance->getCameraLeftKey().toFileString());
-		settingsFile.push_back(InputTracker::instance->getCameraRightKey().toFileString());
-		settingsFile.push_back(InputTracker::instance->getCameraUpKey().toFileString());
-		settingsFile.push_back(InputTracker::instance->getCameraDownKey().toFileString());
+		settingsFile.push_back(mCameraForwardKeyCode->toFileString());
+		settingsFile.push_back(mCameraBackwardKeyCode->toFileString());
+		settingsFile.push_back(mCameraLeftKeyCode->toFileString());
+		settingsFile.push_back(mCameraRightKeyCode->toFileString());
+		settingsFile.push_back(mCameraUpKeyCode->toFileString());
+		settingsFile.push_back(mCameraDownKeyCode->toFileString());
 
 		mFileWriter->writeLinesInFile(*mSettingsFile, settingsFile);
 	}
 
 
-	void GameSettingsHandler::setDefaultSettings()
+	void FileSettingsHandler::setDefaultSettings()
 	{
 		mSaveWindowState.resetCustomValue();
 		mWindowMaximized.resetCustomValue();
 		setDefaultWindowState();
 
-		mFullscreenEnabled.resetCustomValue();
-		mVsyncEnabled.resetCustomValue();
-		mPerspectiveProjectionEnabled.resetCustomValue();
+		mFullscreenEnabled->resetCustomValue();
+		mVsyncEnabled->resetCustomValue();
+		mProjectionID->resetCustomValue();
 
-		mFieldOfView.resetCustomValue();
+		mFieldOfView->resetCustomValue();
 
-		mPauseKeyCode.resetCustomValue();
+		mPauseKeyCode->resetCustomValue();
 
-		mCameraForwardKeyCode.resetCustomValue();
-		mCameraBackwardKeyCode.resetCustomValue();
-		mCameraLeftKeyCode.resetCustomValue();
-		mCameraRightKeyCode.resetCustomValue();
-		mCameraUpKeyCode.resetCustomValue();
-		mCameraDownKeyCode.resetCustomValue();
+		mCameraForwardKeyCode->resetCustomValue();
+		mCameraBackwardKeyCode->resetCustomValue();
+		mCameraLeftKeyCode->resetCustomValue();
+		mCameraRightKeyCode->resetCustomValue();
+		mCameraUpKeyCode->resetCustomValue();
+		mCameraDownKeyCode->resetCustomValue();
 	}
 
 
-	void GameSettingsHandler::setDefaultWindowState()
+	void FileSettingsHandler::setDefaultWindowState()
 	{
 		mWindowMaximized.resetCustomValue();
 		mWindowPositionX.resetCustomValue();
@@ -259,7 +275,7 @@ namespace Bountive
 	}
 
 
-	void GameSettingsHandler::setWindowInBounds()
+	void FileSettingsHandler::setWindowInBounds()
 	{
 		if (mWindowPositionX.getCustomInteger() <= mWindowPositionX.getMinInteger())
 		{
@@ -281,7 +297,7 @@ namespace Bountive
 	}
 
 
-	void GameSettingsHandler::checkToResetInvalidWindow()
+	void FileSettingsHandler::checkToResetInvalidWindow()
 	{
 		if ((mWindowPositionX.getCustomInteger() <= mWindowPositionX.getMinInteger())
 			|| (mWindowPositionX.getCustomInteger() + mWindowSizeX.getCustomInteger() > mWindowPositionX.getMaxInteger())
@@ -293,163 +309,163 @@ namespace Bountive
 	}
 
 
-	const BooleanSetting& GameSettingsHandler::isSaveWindowState() const
+	const BooleanSetting& FileSettingsHandler::isSaveWindowState() const
 	{
 		return mSaveWindowState;
 	}
 
 
-	const BooleanSetting& GameSettingsHandler::isWindowMaximized() const
+	const BooleanSetting& FileSettingsHandler::isWindowMaximized() const
 	{
 		return mWindowMaximized;
 	}
 
 
-	const ClampedIntegerSetting& GameSettingsHandler::getWindowWidth() const
+	const ClampedIntegerSetting& FileSettingsHandler::getWindowWidth() const
 	{
 		return mWindowSizeX;
 	}
 
 
-	const ClampedIntegerSetting& GameSettingsHandler::getWindowHeight() const
+	const ClampedIntegerSetting& FileSettingsHandler::getWindowHeight() const
 	{
 		return mWindowSizeY;
 	}
 
-	const ClampedIntegerSetting& GameSettingsHandler::getWindowPositionX() const
+	const ClampedIntegerSetting& FileSettingsHandler::getWindowPositionX() const
 	{
 		return mWindowPositionX;
 	}
 
 
-	const ClampedIntegerSetting& GameSettingsHandler::getWindowPositionY() const
+	const ClampedIntegerSetting& FileSettingsHandler::getWindowPositionY() const
 	{
 		return mWindowPositionY;
 	}
 
 
-	const BooleanSetting& GameSettingsHandler::isVsyncEnabled() const
+	BooleanSetting* FileSettingsHandler::isVsyncEnabled() const
 	{
 		return mVsyncEnabled;
 	}
 
 
-	const BooleanSetting& GameSettingsHandler::isFullscreenEnabled() const
+	BooleanSetting* FileSettingsHandler::isFullscreenEnabled() const
 	{
 		return mFullscreenEnabled;
 	}
 
 
-	const BooleanSetting& GameSettingsHandler::isPerspectiveProjection() const
+	ClampedIntegerSetting* FileSettingsHandler::getProjectionID() const
 	{
-		return mPerspectiveProjectionEnabled;
+		return mProjectionID;
 	}
 
 
-	const ClampedIntegerSetting& GameSettingsHandler::getFieldOfView() const
+	ClampedIntegerSetting* FileSettingsHandler::getFieldOfView() const
 	{
 		return mFieldOfView;
 	}
 
 
-	const IntegerSetting& GameSettingsHandler::getPauseKeyCode() const
+	SingleKeySetting* FileSettingsHandler::getPauseKeyCode() const
 	{
 		return mPauseKeyCode;
 	}
 
 
-	const IntegerSetting& GameSettingsHandler::getCameraForwardKeyCode() const
+	SingleKeySetting* FileSettingsHandler::getCameraForwardKeyCode() const
 	{
 		return mCameraForwardKeyCode;
 	}
 
 
-	const IntegerSetting& GameSettingsHandler::getCameraBackwardKeyCode() const
+	SingleKeySetting* FileSettingsHandler::getCameraBackwardKeyCode() const
 	{
 		return mCameraBackwardKeyCode;
 	}
 
 
-	const IntegerSetting& GameSettingsHandler::getCameraLeftKeyCode() const
+	SingleKeySetting* FileSettingsHandler::getCameraLeftKeyCode() const
 	{
 		return mCameraLeftKeyCode;
 	}
 
 
-	const IntegerSetting& GameSettingsHandler::getCameraRightKeyCode() const
+	SingleKeySetting* FileSettingsHandler::getCameraRightKeyCode() const
 	{
 		return mCameraRightKeyCode;
 	}
 
 
-	const IntegerSetting& GameSettingsHandler::getCameraUpKeyCode() const
+	SingleKeySetting* FileSettingsHandler::getCameraUpKeyCode() const
 	{
 		return mCameraUpKeyCode;
 	}
 
 
-	const IntegerSetting& GameSettingsHandler::getCameraDownKeyCode() const
+	SingleKeySetting* FileSettingsHandler::getCameraDownKeyCode() const
 	{
 		return mCameraDownKeyCode;
 	}
 
 
-	void GameSettingsHandler::setSaveWindowState(GLboolean saveWindowState)
+	void FileSettingsHandler::setSaveWindowState(GLboolean saveWindowState)
 	{
 		mSaveWindowState.setCustomBoolean(saveWindowState);
 	}
 
 
-	void GameSettingsHandler::setWindowMaximized(GLboolean windowMaximized)
+	void FileSettingsHandler::setWindowMaximized(GLboolean windowMaximized)
 	{
 		mWindowMaximized.setCustomBoolean(windowMaximized);
 	}
 
 
-	void GameSettingsHandler::setWindowSizeX(GLint windowSizeX)
+	void FileSettingsHandler::setWindowSizeX(GLint windowSizeX)
 	{
 		mWindowSizeX.setCustomInteger(windowSizeX);
 	}
 
 
-	void GameSettingsHandler::setWindowSizeY(GLint windowSizeY)
+	void FileSettingsHandler::setWindowSizeY(GLint windowSizeY)
 	{
 		mWindowSizeY.setCustomInteger(windowSizeY);
 	}
 
 
-	void GameSettingsHandler::setWindowPositionX(GLint windowPositionX)
+	void FileSettingsHandler::setWindowPositionX(GLint windowPositionX)
 	{
 		mWindowPositionX.setCustomInteger(windowPositionX);
 	}
 
 
-	void GameSettingsHandler::setWindowPositionY(GLint windowPositionY)
+	void FileSettingsHandler::setWindowPositionY(GLint windowPositionY)
 	{
 		mWindowPositionY.setCustomInteger(windowPositionY);
 	}
 
 
-	void GameSettingsHandler::setVsyncEnabled(GLboolean vsyncEnabled)
+	void FileSettingsHandler::setVsyncEnabled(GLboolean vsyncEnabled)
 	{
-		mVsyncEnabled.setCustomBoolean(vsyncEnabled);
+		mVsyncEnabled->setCustomBoolean(vsyncEnabled);
 	}
 
 
-	void GameSettingsHandler::setFullscreenEnabled(GLboolean fullscreenEnabled)
+	void FileSettingsHandler::setFullscreenEnabled(GLboolean fullscreenEnabled)
 	{
-		mFullscreenEnabled.setCustomBoolean(fullscreenEnabled);
+		mFullscreenEnabled->setCustomBoolean(fullscreenEnabled);
 	}
 
 
-	void GameSettingsHandler::setPerspectiveProjectionEnabled(GLboolean perspectiveProjectionEnabled)
+	void FileSettingsHandler::setProjectionID(const EnumProjection& projectionType)
 	{
-		mPerspectiveProjectionEnabled.setCustomBoolean(perspectiveProjectionEnabled);
+		mProjectionID->setCustomInteger(static_cast<GLint>(projectionType));
 	}
 
 
-	void GameSettingsHandler::setFieldOfView(GLint fieldOfView)
+	void FileSettingsHandler::setFieldOfView(GLint fieldOfView)
 	{
-		mFieldOfView.setCustomInteger(fieldOfView);
+		mFieldOfView->setCustomInteger(fieldOfView);
 	}
 }

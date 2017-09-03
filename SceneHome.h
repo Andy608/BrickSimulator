@@ -14,7 +14,7 @@ namespace Bountive
 	public:
 		static const std::string NAME;
 
-		HomeScene(GLint id, RenderManager& renderManager);
+		HomeScene(GLint id, Window& window, RenderManager& renderManager);
 		~HomeScene();
 
 		virtual void showScene();
@@ -26,6 +26,8 @@ namespace Bountive
 	private:
 		static Logger logger;
 		HomeSceneInput* mInputHandler;
+
+		Camera* mCamera;
 	};
 }
 

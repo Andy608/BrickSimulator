@@ -3,24 +3,29 @@
 #define BOUNTIVE_INPUTTRACKER_H_
 
 #include <glew.h>
+#include <glm\vec2.hpp>
 #include "SingleKeySetting.h"
 
 namespace Bountive
 {
-	class GameSettingsHandler;
+	class FileSettingsHandler;
+	class Window;
 	class Logger;
 
 	class InputTracker
 	{
 	public:
 		static InputTracker* instance;
-		
-		static InputTracker* init(const GameSettingsHandler& GAME_SETTINGS_HANDLER);
+
+		static InputTracker* init(const FileSettingsHandler& FILE_SETTINGS_HANDLER);
 
 		~InputTracker();
 
 		void setKeyPressed(GLint keyCode);
 		void setKeyReleased(GLint keyCode);
+
+		void updateCursorPosition(GLdouble x, GLdouble y);
+		void setCursorPosition(Window& window, glm::vec2 cursorPosition);
 
 		void update(const GLdouble& DELTA_TIME);
 
@@ -33,23 +38,29 @@ namespace Bountive
 		const SingleKeySetting& getCameraUpKey() const;
 		const SingleKeySetting& getCameraDownKey() const;
 
+		const glm::vec2& getCursorPosition() const;
+		const glm::vec2& getLastCursorPosition() const;
+
 	private:
 		static Logger logger;
 		static const GLint MAX_KEYS_PRESSED;
 
 		GLint* mPressedKeys;
-		const GameSettingsHandler& mGAME_SETTINGS_HANDLER;
+		const FileSettingsHandler& mFILE_SETTINGS_HANDLER;
 
-		SingleKeySetting mPause;
+		SingleKeySetting* mPauseKey;
 
-		SingleKeySetting mCameraForward;
-		SingleKeySetting mCameraBackward;
-		SingleKeySetting mCameraLeft;
-		SingleKeySetting mCameraRight;
-		SingleKeySetting mCameraUp;
-		SingleKeySetting mCameraDown;
+		SingleKeySetting* mCameraForwardKey;
+		SingleKeySetting* mCameraBackwardKey;
+		SingleKeySetting* mCameraLeftKey;
+		SingleKeySetting* mCameraRightKey;
+		SingleKeySetting* mCameraUpKey;
+		SingleKeySetting* mCameraDownKey;
 
-		InputTracker(const GameSettingsHandler& GAME_SETTINGS_HANDLER);
+		glm::vec2 mCursorPosition;
+		glm::vec2 mLastCursorPosition;
+
+		InputTracker(const FileSettingsHandler& FILE_SETTINGS_HANDLER);
 
 		void addKeyPressed(GLint asciiValue);
 		void removeKeyPressed(GLint asciiValue);

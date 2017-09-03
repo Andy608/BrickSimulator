@@ -8,9 +8,10 @@ namespace Bountive
 {
 	Logger Scene::logger = Logger("Scene", Logger::Level::LEVEL_ALL);
 
-	Scene::Scene(GLint id, std::string name, RenderManager& renderManager) :
+	Scene::Scene(GLint id, std::string name, Window& window, RenderManager& renderManager) :
 		mID(id),
 		mNAME(name),
+		mWindow(window),
 		mRenderManager(renderManager),
 		mEntityList(new std::vector<Entity*>())
 		//mGuiList(new std::vector<EntityGui*>())

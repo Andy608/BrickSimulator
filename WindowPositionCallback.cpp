@@ -6,19 +6,19 @@ namespace Bountive
 	WindowPositionCallback* WindowPositionCallback::instance = nullptr;
 	Logger WindowPositionCallback::logger = Logger("WindowPositionCallback", Logger::Level::LEVEL_ALL);
 
-	WindowPositionCallback* WindowPositionCallback::init(GameSettingsHandler& gameSettingsHandler)
+	WindowPositionCallback* WindowPositionCallback::init(FileSettingsHandler& fileSettingsHandler)
 	{
 		if (instance == nullptr)
 		{
-			instance = new WindowPositionCallback(gameSettingsHandler);
+			instance = new WindowPositionCallback(fileSettingsHandler);
 		}
 
 		return instance;
 	}
 
 
-	WindowPositionCallback::WindowPositionCallback(GameSettingsHandler& gameSettingsHandler) :
-		mGameSettingsHandler(gameSettingsHandler)
+	WindowPositionCallback::WindowPositionCallback(FileSettingsHandler& fileSettingsHandler) :
+		mFileSettingsHandler(fileSettingsHandler)
 	{
 		logger.log(Logger::Level::LEVEL_DEBUG, "Creating WindowPositionCallback...");
 	}
@@ -32,10 +32,10 @@ namespace Bountive
 
 	void WindowPositionCallback::windowPositionCallback(GLFWwindow* windowHandle, GLint xPosition, GLint yPosition)
 	{
-		if (!instance->mGameSettingsHandler.isWindowMaximized().getCustomBoolean())
+		if (!instance->mFileSettingsHandler.isWindowMaximized().getCustomBoolean())
 		{
-			instance->mGameSettingsHandler.setWindowPositionX(xPosition);
-			instance->mGameSettingsHandler.setWindowPositionY(yPosition);
+			instance->mFileSettingsHandler.setWindowPositionX(xPosition);
+			instance->mFileSettingsHandler.setWindowPositionY(yPosition);
 		}
 	}
 }

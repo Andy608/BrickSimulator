@@ -4,7 +4,7 @@
 
 #include "DirectoryUtil.h"
 #include "Window.h"
-#include "GameSettingsHandler.h"
+#include "FileSettingsHandler.h"
 #include "ResourceBundleTracker.h"
 #include "EntityTracker.h"
 #include "TextureList.h"
@@ -13,6 +13,7 @@ namespace Bountive
 {
 	class Logger;
 	class LoggerUtil;
+	class GraphicsOptions;
 
 	class BrickSimulator : public IUpdatable, public IRenderable
 	{
@@ -29,7 +30,6 @@ namespace Bountive
 		Window* getWindow() const;
 		SceneManager* getSceneManager() const;
 		InputTracker* getInputTracker() const;
-		GameSettingsHandler* getGameSettings() const;
 
 	private:
 		static Logger logger;
@@ -44,7 +44,7 @@ namespace Bountive
 		const LoggerUtil* const mLOGGER_UTIL;
 
 		Window* const mWindow;
-		GameSettingsHandler* const mGameSettingsHandler;
+		FileSettingsHandler* const mFileSettingsHandler;
 
 		ResourceBundleTracker* mResourceBundleTracker;
 		TextureList* mTextureList;
@@ -53,6 +53,7 @@ namespace Bountive
 		SceneManager* mSceneManager;
 		RenderManager* mRenderManager;
 		InputTracker* mInputTracker;
+		GraphicsOptions* mGraphicsOptions;
 
 		BrickSimulator();
 

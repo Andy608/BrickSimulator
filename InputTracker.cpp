@@ -2,7 +2,8 @@
 #include "KeyboardCallback.h"
 #include "Window.h"
 #include "Logger.h"
-#include "GameSettingsHandler.h"
+#include "FileSettingsHandler.h"
+#include "Window.h"
 
 namespace Bountive
 {
@@ -10,29 +11,31 @@ namespace Bountive
 	Logger InputTracker::logger = Logger("InputTracker", Logger::Level::LEVEL_ALL);
 	const GLint InputTracker::MAX_KEYS_PRESSED = 6;
 
-	InputTracker* InputTracker::init(const GameSettingsHandler& GAME_SETTINGS_HANDLER)
+	InputTracker* InputTracker::init(const FileSettingsHandler& FILE_SETTINGS_HANDLER)
 	{
 		if (instance == nullptr)
 		{
-			instance = new InputTracker(GAME_SETTINGS_HANDLER);
+			instance = new InputTracker(FILE_SETTINGS_HANDLER);
 		}
 
 		return instance;
 	}
 
 
-	InputTracker::InputTracker(const GameSettingsHandler& GAME_SETTINGS_HANDLER) :
-		mGAME_SETTINGS_HANDLER(GAME_SETTINGS_HANDLER),
+	InputTracker::InputTracker(const FileSettingsHandler& FILE_SETTINGS_HANDLER) :
+		mFILE_SETTINGS_HANDLER(FILE_SETTINGS_HANDLER),
 		mPressedKeys(new int[MAX_KEYS_PRESSED]),
-		mPause(SingleKeySetting(GAME_SETTINGS_HANDLER.getPauseKeyCode())),
-		mCameraForward(SingleKeySetting(GAME_SETTINGS_HANDLER.getCameraForwardKeyCode())),
-		mCameraBackward(SingleKeySetting(GAME_SETTINGS_HANDLER.getCameraBackwardKeyCode())),
-		mCameraLeft(SingleKeySetting(GAME_SETTINGS_HANDLER.getCameraLeftKeyCode())),
-		mCameraRight(SingleKeySetting(GAME_SETTINGS_HANDLER.getCameraRightKeyCode())),
-		mCameraUp(SingleKeySetting(GAME_SETTINGS_HANDLER.getCameraUpKeyCode())),
-		mCameraDown(SingleKeySetting(GAME_SETTINGS_HANDLER.getCameraDownKeyCode()))
+		mPauseKey(FILE_SETTINGS_HANDLER.getPauseKeyCode()),
+		mCameraForwardKey(FILE_SETTINGS_HANDLER.getCameraForwardKeyCode()),
+		mCameraBackwardKey(FILE_SETTINGS_HANDLER.getCameraBackwardKeyCode()),
+		mCameraLeftKey(FILE_SETTINGS_HANDLER.getCameraLeftKeyCode()),
+		mCameraRightKey(FILE_SETTINGS_HANDLER.getCameraRightKeyCode()),
+		mCameraUpKey(FILE_SETTINGS_HANDLER.getCameraUpKeyCode()),
+		mCameraDownKey(FILE_SETTINGS_HANDLER.getCameraDownKeyCode()),
+		mCursorPosition(),
+		mLastCursorPosition()
 	{
-		logger.log(Logger::Level::LEVEL_DEBUG, "Creating InputHandler...");
+		logger.log(Logger::Level::LEVEL_DEBUG, "Creating InputTracker...");
 	
 		for (int i = 0; i < MAX_KEYS_PRESSED; ++i)
 		{
@@ -52,40 +55,40 @@ namespace Bountive
 	{
 		addKeyPressed(keyCode);
 
-		if (keyCode == mPause.getCustomInteger())
+		if (keyCode == mPauseKey->getCustomInteger())
 		{
-			mPause.setNewPress(GL_TRUE);
-			mPause.setPressed(GL_TRUE);
+			mPauseKey->setNewPress(GL_TRUE);
+			mPauseKey->setPressed(GL_TRUE);
 		}
-		else if (keyCode == mCameraForward.getCustomInteger())
+		else if (keyCode == mCameraForwardKey->getCustomInteger())
 		{
-			mCameraForward.setNewPress(GL_TRUE);
-			mCameraForward.setPressed(GL_TRUE);
+			mCameraForwardKey->setNewPress(GL_TRUE);
+			mCameraForwardKey->setPressed(GL_TRUE);
 		}
-		else if (keyCode == mCameraBackward.getCustomInteger())
+		else if (keyCode == mCameraBackwardKey->getCustomInteger())
 		{
-			mCameraBackward.setNewPress(GL_TRUE);
-			mCameraBackward.setPressed(GL_TRUE);
+			mCameraBackwardKey->setNewPress(GL_TRUE);
+			mCameraBackwardKey->setPressed(GL_TRUE);
 		}
-		else if (keyCode == mCameraLeft.getCustomInteger())
+		else if (keyCode == mCameraLeftKey->getCustomInteger())
 		{
-			mCameraLeft.setNewPress(GL_TRUE);
-			mCameraLeft.setPressed(GL_TRUE);
+			mCameraLeftKey->setNewPress(GL_TRUE);
+			mCameraLeftKey->setPressed(GL_TRUE);
 		}
-		else if (keyCode == mCameraRight.getCustomInteger())
+		else if (keyCode == mCameraRightKey->getCustomInteger())
 		{
-			mCameraRight.setNewPress(GL_TRUE);
-			mCameraRight.setPressed(GL_TRUE);
+			mCameraRightKey->setNewPress(GL_TRUE);
+			mCameraRightKey->setPressed(GL_TRUE);
 		}
-		else if (keyCode == mCameraUp.getCustomInteger())
+		else if (keyCode == mCameraUpKey->getCustomInteger())
 		{
-			mCameraUp.setNewPress(GL_TRUE);
-			mCameraUp.setPressed(GL_TRUE);
+			mCameraUpKey->setNewPress(GL_TRUE);
+			mCameraUpKey->setPressed(GL_TRUE);
 		}
-		else if (keyCode == mCameraDown.getCustomInteger())
+		else if (keyCode == mCameraDownKey->getCustomInteger())
 		{
-			mCameraDown.setNewPress(GL_TRUE);
-			mCameraDown.setPressed(GL_TRUE);
+			mCameraDownKey->setNewPress(GL_TRUE);
+			mCameraDownKey->setPressed(GL_TRUE);
 		}
 	}
 
@@ -94,67 +97,98 @@ namespace Bountive
 	{
 		removeKeyPressed(keyCode);
 
-		if (keyCode == mPause.getCustomInteger())
+		if (keyCode == mPauseKey->getCustomInteger())
 		{
-			mPause.setPressed(GL_FALSE);
+			mPauseKey->setPressed(GL_FALSE);
 		}
-		else if (keyCode == mCameraForward.getCustomInteger())
+		else if (keyCode == mCameraForwardKey->getCustomInteger())
 		{
-			mCameraForward.setPressed(GL_FALSE);
+			mCameraForwardKey->setPressed(GL_FALSE);
 		}
-		else if (keyCode == mCameraBackward.getCustomInteger())
+		else if (keyCode == mCameraBackwardKey->getCustomInteger())
 		{
-			mCameraBackward.setPressed(GL_FALSE);
+			mCameraBackwardKey->setPressed(GL_FALSE);
 		}
-		else if (keyCode == mCameraLeft.getCustomInteger())
+		else if (keyCode == mCameraLeftKey->getCustomInteger())
 		{
-			mCameraLeft.setPressed(GL_FALSE);
+			mCameraLeftKey->setPressed(GL_FALSE);
 		}
-		else if (keyCode == mCameraRight.getCustomInteger())
+		else if (keyCode == mCameraRightKey->getCustomInteger())
 		{
-			mCameraRight.setPressed(GL_FALSE);
+			mCameraRightKey->setPressed(GL_FALSE);
 		}
-		else if (keyCode == mCameraUp.getCustomInteger())
+		else if (keyCode == mCameraUpKey->getCustomInteger())
 		{
-			mCameraUp.setPressed(GL_FALSE);
+			mCameraUpKey->setPressed(GL_FALSE);
 		}
-		else if (keyCode == mCameraDown.getCustomInteger())
+		else if (keyCode == mCameraDownKey->getCustomInteger())
 		{
-			mCameraDown.setPressed(GL_FALSE);
+			mCameraDownKey->setPressed(GL_FALSE);
 		}
+	}
+
+
+	void InputTracker::updateCursorPosition(GLdouble x, GLdouble y)
+	{
+		if (mLastCursorPosition.x == 0 && mLastCursorPosition.y == 0)
+		{
+			mLastCursorPosition.x = x;
+			mLastCursorPosition.y = y;
+		}
+		else
+		{
+			mLastCursorPosition.x = mCursorPosition.x;
+			mLastCursorPosition.y = mCursorPosition.y;
+		}
+
+		mCursorPosition.x = static_cast<GLfloat>(x);
+		mCursorPosition.y = static_cast<GLfloat>(y);
+
+		//logger.log(Logger::Level::LEVEL_DEBUG, std::to_string(mLastCursorPosition.x) + " " + std::to_string(mCursorPosition.x));
+	}
+
+
+	void InputTracker::setCursorPosition(Window& window, glm::vec2 cursorPosition)
+	{
+		glfwSetCursorPos(window.getWindowHandle(), cursorPosition.x, cursorPosition.y);
+		updateCursorPosition(cursorPosition.x, cursorPosition.y);
+
+		//logger.log(Logger::Level::LEVEL_DEBUG, std::to_string(mLastCursorPosition.x) + " " + std::to_string(mCursorPosition.x));
 	}
 
 
 	void InputTracker::update(const GLdouble& DELTA_TIME)
 	{
-		if (mPause.isNewPress())
+		if (mPauseKey->isNewPress())
 		{
-			mPause.setNewPress(GL_FALSE);
+			mPauseKey->setNewPress(GL_FALSE);
 		}
-		else if (mCameraForward.isNewPress())
+		else if (mCameraForwardKey->isNewPress())
 		{
-			mCameraForward.setNewPress(GL_FALSE);
+			mCameraForwardKey->setNewPress(GL_FALSE);
 		}
-		else if (mCameraBackward.isNewPress())
+		else if (mCameraBackwardKey->isNewPress())
 		{
-			mCameraBackward.setNewPress(GL_FALSE);
+			mCameraBackwardKey->setNewPress(GL_FALSE);
 		}
-		else if (mCameraLeft.isNewPress())
+		else if (mCameraLeftKey->isNewPress())
 		{
-			mCameraLeft.setNewPress(GL_FALSE);
+			mCameraLeftKey->setNewPress(GL_FALSE);
 		}
-		else if (mCameraRight.isNewPress())
+		else if (mCameraRightKey->isNewPress())
 		{
-			mCameraRight.setNewPress(GL_FALSE);
+			mCameraRightKey->setNewPress(GL_FALSE);
 		}
-		else if (mCameraUp.isNewPress())
+		else if (mCameraUpKey->isNewPress())
 		{
-			mCameraUp.setNewPress(GL_FALSE);
+			mCameraUpKey->setNewPress(GL_FALSE);
 		}
-		else if (mCameraDown.isNewPress())
+		else if (mCameraDownKey->isNewPress())
 		{
-			mCameraDown.setNewPress(GL_FALSE);
+			mCameraDownKey->setNewPress(GL_FALSE);
 		}
+
+		updateCursorPosition(mCursorPosition.x, mCursorPosition.y);
 	}
 
 
@@ -238,41 +272,53 @@ namespace Bountive
 
 	const SingleKeySetting& InputTracker::getPauseKey() const
 	{
-		return mPause;
+		return *mPauseKey;
 	}
 
 	const SingleKeySetting& InputTracker::getCameraForwardKey() const
 	{
-		return mCameraForward;
+		return *mCameraForwardKey;
 	}
 
 
 	const SingleKeySetting& InputTracker::getCameraBackwardKey() const
 	{
-		return mCameraBackward;
+		return *mCameraBackwardKey;
 	}
 
 
 	const SingleKeySetting& InputTracker::getCameraLeftKey() const
 	{
-		return mCameraLeft;
+		return *mCameraLeftKey;
 	}
 
 
 	const SingleKeySetting& InputTracker::getCameraRightKey() const
 	{
-		return mCameraRight;
+		return *mCameraRightKey;
 	}
 
 
 	const SingleKeySetting& InputTracker::getCameraUpKey() const
 	{
-		return mCameraUp;
+		return *mCameraUpKey;
 	}
 
 
 	const SingleKeySetting& InputTracker::getCameraDownKey() const
 	{
-		return mCameraDown;
+		return *mCameraDownKey;
+	}
+
+
+	const glm::vec2& InputTracker::getCursorPosition() const
+	{
+		return mCursorPosition;
+	}
+
+
+	const glm::vec2& InputTracker::getLastCursorPosition() const
+	{
+		return mLastCursorPosition;
 	}
 }
